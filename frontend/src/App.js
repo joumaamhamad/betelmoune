@@ -1,25 +1,31 @@
 import logo from './logo.svg';
 import './App.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import HomePage from './screens/HomePage';
+import SignIn from './screens/Signin';
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <div className="App flex flex-col min-h-screen">
+        <header className="bg-gray-800 text-white p-4">
+          headerr
+        </header>
+
+        <main className="flex-grow">
+          <Routes>
+            <Route path='/' element={<HomePage />} />
+          </Routes>
+        </main>
+
+        <footer className="bg-gray-800 text-white p-4">
+          footer
+        </footer>
+      </div>
+    </BrowserRouter>
   );
 }
 
 export default App;
+
