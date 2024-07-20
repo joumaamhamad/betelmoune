@@ -15,3 +15,26 @@ mongoose.connect(process.env.MONGO_ATLAS).then
     console.log(err.message);
 })
 
+
+const app = express();
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+
+app.use('/api/users' , userRouter);
+
+
+
+
+
+app.use((err , req , res , next) => {
+    res.status(500).send({message: err.message});
+})
+
+const port = process.env.PORT || 5000;
+
+app.listen(port , () => {
+    console.log(`Listen on port ${port}!!`);
+})
+
