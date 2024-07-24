@@ -5,7 +5,7 @@ import userRouter from './routes/userRoutes.js';
 
 dotenv.config();
 
-console.log('url::', process.env.MONGO_ATLAS);
+// console.log('url::', process.env.MONGO_ATLAS);
 
 mongoose
   .connect(process.env.MONGO_ATLAS)
@@ -20,6 +20,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/api/users', userRouter);
+
+
+
+
 
 app.use((err, req, res, next) => {
   res.status(500).send({ message: err.message });
