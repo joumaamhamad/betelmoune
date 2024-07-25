@@ -11,26 +11,19 @@ import { ToastContainer } from 'react-toastify';
 function App() {
   return (
     <BrowserRouter>
-
       <div className="App flex flex-col min-h-screen">
-      
-
         <NavBar />
 
         <main className="flex-grow">
-
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path='/signup' element={<SignUp />} />
             <Route path='/signin' element={<SignIn />} />
           </Routes>
-          
         </main>
 
         <Footer />
-
       </div>
-
     </BrowserRouter>
   );
 }
