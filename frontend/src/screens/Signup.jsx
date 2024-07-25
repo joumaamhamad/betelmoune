@@ -13,6 +13,9 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { toast } from "react-toastify";
+import { getError } from "../utils";
 
 function Copyright(props) {
   return (
@@ -30,6 +33,12 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignUp() {
+
+  const navigate = useNavigate();
+  const { search } = useLocation();
+  const redirectUrl = new URLSearchParams(search).get('redirect');
+  const redirect = redirectUrl ? redirectUrl : '/'
+
   const [formValues, setFormValues] = React.useState({
     firstName: '',
     lastName: '',
@@ -45,9 +54,26 @@ export default function SignUp() {
     });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
+
     event.preventDefault();
     console.log(formValues);
+
+    try{
+      const { data } = await axios.post('/api/users/signup' , {
+        firstName: formValues.firstName,
+        lastName: formValues.lastName,
+        email: formValues.email,
+        password: formValues.password
+      })
+
+      localStorage.setItem('userInfo' , JSON.stringify(data));
+      toast.success('Account is created!!')
+      navigate(redirect || '/');
+
+    }catch(err){
+      toast.error(getError(err));
+    }
   };
 
   return (
