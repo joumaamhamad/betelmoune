@@ -7,6 +7,7 @@ dotenv.config();
 
 console.log('url::', process.env.MONGO_ATLAS);
 
+
 mongoose
   .connect(process.env.MONGO_ATLAS)
   .then(() => console.log('connected to db!'))
