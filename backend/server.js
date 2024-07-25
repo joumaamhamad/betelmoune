@@ -5,7 +5,8 @@ import userRouter from './routes/userRoutes.js';
 
 dotenv.config();
 
-// console.log('url::', process.env.MONGO_ATLAS);
+console.log('url::', process.env.MONGO_ATLAS);
+
 
 mongoose
   .connect(process.env.MONGO_ATLAS)
