@@ -21,10 +21,6 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/api/users', userRouter);
 
-
-
-
-
 app.use((err, req, res, next) => {
   res.status(500).send({ message: err.message });
 });
