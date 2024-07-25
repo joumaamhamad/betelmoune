@@ -5,6 +5,8 @@ import HomePage from './screens/HomePage';
 import SignIn from './screens/Signin';
 import NavBar from './components/NavBar';
 import Footer from './components/Footer';
+import SignUp from './screens/Signup';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   return (
@@ -15,6 +17,8 @@ function App() {
         <main className="flex-grow">
           <Routes>
             <Route path="/" element={<HomePage />} />
+            <Route path='/signup' element={<SignUp />} />
+            <Route path='/signin' element={<SignIn />} />
           </Routes>
         </main>
 

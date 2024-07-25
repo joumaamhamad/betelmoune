@@ -12,6 +12,9 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { getError } from '../utils';
+import axios from 'axios';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 function Copyright(props) {
   return (
@@ -36,13 +39,33 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-  const handleSubmit = (event) => {
+
+  const navigate = useNavigate();
+  const { search } = useLocation();
+  const redirectUrl = new URLSearchParams(search).get('redirect');
+  const redirect = redirectUrl ? redirectUrl : '/'
+  
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+
+    try{
+
+      const data = new FormData(event.currentTarget);
+      console.log({
+        email: data.get('email'),
+        password: data.get('password'),
+      });
+
+      const { result} = axios.post('/api/users/signin' , {
+        email: data.get('email'),
+        password: data.get('password'),
+      })
+
+      localStorage.setItem('userInfo' , JSON.stringify(result));
+      navigate(redirect || '/');
+    }catch(err){
+      console.log(getError(err))
+    }
   };
 
   return (
