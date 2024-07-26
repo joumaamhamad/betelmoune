@@ -6,7 +6,9 @@ import NavBarPlus from './components/NavBarPlus';
 import Footer from './components/Footer';
 import SignUp from './screens/Signup';
 import Products from './screens/Products';
-import { ToastContainer } from 'react-toastify';
+import AddProduct from './screens/AddProduct';
+import EditProduct from './screens/EditProduct';
+// import { ToastContainer } from 'react-toastify';
 
 function App() {
   return (
@@ -20,7 +22,8 @@ function App() {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/signin" element={<SignIn />} />
             <Route path="/products" element={<Products />} />
-
+            <Route path="/addProduct" element={<AddProduct />} />
+            <Route path="/editProduct" element={<EditProduct />} />
           </Routes>
         </main>
 
