@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 export default function NavBar() {
   return (
-    <header className="bg-gray-800 text-white p-4 flex items-center justify-between">
+    <header className="bg-white-800 text-black p-4 flex items-center justify-between">
       <div className="flex items-center">
         <Link to="/" className="text-lg font-bold hover:text-gray-400">
           Bel Elmouneh
@@ -35,15 +35,19 @@ export default function NavBar() {
           <input
             type="text"
             placeholder="Search"
-            className="p-1 rounded outline-none"
+            className="p-1 rounded outline-none bg-gray-200"
           />
         </div>
-        <button className="bg-blue-500 text-white py-1 px-3 rounded mr-2">
-          Sign in
-        </button>
-        <button className="bg-green-500 text-white py-1 px-3 rounded">
-          Sign up
-        </button>
+        <Link to="/signin">
+          <button className="bg-blue-500 text-white py-1 px-3 rounded mr-2">
+            Sign in
+          </button>
+        </Link>
+        <Link to="/signup">
+          <button className="bg-green-500 text-white py-1 px-3 rounded">
+            Sign up
+          </button>
+        </Link>
       </div>
     </header>
   );
