@@ -3,7 +3,12 @@
 module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        palepeach: '#98fb98',
+      },
+    },
   },
+  variants: {},
   plugins: [],
 };
