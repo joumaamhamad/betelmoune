@@ -39,32 +39,30 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-
   const navigate = useNavigate();
   const { search } = useLocation();
   const redirectUrl = new URLSearchParams(search).get('redirect');
-  const redirect = redirectUrl ? redirectUrl : '/'
-  
+  const redirect = redirectUrl ? redirectUrl : '/';
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    try{
-
+    try {
       const data = new FormData(event.currentTarget);
       console.log({
         email: data.get('email'),
         password: data.get('password'),
       });
 
-      const { result} = axios.post('/api/users/signin' , {
+      const { result } = axios.post('/api/users/signin', {
         email: data.get('email'),
         password: data.get('password'),
-      })
+      });
 
-      localStorage.setItem('userInfo' , JSON.stringify(result));
+      localStorage.setItem('userInfo', JSON.stringify(result));
       navigate(redirect || '/');
-    }catch(err){
-      console.log(getError(err))
+    } catch (err) {
+      console.log(getError(err));
     }
   };
 
