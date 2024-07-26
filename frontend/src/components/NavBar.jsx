@@ -38,11 +38,14 @@ export default function NavBar() {
             className="p-1 rounded outline-none bg-gray-200"
           />
         </div>
+
         <Link to="/signin">
+
           <button className="bg-blue-500 text-white py-1 px-3 rounded mr-2">
             Sign in
           </button>
         </Link>
+
         <Link to="/signup">
           <button className="bg-green-500 text-white py-1 px-3 rounded">
             Sign up
