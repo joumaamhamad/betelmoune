@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect, useRef } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,9 +12,9 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { getError } from '../utils';
-import axios from 'axios';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { logIn } from '../store/authSlice';
 
 function Copyright(props) {
   return (
@@ -39,32 +39,34 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignIn() {
+  const user = useSelector((state) => state.authSlice.user);
+
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
+
   const navigate = useNavigate();
-  const { search } = useLocation();
-  const redirectUrl = new URLSearchParams(search).get('redirect');
-  const redirect = redirectUrl ? redirectUrl : '/';
+  const dispatch = useDispatch();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    const dataField = {
+      email: data.get('email'),
+      password: data.get('password'),
+    };
 
-    try {
-      const data = new FormData(event.currentTarget);
-      console.log({
-        email: data.get('email'),
-        password: data.get('password'),
-      });
-
-      const { result } = axios.post('/api/users/signin', {
-        email: data.get('email'),
-        password: data.get('password'),
-      });
-
-      localStorage.setItem('userInfo', JSON.stringify(result));
-      navigate(redirect || '/');
-    } catch (err) {
-      console.log(getError(err));
+    if (dataField.email && dataField.password) {
+      dispatch(logIn(dataField));
     }
   };
+
+  useEffect(() => {
+    if (user) {
+      navigate('/');
+      emailRef.current.value = '';
+      passwordRef.current.value = '';
+    }
+  }, [navigate, user]);
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -95,6 +97,7 @@ export default function SignIn() {
               required
               fullWidth
               id="email"
+              inputRef={emailRef}
               label="Email Address"
               name="email"
               autoComplete="email"
@@ -104,6 +107,7 @@ export default function SignIn() {
               margin="normal"
               required
               fullWidth
+              inputRef={passwordRef}
               name="password"
               label="Password"
               type="password"

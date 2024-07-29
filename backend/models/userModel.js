@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import Product from './productModel.js';
 
 const userSchema = new mongoose.Schema({
   firstName: { type: String, required: true },
@@ -7,7 +8,7 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   isAdmin: { type: Boolean, default: false, required: true },
 
-  products: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }],
+  products: [Product.schema],
 
   workshops: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Workshop' }],
 });

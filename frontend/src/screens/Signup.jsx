@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect, useRef } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,10 +12,10 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import axios from 'axios';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { toast } from "react-toastify";
-import { getError } from "../utils";
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { useDispatch, useSelector } from 'react-redux';
+import { signUp } from '../store/authSlice';
 
 function Copyright(props) {
   return (
@@ -38,48 +38,42 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignUp() {
+  const user = useSelector((state) => state.authSlice.user);
+
+  const firstNameRef = useRef(null);
+  const lastNameRef = useRef(null);
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
 
   const navigate = useNavigate();
-  const { search } = useLocation();
-  const redirectUrl = new URLSearchParams(search).get('redirect');
-  const redirect = redirectUrl ? redirectUrl : '/'
-
-  const [formValues, setFormValues] = React.useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-  });
-
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setFormValues({
-      ...formValues,
-      [name]: value,
-    });
-  };
+  const dispatch = useDispatch();
 
   const handleSubmit = async (event) => {
-
     event.preventDefault();
-    console.log(formValues);
+    const data = new FormData(event.currentTarget);
 
-    try{
-      const { data } = await axios.post('/api/users/signup' , {
-        firstName: formValues.firstName,
-        lastName: formValues.lastName,
-        email: formValues.email,
-        password: formValues.password
-      })
+    const dataField = {
+      firstName: data.get('firstName'),
+      lastName: data.get('lastName'),
+      email: data.get('email'),
+      password: data.get('password'),
+    };
 
-      localStorage.setItem('userInfo' , JSON.stringify(data));
-      toast.success('Account is created!!')
-      navigate(redirect || '/');
-
-    }catch(err){
-      toast.error(getError(err));
+    if (dataField.email && dataField.password) {
+      dispatch(signUp(dataField));
     }
   };
+
+  useEffect(() => {
+    if (user) {
+      toast.success('Account is created!!');
+      navigate('/');
+      firstNameRef.current.value = '';
+      lastNameRef.current.value = '';
+      emailRef.current.value = '';
+      passwordRef.current.value = '';
+    }
+  }, [navigate, user]);
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -113,10 +107,9 @@ export default function SignUp() {
                   required
                   fullWidth
                   id="firstName"
+                  inputRef={firstNameRef}
                   label="First Name"
                   autoFocus
-                  value={formValues.firstName}
-                  onChange={handleInputChange}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -124,11 +117,10 @@ export default function SignUp() {
                   required
                   fullWidth
                   id="lastName"
+                  inputRef={lastNameRef}
                   label="Last Name"
                   name="lastName"
                   autoComplete="family-name"
-                  value={formValues.lastName}
-                  onChange={handleInputChange}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -136,24 +128,22 @@ export default function SignUp() {
                   required
                   fullWidth
                   id="email"
+                  inputRef={emailRef}
                   label="Email Address"
                   name="email"
                   autoComplete="email"
-                  value={formValues.email}
-                  onChange={handleInputChange}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
+                  inputRef={passwordRef}
                   name="password"
                   label="Password"
                   type="password"
                   id="password"
                   autoComplete="new-password"
-                  value={formValues.password}
-                  onChange={handleInputChange}
                 />
               </Grid>
               <Grid item xs={12}>
