@@ -7,6 +7,8 @@ import NavBarPlus from './components/NavBarPlus';
 // import Footer from './components/Footer'; // Uncomment if you want to use the Footer
 import { ToastContainer } from 'react-toastify';
 import WorkshopDetails from './screens/WorkshopDetails';
+import AddProduct from './screens/AddProduct';
+import EditProduct from './screens/EditProduct';
 // Lazy load components
 const HomePage = lazy(() => import('./screens/HomePage'));
 const SignIn = lazy(() => import('./screens/Signin'));
