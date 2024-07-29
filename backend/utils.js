@@ -1,4 +1,7 @@
 import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 export const generateToken = (user) => {
   return jwt.sign(
@@ -41,3 +44,33 @@ export const isAdmin = (req, res, next) => {
     res.status(401).send({ message: 'Invalid Admin Token' });
   }
 };
+
+
+
+export const sendEmail = (user , email) => {
+
+  const transporter = nodemailer.createTransport({
+
+      service: 'outlook',
+      auth: {
+          user: process.env.EMAIL,
+          pass: process.env.PASSWORD
+      }
+  });
+  
+  const mailOptions = {
+      from: 'mhamad_jomaa@outlook.com',
+      to: email,
+      subject: 'Sign In ',
+      text: `Welcome Back ${user.name}`
+  };
+  
+  transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+          console.error(error);
+      } else {
+          console.log('Email sent: ' + info.response);
+      }
+  });
+
+}

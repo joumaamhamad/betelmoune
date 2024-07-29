@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const NavBarPlus = () => {
   return (
@@ -6,26 +7,26 @@ const NavBarPlus = () => {
       <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex-shrink-0 flex items-center">
-            <a href="#" className="text-xl font-bold text-gray-900">
+            <Link to={''} className="text-xl font-bold text-gray-900">
               Acme Co
-            </a>
+            </Link>
           </div>
           <div className="hidden md:flex md:space-x-8 md:items-center">
-            <a href="#" className="text-gray-900 hover:text-gray-600">
+            <Link to={'/'} className="text-gray-900 hover:text-gray-600">
               Home
-            </a>
-            <a href="#" className="text-gray-900 hover:text-gray-600">
+            </Link>
+            <Link to={'/products'} className="text-gray-900 hover:text-gray-600">
               Products
-            </a>
-            <a href="#" className="text-gray-900 hover:text-gray-600">
+            </Link>
+            <Link to={'/workshops'} className="text-gray-900 hover:text-gray-600">
               Workshop
-            </a>
-            <a href="#" className="text-gray-900 hover:text-gray-600">
+            </Link>
+            <Link to={'/aboutus'} className="text-gray-900 hover:text-gray-600">
               About us
-            </a>
-            <a href="#" className="text-gray-900 hover:text-gray-600">
+            </Link>
+            <Link to={'/contact'} className="text-gray-900 hover:text-gray-600">
               Contact
-            </a>
+            </Link>
           </div>
           <div className="flex items-center space-x-4">
             <div className="relative">
@@ -36,7 +37,7 @@ const NavBarPlus = () => {
               />
             </div>
             <div className="flex-shrink-0">
-              <a href="#" className="text-gray-900 hover:text-gray-600">
+              {/* <a href="#" className="text-gray-900 hover:text-gray-600">
                 <svg
                   className="w-6 h-6"
                   fill="none"
@@ -51,7 +52,19 @@ const NavBarPlus = () => {
                     d="M5.121 20.121A3 3 0 118.464 16.88L12 20.415l3.536-3.536a3 3 0 114.243 4.243L12 24.828l-6.879-6.879zM4 10V5a4 4 0 014-4h8a4 4 0 014 4v5m-4 4a4 4 0 11-8 0"
                   />
                 </svg>
-              </a>
+              </a> */}
+
+              <Link to="/signin">
+                <button className="bg-blue-500 text-white py-1 px-3 rounded mr-2">
+                  Sign in
+                </button>
+              </Link>
+
+              <Link to="/signup">
+                <button className="bg-green-500 text-white py-1 px-3 rounded">
+                  Sign up
+                </button>
+              </Link>
             </div>
           </div>
         </div>

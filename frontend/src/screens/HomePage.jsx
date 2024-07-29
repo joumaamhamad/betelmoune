@@ -7,7 +7,7 @@ export default function HomePage() {
       <img
         src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRjuvNQtvyfIon9TONH_qMZetGGFed4ZxvKEUOLWYr6yYm55d0AHzL6i2H2N0FLJnJN5A&usqp=CAU"
         alt="images"
-        className="w-full h-[400px]"
+        className="w-full h-[650px]"
       />
       <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-50 text-white">
         <h1 className="text-4xl font-bold mb-4 text-center">

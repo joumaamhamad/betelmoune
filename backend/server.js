@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import userRouter from './routes/userRoutes.js';
+import workshopRouter from './routes/workshopRoutes.js';
 
 dotenv.config();
 
@@ -20,6 +21,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/api/users', userRouter);
+app.use('/api/workshops' , workshopRouter);
 
 app.use((err, req, res, next) => {
   res.status(500).send({ message: err.message });
