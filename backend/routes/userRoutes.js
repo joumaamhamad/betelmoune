@@ -31,28 +31,6 @@ userRouter.post('/signin', async (req, res) => {
 })
 
 
-  console.log(req.body.email);
-
-  const user = await User.findOne({ email: req.body.email });
-
-  if (user) {
-    if (bcrypt.compareSync(req.body.password, user.password)) {
-      return res.send({
-        _id: user._id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        isAdmin: user.isAdmin,
-        products: user.products,
-        workshops: user.workshops,
-        token: generateToken(user),
-      });
-    }
-  }
-
-  res.status(401).send({ message: 'Invalid email or password!!' });
-});
-
 userRouter.post('/signup', async (req, res) => {
 
   const newUser = new User({
