@@ -1,11 +1,35 @@
 import express from 'express';
 import User from '../models/userModel.js';
 import bcrypt from 'bcryptjs';
-import { isAuth, isAdmin, generateToken } from '../utils.js';
+import { isAuth , isAdmin , generateToken , sendEmail } from '../utils.js';
+
 
 const userRouter = express.Router();
 
 userRouter.post('/signin', async (req, res) => {
+
+    console.log(req.body.email)
+    const user = await User.findOne({ email: req.body.email })
+
+    if (user) {
+        // sendEmail(user , user.email);
+        if (bcrypt.compareSync(req.body.password, user.password)) {
+            return res.send({
+                _id: user._id,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                email: user.email,
+                isAdmin: user.isAdmin,
+                products: user.products,
+                workshops: user.workshops,
+                token: generateToken(user),
+            })
+        }
+    }
+
+    res.status(401).send({ message: "Invalid email or password!!" })
+})
+
 
   console.log(req.body.email);
 

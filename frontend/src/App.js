@@ -1,14 +1,19 @@
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import HomePage from './screens/HomePage';
-import SignIn from './screens/Signin';
+import React, { Suspense, lazy } from 'react';
+import { CircularProgress } from '@mui/material';
 import NavBarPlus from './components/NavBarPlus';
-import Footer from './components/Footer';
-import SignUp from './screens/Signup';
-import Products from './screens/Products';
-import AddProduct from './screens/AddProduct';
-import EditProduct from './screens/EditProduct';
-// import { ToastContainer } from 'react-toastify';
+
+// import Footer from './components/Footer'; // Uncomment if you want to use the Footer
+import { ToastContainer } from 'react-toastify';
+import WorkshopDetails from './screens/WorkshopDetails';
+// Lazy load components
+const HomePage = lazy(() => import('./screens/HomePage'));
+const SignIn = lazy(() => import('./screens/Signin'));
+const SignUp = lazy(() => import('./screens/Signup'));
+const Products = lazy(() => import('./screens/Products'));
+const Workshops = lazy(() => import('./screens/Workshops'));
+
 
 function App() {
   return (
@@ -17,17 +22,23 @@ function App() {
         <NavBarPlus />
 
         <main className="flex-grow">
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="/signin" element={<SignIn />} />
-            <Route path="/products" element={<Products />} />
-            <Route path="/addProduct" element={<AddProduct />} />
-            <Route path="/editProduct" element={<EditProduct />} />
-          </Routes>
+
+          <Suspense fallback={<CircularProgress />}>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="/signin" element={<SignIn />} />
+              <Route path="/products" element={<Products />} />
+              <Route path="/workshops" element={<Workshops />} />
+              <Route path="/workshop/:slug" element={<WorkshopDetails />} />
+              <Route path="/addProduct" element={<AddProduct />} />
+              <Route path="/editProduct" element={<EditProduct />} />
+            </Routes>
+          </Suspense>
         </main>
 
-        <Footer />
+        {/* <Footer /> */}
+        <ToastContainer />
       </div>
     </BrowserRouter>
   );

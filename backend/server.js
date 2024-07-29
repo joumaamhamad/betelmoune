@@ -3,7 +3,9 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import userRouter from './routes/userRoutes.js';
+import workshopRouter from './routes/workshopRoutes.js';
 import productsRouter from './routes/productRoutes.js';
+
 
 dotenv.config();
 
@@ -30,7 +32,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/api/users', userRouter);
+app.use('/api/workshops' , workshopRouter);
 app.use('/api/products', productsRouter);
+
 
 app.use((err, req, res, next) => {
   res.status(500).send({ message: err.message });
