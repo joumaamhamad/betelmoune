@@ -6,7 +6,9 @@ import { isAuth, isAdmin, generateToken } from '../utils.js';
 const userRouter = express.Router();
 
 userRouter.post('/signin', async (req, res) => {
+
   console.log(req.body.email);
+
   const user = await User.findOne({ email: req.body.email });
 
   if (user) {
@@ -28,25 +30,35 @@ userRouter.post('/signin', async (req, res) => {
 });
 
 userRouter.post('/signup', async (req, res) => {
+
   const newUser = new User({
+
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     email: req.body.email,
     password: bcrypt.hashSync(req.body.password),
+    products: [],
+
   });
 
   const user = await newUser.save();
 
-  res.send({
-    _id: user._id,
-    firstName: user.firstName,
-    lastName: user.lastName,
-    email: user.email,
-    isAdmin: user.isAdmin,
-    products: user.products,
-    workshops: user.workshops,
-    token: generateToken(user),
-  });
+
+  if (user) {
+    return res.send({
+      _id: user._id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      isAdmin: user.isAdmin,
+      products: user.products,
+      workshops: user.workshops,
+      token: generateToken(user),
+    });
+  }
+
+  res.status(404).send({ message: 'Failed To SignUp try again later' });
+
 });
 
 export default userRouter;
