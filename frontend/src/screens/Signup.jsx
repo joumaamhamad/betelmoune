@@ -17,6 +17,7 @@ import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { signUp } from '../store/authSlice';
 
+
 function Copyright(props) {
   return (
     <Typography
@@ -38,6 +39,7 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignUp() {
+
   const user = useSelector((state) => state.authSlice.user);
 
   const firstNameRef = useRef(null);
@@ -50,6 +52,7 @@ export default function SignUp() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
     const data = new FormData(event.currentTarget);
 
     const dataField = {
@@ -61,6 +64,7 @@ export default function SignUp() {
 
     if (dataField.email && dataField.password) {
       dispatch(signUp(dataField));
+
     }
   };
 
