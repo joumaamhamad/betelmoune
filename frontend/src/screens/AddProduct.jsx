@@ -2,8 +2,8 @@ import React from 'react';
 
 const AddProduct = () => {
   return (
-    <div className="flex items-start justify-start min-h-screen bg-white-100 p-8">
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md mt-5">
+    <div className="flex items-start justify-start min-h-screen bg-white-100 p-8 pl-32">
+      <div className="bg-white p-8 rounded-lg w-full max-w-2xl mt-5">
         <h2 className="text-2xl font-bold mb-6 text-left">Add a new product</h2>
         <form>
           <div className="mb-4">

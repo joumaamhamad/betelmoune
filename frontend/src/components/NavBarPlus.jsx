@@ -8,17 +8,23 @@ const NavBarPlus = () => {
         <div className="flex justify-between h-16">
           <div className="flex-shrink-0 flex items-center">
             <Link to={''} className="text-xl font-bold text-gray-900">
-              Acme Co
+              Bel Elmouneh
             </Link>
           </div>
           <div className="hidden md:flex md:space-x-8 md:items-center">
             <Link to={'/'} className="text-gray-900 hover:text-gray-600">
               Home
             </Link>
-            <Link to={'/products'} className="text-gray-900 hover:text-gray-600">
+            <Link
+              to={'/products'}
+              className="text-gray-900 hover:text-gray-600"
+            >
               Products
             </Link>
-            <Link to={'/workshops'} className="text-gray-900 hover:text-gray-600">
+            <Link
+              to={'/workshops'}
+              className="text-gray-900 hover:text-gray-600"
+            >
               Workshop
             </Link>
             <Link to={'/aboutus'} className="text-gray-900 hover:text-gray-600">
@@ -55,13 +61,13 @@ const NavBarPlus = () => {
               </a> */}
 
               <Link to="/signin">
-                <button className="bg-blue-500 text-white py-1 px-3 rounded mr-2">
+                <button className="bg-blue-500 text-white py-1 px-3 hover:bg-blue-700 rounded mr-2">
                   Sign in
                 </button>
               </Link>
 
               <Link to="/signup">
-                <button className="bg-green-500 text-white py-1 px-3 rounded">
+                <button className="bg-green-500 text-white py-1 px-3 hover:bg-green-700 rounded">
                   Sign up
                 </button>
               </Link>
