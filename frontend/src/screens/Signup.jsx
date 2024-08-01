@@ -17,7 +17,6 @@ import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { signUp } from '../store/authSlice';
 
-
 function Copyright(props) {
   return (
     <Typography
@@ -39,7 +38,6 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignUp() {
-
   const user = useSelector((state) => state.authSlice.user);
 
   const firstNameRef = useRef(null);
@@ -64,7 +62,6 @@ export default function SignUp() {
 
     if (dataField.email && dataField.password) {
       dispatch(signUp(dataField));
-
     }
   };
 
@@ -169,7 +166,7 @@ export default function SignUp() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/signin" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>
