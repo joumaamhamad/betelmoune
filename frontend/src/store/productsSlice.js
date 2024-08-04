@@ -29,13 +29,82 @@ const productsSlice = createSlice({
   name: 'products',
   initialState: {
     products: [],
+    productsFilter: [],
+    categories: [],
+    selectedProduct: [],
   },
-  reducers: {},
+  reducers: {
+    // Select Product
+    selectProduct: (state, action) => {
+      state.selectedProduct = action.payload;
+    },
+
+    // Click in Category
+    categoriesFilter: (state, action) => {
+      state.products = state.products.filter((product) => {
+        if (
+          product.category.toLowerCase().includes(action.payload.toLowerCase())
+        ) {
+          return product;
+        } else {
+          state.productsFilter.push(product);
+          return null;
+        }
+      });
+
+      state.productsFilter = state.productsFilter.filter((product) => {
+        if (
+          product.category.toLowerCase().includes(action.payload.toLowerCase())
+        ) {
+          state.products.push(product);
+          return null;
+        } else {
+          return product;
+        }
+      });
+    },
+
+    // Filter Search Product
+    filterProducts: (state, action) => {
+      state.products = state.products.filter((product) => {
+        if (product.name.toLowerCase().includes(action.payload.toLowerCase())) {
+          return product;
+        } else {
+          state.productsFilter.push(product);
+          return null;
+        }
+      });
+
+      state.productsFilter = state.productsFilter.filter((product) => {
+        if (product.name.toLowerCase().includes(action.payload.toLowerCase())) {
+          state.products.push(product);
+          return null;
+        } else {
+          return product;
+        }
+      });
+    },
+
+    // Empty Products State
+    setProductsEmpty: (state, action) => {
+      state.products = [];
+      state.productsFilter = [];
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(getProducts.fulfilled, (state, action) => {
       state.products = action.payload;
+      action.payload.forEach((elem) => {
+        state.categories.push(elem.category);
+      });
     });
   },
 });
 
+export const {
+  selectProduct,
+  categoriesFilter,
+  filterProducts,
+  setProductsEmpty,
+} = productsSlice.actions;
 export default productsSlice.reducer;
