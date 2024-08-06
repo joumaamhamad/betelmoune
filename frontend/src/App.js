@@ -3,6 +3,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import React, { Suspense, lazy } from 'react';
 import { CircularProgress } from '@mui/material';
 import NavBarPlus from './components/NavBarPlus';
+import Profile from "./screens/Profile";
+
 
 // import Footer from './components/Footer'; // Uncomment if you want to use the Footer
 import { ToastContainer } from 'react-toastify';
@@ -40,6 +42,7 @@ function App() {
               <Route path="/addProduct" element={<AddProduct />} />
               <Route path="/editProduct" element={<EditProduct />} />
               <Route path="/cart" element={<Cart />} />
+              <Route path="/profile" element={<Profile />} />
             </Routes>
           </Suspense>
         </main>
