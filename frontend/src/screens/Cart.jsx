@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 const Cart = () => {
   const [quantities, setQuantities] = useState({
     chickenBreast: 1,
-    avocadoOil: 1,
+    oliveOil: 1,
   });
 
   const handleIncrement = (item) => {
@@ -27,7 +27,7 @@ const Cart = () => {
         <div className="space-y-4">
           <div className="flex items-center space-x-4">
             <img
-              src="https://zaatarandzaytoun.com/wp-content/uploads/2020/06/makdous-18.jpg"
+              src="https://www.daylesford.com/media/catalog/product/2/1/21010060_organic-free-range-chicken-fillets-skinless-400g.jpg?quality=80&bg-color=255,255,255&fit=bounds&height=&width="
               alt="Organic Chicken Breast"
               className="w-20 h-20 object-cover rounded-md"
             />
@@ -53,25 +53,25 @@ const Cart = () => {
           </div>
           <div className="flex items-center space-x-4">
             <img
-              src="https://silkroadrecipes.com/wp-content/uploads/2020/07/Lebanese-Seven-Spice-Blend-square.jpg"
-              alt="Avocado Oil"
+              src="https://i.pinimg.com/originals/3f/e6/ad/3fe6adc970f1b89c3c8b6d61ae05d347.jpg"
+              alt="olive Oil"
               className="w-20 h-20 object-cover rounded-md"
             />
             <div className="flex-1">
-              <h3 className="text-lg font-semibold">Avocado Oil</h3>
+              <h3 className="text-lg font-semibold">Olive Oil</h3>
               <p className="text-gray-600">$12.00 • 16.9 oz</p>
             </div>
             <div className="flex items-center space-x-2">
               <button
                 className="bg-gray-200 text-gray-700 px-3 py-1 rounded"
-                onClick={() => handleDecrement('avocadoOil')}
+                onClick={() => handleDecrement('oliveOil')}
               >
                 -
               </button>
-              <span>{quantities.avocadoOil}</span>
+              <span>{quantities.oliveOil}</span>
               <button
                 className="bg-gray-200 text-gray-700 px-3 py-1 rounded"
-                onClick={() => handleIncrement('avocadoOil')}
+                onClick={() => handleIncrement('oliveOil')}
               >
                 +
               </button>
