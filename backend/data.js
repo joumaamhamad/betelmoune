@@ -16,6 +16,7 @@ const workshops = [
         topics: ["Introduction", "History of El Moune"],
         price: 50,
         images: ["https://zaatarandzaytoun.com/wp-content/uploads/2020/06/makdous-18.jpg", "https://silkroadrecipes.com/wp-content/uploads/2020/07/Lebanese-Seven-Spice-Blend-square.jpg", "https://miro.medium.com/v2/resize:fit:1080/1*qlBeWAKsZNZjNmCy4cloWw.png" , "https://www.four-seasons.ro/images/evenimente/spices-four-seasons2.png" , "https://www.allrecipes.com/thmb/MU4sihJ6xm5ATweejVWzamdbJxo=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/267408-spicy-vietnamese-quick-pickled-vegetables-DDMFS-4x3-2719-becd9a3a80ce497a81f66ef8912dfae1.jpg", "https://www.cooking-therapy.com/wp-content/uploads/2020/08/Pickled-Vegetables-5.jpg"],
+        type: 'Trending'
     },
     {
         id: 2,
@@ -29,6 +30,7 @@ const workshops = [
         instructor: "66a15aa2e0f69ffdcda06125", // replace with actual ObjectId
         topics: ["Pickling", "Vegetables"],
         price: 40,
+        type: 'Trending',
         images: ["https://www.allrecipes.com/thmb/MU4sihJ6xm5ATweejVWzamdbJxo=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/267408-spicy-vietnamese-quick-pickled-vegetables-DDMFS-4x3-2719-becd9a3a80ce497a81f66ef8912dfae1.jpg", "https://www.cooking-therapy.com/wp-content/uploads/2020/08/Pickled-Vegetables-5.jpg" , "https://foodhub.scene7.com/is/image/woolworthsltdprod/2203-pickled-vegetables:Mobile-1300x1150" , "https://www.seriouseats.com/thmb/uQeEIawswJk3hopfN3pWBYGlZac=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/20230314-SEA-Tourshi-VickyWasik-hero-b897b4ac0afb459fa5e95b67549d1997.JPG"],
     },
     {
@@ -43,6 +45,7 @@ const workshops = [
         instructor: "66a15aa2e0f69ffdcda06125", // replace with actual ObjectId
         topics: ["Labneh", "Dairy Products"],
         price: 60,
+        type: 'Trending',
         images: ["https://hadiaslebanesecuisine.com/newsite/wp-content/uploads/2014/02/labneh-balls-2000-1-2-280x300.jpg", "https://littlesunnykitchen.com/wp-content/uploads/2021/03/Labneh-Recipe-1-750x750.jpg" , "https://cdn.loveandlemons.com/wp-content/uploads/2020/05/labneh-yogurt.jpg" , "https://www.manusmenu.com/wp-content/uploads/2012/06/1-Labneh-1-1-of-1.jpg"],
     },
     {
@@ -57,6 +60,7 @@ const workshops = [
         instructor: "66a15aa2e0f69ffdcda06125", // replace with actual ObjectId
         topics: ["Fruit Preservation", "Jam Making"],
         price: 50,
+        type: 'Premium',
         images: ["https://blog.thompson-morgan.com/wp-content/uploads/2022/07/20220607_tm_overview_of_preserved_fruits.jpg", "https://i0.wp.com/zoominnutrition.com/wp-content/uploads/2021/10/Food_Preserving_cov1.png?resize=940%2C675&ssl=1" , "https://www.almanac.com/sites/default/files/users/The%20Editors/frozen-shutterstock_1580573581_0_full_width.jpg" , "https://www.halfyourplate.ca/wp-content/uploads/2022/09/strawberry-freezer-jam-in-jar-sq.jpg"],
     },
     {
@@ -71,6 +75,7 @@ const workshops = [
         instructor: "66a15aa2e0f69ffdcda06125", // replace with actual ObjectId
         topics: ["Olive Preservation", "Salting Techniques"],
         price: 50,
+        type: 'Premium',
         images: ["https://cdn.mos.cms.futurecdn.net/7X5dvNX9hpgZFvwSGaXZpi.jpg", "https://www.thespruceeats.com/thmb/JX-Ik1jghLnbGAknB7eNlP_8KVo=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/greenolives-5a85e5dfa18d9e0037a56ce5.jpg" , "https://i.ytimg.com/vi/S7PLpITU-RA/maxresdefault.jpg" , "https://koala.sh/api/image/v2-9eq9g-r8e1m.jpg?width=1216&height=832&dream"],
     },
     {
@@ -85,6 +90,7 @@ const workshops = [
         instructor: "66a15aa2e0f69ffdcda06125", // replace with actual ObjectId
         topics: ["Kibbeh Nayeh", "Meat Preparation"],
         price: 60,
+        type: 'Uncoming',
         images: ["https://www.mamaslebanesekitchen.com/wp-content/uploads/2011/09/Kibbeh-Nayyeh.jpg", "https://www.mamaslebanesekitchen.com/wp-content/uploads/2011/09/kibbeh3.jpg" , "https://thematbakh.com/wp-content/uploads/2022/04/kibbeh-nayeh-lebanese-raw-kibbeh-3.jpg" , "https://thematbakh.com/wp-content/uploads/2022/04/kibbeh-nayeh-lebanese-raw-kibbeh-7.jpg"],
     },
     {
@@ -99,6 +105,7 @@ const workshops = [
         instructor: "66a15aa2e0f69ffdcda06125", // replace with actual ObjectId
         topics: ["Tomato Canning", "Sauce Making"],
         price: 50,
+        type: 'Premium',
         images: ["https://www.shelovesbiscotti.com/wp-content/uploads/2017/09/IMG_0494.png", "https://images.squarespace-cdn.com/content/v1/563cf214e4b021af1b575f8a/1454031226999-JCBCSGWASXSI5DZYMLFK/tomato-canning.jpg" , "https://thecozycook.com/wp-content/uploads/2015/08/Canned-Tomatoes.jpg" , "https://melissaknorris.com/wp-content/uploads/2021/09/tomatosaucelineup.jpg"],
     },
     {
@@ -113,6 +120,7 @@ const workshops = [
         instructor: "66a15aa2e0f69ffdcda06125", // replace with actual ObjectId
         topics: ["Herb Drying", "Spices"],
         price: 40,
+        type: 'Premium',
         images: ["https://morningchores.com/wp-content/uploads/2020/09/Drying-Herbs.jpg", "https://www.tasteofhome.com/wp-content/uploads/2024/02/GettyImages-1923062478-how-to-dry-herbs-JVedit.jpg" , "https://images.saymedia-content.com/.image/ar_4:3%2Cc_fill%2Ccs_srgb%2Cfl_progressive%2Cq_auto:eco%2Cw_1200/MTc0MTE1Njc4MjUxNzg3NzIx/drying-herbs-in-a-convection-oven-dehydrating-dehydrator-dry-herb-oregano.jpg" , "https://afarmgirlinthemaking.com/wp-content/uploads/2020/07/PSX_20200703_165219-scaled-e1593830501103.jpg"],
     },
     {
@@ -127,6 +135,7 @@ const workshops = [
         instructor: "66a15aa2e0f69ffdcda06125", // replace with actual ObjectId
         topics: ["Pomegranate Molasses", "Preservation Techniques"],
         price: 50,
+        type: 'Premium',
         images: ["https://cdn.prod.website-files.com/61cb78816c8c4a56f75f0656/62699c14bab0293d0abd9406_hero.jpg", "https://img.taste.com.au/1BB6Goao/taste/2016/11/how-to-make-pomegranate-molasses-64412-1.jpg" , "https://www.seriouseats.com/thmb/cjbTwfG6hubSiNc2KrRe41eVH-E=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/__opt__aboutcom__coeus__resources__content_migration__serious_eats__seriouseats.com__2021__02__20210201-pomegranate-molasses-nik-sharma-6-ecf9af54466a4334a7123e1c95dd510e.jpg" , "https://assets.bonappetit.com/photos/57acf3ab1b33404414975383/1:1/w_2560%2Cc_limit/pomegranate-molasses-chicken-with-bulgur-salad.jpg"],
     },
     {
@@ -141,6 +150,7 @@ const workshops = [
         instructor: "66a15aa2e0f69ffdcda06125", // replace with actual ObjectId
         topics: ["Spices", "Preservation Techniques"],
         price: 40,
+        type: 'Premium',
         images: ["https://silkroadrecipes.com/wp-content/uploads/2020/07/Lebanese-Seven-Spice-Blend-square.jpg", "https://miro.medium.com/v2/resize:fit:1080/1*qlBeWAKsZNZjNmCy4cloWw.png" , "https://www.four-seasons.ro/images/evenimente/spices-four-seasons2.png" , "https://forksandfoliage.com/wp-content/uploads/2023/05/lebanese-7-spice-21.jpg"],
     }
 ]

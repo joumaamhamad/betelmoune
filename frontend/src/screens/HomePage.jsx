@@ -1,8 +1,41 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { CiSearch } from 'react-icons/ci';
+import Aboutus from '../components/Aboutus';
+import { useDispatch, useSelector } from 'react-redux';
+import { getProducts } from '../store/productsSlice';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
+import Contactus from '../components/Contactus';
 
 export default function HomePage() {
+
+  const [ workshops , setWorkshops ] = useState([]);
+
+
+  const products = useSelector((state) => state.productsSlice.products);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getProducts());
+  }, [dispatch]);
+
+  console.log('productss::' , products)
+
+  useEffect(() => {
+
+    const fetchWorkshops = async () => {
+      const { data } = await axios.get('/api/workshops');
+      setWorkshops(data);
+    }
+
+    fetchWorkshops();
+  },[])
+
+
+
   return (
+  <div>
     <div className="relative">
       <img
         src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRjuvNQtvyfIon9TONH_qMZetGGFed4ZxvKEUOLWYr6yYm55d0AHzL6i2H2N0FLJnJN5A&usqp=CAU"
@@ -25,6 +58,66 @@ export default function HomePage() {
           </button>
         </div>
       </div>
+
+      
     </div>
+    <Aboutus />
+
+    <div className="container mx-auto p-16">
+      <h2 className="text-3xl font-bold mb-8">Daily Deals</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+        {products.map((product) => (
+          <div key={product.productId} className="pb-4 bg-white rounded-lg shadow-md overflow-hidden relative group">
+            <img
+              src={product.img[0]}
+              alt={product.name}
+              className="w-full h-48 object-cover cursor-pointer"
+            />
+            {/* <div className="absolute inset-0 bg-black bg-opacity-80 opacity-0 group-hover:opacity-100 flex items-center justify-center transition duration-300">
+              <div className="text-white text-center cursor-pointer">
+                <h3 className="text-lg font-bold">{product.name}</h3>
+                <p className="text-gray-300">{product.price}</p>
+                <button className="mt-4 mb-1 bg-transparent border-2 text-white py-1 px-3 rounded">More info</button>
+              </div>
+            </div> */}
+            <div className="p-4">
+              <h3 className="text-lg font-bold">{product.name}</h3>
+              <p className="text-gray-600">Price:{" "}{product.price}</p>
+              <button className="bg-green-500 text-white mt-6 py-1 px-3 rounded">Show product</button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+
+    <div className="container mx-auto p-4 pl-16 pr-16 mt-16 mb-16">
+  <h1 className="text-center text-2xl font-bold mb-8">#SOME_WORKSHOPS</h1>
+  <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 cursor-pointer">
+    {workshops?.slice(0, 8).map((workshop, index) => (
+      <div key={index} className="relative group">
+        <Link to={`/workshop/${workshop.slug}`}>
+          <img 
+            src={workshop?.images[1]} 
+            alt={`Gallery ${index}`} 
+            className="w-full h-64 object-cover" 
+          />
+          <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity duration-300">
+            <p className="text-white text-center px-4">{workshop.description}</p>
+          </div>
+        </Link>
+      </div>
+    ))}
+  </div>
+</div>
+
+
+
+    <Contactus />
+
+
+  </div>
+
+    
   );
 }

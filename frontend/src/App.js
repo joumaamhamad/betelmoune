@@ -10,7 +10,10 @@ import ProductsDetails from './screens/ProductDetails';
 import WorkshopDetails from './screens/WorkshopDetails';
 import AddProduct from './screens/AddProduct';
 import EditProduct from './screens/EditProduct';
+import Footer from './components/Footer';
+
 import Cart from './screens/Cart';
+
 // Lazy load components
 const HomePage = lazy(() => import('./screens/HomePage'));
 const SignIn = lazy(() => import('./screens/Signin'));
@@ -41,7 +44,7 @@ function App() {
           </Suspense>
         </main>
 
-        {/* <Footer /> */}
+        <Footer />
         <ToastContainer />
       </div>
     </BrowserRouter>
