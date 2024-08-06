@@ -2,8 +2,8 @@ import React from 'react';
 
 const EditProduct = () => {
   return (
-    <div className="flex items-start justify-start min-h-screen bg-white-100 p-8">
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-2xl">
+    <div className="flex items-start justify-start min-h-screen bg-white-100 p-8 pl-32">
+      <div className="bg-white p-8 rounded-lg w-full max-w-2xl">
         <h2 className="text-2xl font-bold mb-6 text-left">Edit product</h2>
         <form>
           <h3 className="text-xl font-semibold mb-4 text-left">
@@ -66,7 +66,7 @@ const EditProduct = () => {
           </h3>
           <div className="mb-4">
             <img
-              src="https://via.placeholder.com/600x400"
+              src="https://zaatarandzaytoun.com/wp-content/uploads/2020/06/makdous-18.jpg"
               alt="Product"
               className="w-full h-auto rounded-md mb-4"
             />

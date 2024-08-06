@@ -73,6 +73,7 @@ function Workshops() {
             </div>
         </div>
     );
+
 }
 
 export default Workshops;

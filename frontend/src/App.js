@@ -6,17 +6,20 @@ import NavBarPlus from './components/NavBarPlus';
 
 // import Footer from './components/Footer'; // Uncomment if you want to use the Footer
 import { ToastContainer } from 'react-toastify';
+import ProductsDetails from './screens/ProductDetails';
 import WorkshopDetails from './screens/WorkshopDetails';
 import AddProduct from './screens/AddProduct';
 import EditProduct from './screens/EditProduct';
 import Footer from './components/Footer';
+
+import Cart from './screens/Cart';
+
 // Lazy load components
 const HomePage = lazy(() => import('./screens/HomePage'));
 const SignIn = lazy(() => import('./screens/Signin'));
 const SignUp = lazy(() => import('./screens/Signup'));
 const Products = lazy(() => import('./screens/Products'));
 const Workshops = lazy(() => import('./screens/Workshops'));
-
 
 function App() {
   return (
@@ -25,17 +28,18 @@ function App() {
         <NavBarPlus />
 
         <main className="flex-grow">
-
           <Suspense fallback={<CircularProgress />}>
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/signup" element={<SignUp />} />
               <Route path="/signin" element={<SignIn />} />
               <Route path="/products" element={<Products />} />
+              <Route path="/products/:id" element={<ProductsDetails />} />
               <Route path="/workshops" element={<Workshops />} />
               <Route path="/workshop/:slug" element={<WorkshopDetails />} />
               <Route path="/addProduct" element={<AddProduct />} />
               <Route path="/editProduct" element={<EditProduct />} />
+              <Route path="/cart" element={<Cart />} />
             </Routes>
           </Suspense>
         </main>
