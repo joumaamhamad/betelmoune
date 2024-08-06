@@ -12,7 +12,7 @@ function Workshops() {
         const fetchWorkshops = async () => {
             try {
                 const { data } = await axios.get('/api/workshops');
-                console.log(data);
+                console.log('dataaaa',data);
                 setWorkshops(data);
             } catch (error) {
                 console.log(getError(error));
@@ -29,7 +29,7 @@ function Workshops() {
     });
 
     return (
-        <div className="p-6 font-sans">
+        <div className="p-6 font-sans mb-24">
             <div className="max-w-screen-xl mx-auto">
                 <h1 className="text-left text-4xl font-bold mb-6">All Workshops</h1>
                 <div className="flex space-x-4 mb-6">

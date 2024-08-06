@@ -90,7 +90,7 @@ const workshops = [
         instructor: "66a15aa2e0f69ffdcda06125", // replace with actual ObjectId
         topics: ["Kibbeh Nayeh", "Meat Preparation"],
         price: 60,
-        type: 'Uncoming',
+        type: 'Upcoming',
         images: ["https://www.mamaslebanesekitchen.com/wp-content/uploads/2011/09/Kibbeh-Nayyeh.jpg", "https://www.mamaslebanesekitchen.com/wp-content/uploads/2011/09/kibbeh3.jpg" , "https://thematbakh.com/wp-content/uploads/2022/04/kibbeh-nayeh-lebanese-raw-kibbeh-3.jpg" , "https://thematbakh.com/wp-content/uploads/2022/04/kibbeh-nayeh-lebanese-raw-kibbeh-7.jpg"],
     },
     {
@@ -152,7 +152,38 @@ const workshops = [
         price: 40,
         type: 'Premium',
         images: ["https://silkroadrecipes.com/wp-content/uploads/2020/07/Lebanese-Seven-Spice-Blend-square.jpg", "https://miro.medium.com/v2/resize:fit:1080/1*qlBeWAKsZNZjNmCy4cloWw.png" , "https://www.four-seasons.ro/images/evenimente/spices-four-seasons2.png" , "https://forksandfoliage.com/wp-content/uploads/2023/05/lebanese-7-spice-21.jpg"],
-    }
+    },
+    {
+        id: 11,
+        name: "Making Makdous",
+        slug: "making-makdous",
+        description: "A comprehensive guide to making Makdous, stuffed pickled eggplants.",
+        date: new Date("2024-09-20T09:00:00Z"),
+        duration: 4,
+        capacity: 25,
+        registeredUsers: [],
+        instructor: "66a15aa2e0f69ffdcda06125", // replace with actual ObjectId
+        topics: ["Makdous", "Pickling", "Stuffed Vegetables"],
+        price: 0,
+        type: 'Free',
+        images: ["https://falasteenifoodie.com/wp-content/uploads/2023/02/makdous.jpg", "https://zaatarandzaytoun.com/wp-content/uploads/2020/06/makdous-9-1024x679.jpg", "https://hadiaslebanesecuisine.com/newsite/wp-content/uploads/2023/07/makdous-14-2.jpg" , "https://www.alphafoodie.com/wp-content/uploads/2020/04/Simple-Stuffed-Makdous-Recipe-7-of-9.jpeg"],
+    },
+    {
+        id: 12,
+        name: "Making Quince Jam",
+        slug: "making-quince-jam",
+        description: "Learn how to make quince jam, a traditional Lebanese preserve.",
+        date: new Date("2024-09-25T10:00:00Z"),
+        duration: 3,
+        capacity: 20,
+        registeredUsers: [],
+        instructor: "66a15aa2e0f69ffdcda06125", // replace with actual ObjectId
+        topics: ["Quince Jam", "Fruit Preservation"],
+        price: 50,
+        type: 'Upcoming',
+        images: ["https://hildaskitchenblog.com/wp-content/uploads/2017/10/quince-preserves-8-500x500.jpg", "https://www.lazzaris.com/wp-content/uploads/sites/2/2018/07/Marmellata_mele_cotogne3.jpg", "https://hadiaslebanesecuisine.com/newsite/wp-content/uploads/2017/11/safarjal-1.jpg" , "https://edibleparadise.com/wp-content/uploads/2023/09/AdobeStock_524247279_quince-jam.jpg"],
+    },
+
 ]
 
 
