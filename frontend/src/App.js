@@ -3,8 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import React, { Suspense, lazy } from 'react';
 import { CircularProgress } from '@mui/material';
 import NavBarPlus from './components/NavBarPlus';
-import Profile from "./screens/Profile";
-
+import Profile from './screens/Profile';
 
 // import Footer from './components/Footer'; // Uncomment if you want to use the Footer
 import { ToastContainer } from 'react-toastify';

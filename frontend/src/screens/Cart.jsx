@@ -25,7 +25,7 @@ const Cart = () => {
       <div className="p-6 rounded-lg">
         <h2 className="text-3xl font-bold mb-4 flex items-start">Your Cart</h2>
         <div className="space-y-4">
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-4 bg-gray-200 p-4">
             <img
               src="https://www.daylesford.com/media/catalog/product/2/1/21010060_organic-free-range-chicken-fillets-skinless-400g.jpg?quality=80&bg-color=255,255,255&fit=bounds&height=&width="
               alt="Organic Chicken Breast"
@@ -37,21 +37,21 @@ const Cart = () => {
             </div>
             <div className="flex items-center space-x-2">
               <button
-                className="bg-gray-200 text-gray-700 px-3 py-1 rounded"
+                className="bg-white text-gray-700 px-3 py-1 rounded"
                 onClick={() => handleDecrement('chickenBreast')}
               >
                 -
               </button>
               <span>{quantities.chickenBreast}</span>
               <button
-                className="bg-gray-200 text-gray-700 px-3 py-1 rounded"
+                className="bg-white text-gray-700 px-3 py-1 rounded"
                 onClick={() => handleIncrement('chickenBreast')}
               >
                 +
               </button>
             </div>
           </div>
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-4 bg-gray-200 p-4">
             <img
               src="https://i.pinimg.com/originals/3f/e6/ad/3fe6adc970f1b89c3c8b6d61ae05d347.jpg"
               alt="olive Oil"
@@ -63,14 +63,14 @@ const Cart = () => {
             </div>
             <div className="flex items-center space-x-2">
               <button
-                className="bg-gray-200 text-gray-700 px-3 py-1 rounded"
+                className="bg-white text-gray-700 px-3 py-1 rounded"
                 onClick={() => handleDecrement('oliveOil')}
               >
                 -
               </button>
               <span>{quantities.oliveOil}</span>
               <button
-                className="bg-gray-200 text-gray-700 px-3 py-1 rounded"
+                className="bg-white text-gray-700 px-3 py-1 rounded"
                 onClick={() => handleIncrement('oliveOil')}
               >
                 +

@@ -10,11 +10,9 @@ export default function WorkshopDetails() {
 
   // console.log('iddddd::' , id);
 
-    useEffect(() => {
-        window.scrollTo(0, 0);
-      });
-
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,7 +27,6 @@ export default function WorkshopDetails() {
 
     fetchData();
   }, []);
-
 
   return (
     <div className="flex flex-col wrap text-left mt-24 ml-32 mb-24">

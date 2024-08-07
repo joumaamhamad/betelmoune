@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Link as ScrollLink } from 'react-scroll';
 
 const NavBarPlus = () => {
   return (
@@ -27,12 +28,26 @@ const NavBarPlus = () => {
             >
               Workshop
             </Link>
-            <Link to={'/aboutus'} className="text-gray-900 hover:text-gray-600">
+            <ScrollLink
+              to="about"
+              spy={true}
+              smooth={true}
+              offset={50}
+              duration={700}
+              className="text-gray-900 hover:text-gray-600 cursor-pointer"
+            >
               About us
-            </Link>
-            <Link to={'/contact'} className="text-gray-900 hover:text-gray-600">
+            </ScrollLink>
+            <ScrollLink
+              to="contact"
+              spy={true}
+              smooth={true}
+              offset={50}
+              duration={1200}
+              className="text-gray-900 hover:text-gray-600 cursor-pointer"
+            >
               Contact
-            </Link>
+            </ScrollLink>
           </div>
           <div className="flex items-center space-x-4">
             <div className="flex-shrink-0">
@@ -41,7 +56,6 @@ const NavBarPlus = () => {
                   Sign in
                 </button>
               </Link>
-
               <Link to="/signup">
                 <button className="bg-green-500 text-white py-1 px-3 hover:bg-green-700 rounded">
                   Sign up
