@@ -54,22 +54,27 @@ export const signUp = createAsyncThunk(
   }
 );
 
-const AuthSlice = createSlice({
+const authSlice = createSlice({
   name: 'auth',
   initialState: {
     user: null,
     token: null,
     error: null,
     isLoading: null,
+    cart: [],
   },
   reducers: {
     // Empty User State
-
     logOut: (state) => {
       state.user = null;
       state.token = null;
       state.isLoading = false;
       state.error = null;
+    },
+
+    // Get Cart Data
+    getCart: (state, action) => {
+      state.cart = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -107,5 +112,5 @@ const AuthSlice = createSlice({
   },
 });
 
-export const { logOut } = AuthSlice.actions;
-export default AuthSlice.reducer;
+export const { logOut, getCart } = authSlice.actions;
+export default authSlice.reducer;

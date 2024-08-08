@@ -6,7 +6,7 @@ import userRouter from './routes/userRoutes.js';
 import workshopRouter from './routes/workshopRoutes.js';
 import productsRouter from './routes/productRoutes.js';
 import messagesRouter from './routes/messageRoutes.js';
-
+import cartRouter from './routes/cartRouter.js';
 
 dotenv.config();
 
@@ -33,10 +33,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/api/users', userRouter);
-app.use('/api/workshops' , workshopRouter);
+app.use('/api/workshops', workshopRouter);
 app.use('/api/products', productsRouter);
-app.use('/api/messages' , messagesRouter);
-
+app.use('/api/messages', messagesRouter);
+app.use('/api/cart', cartRouter);
 
 app.use((err, req, res, next) => {
   res.status(500).send({ message: err.message });

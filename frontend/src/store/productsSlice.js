@@ -86,7 +86,7 @@ const productsSlice = createSlice({
     },
 
     // Empty Products State
-    setProductsEmpty: (state, action) => {
+    setProductsEmpty: (state) => {
       state.products = [];
       state.productsFilter = [];
     },
