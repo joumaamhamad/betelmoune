@@ -20,6 +20,7 @@ userRouter.post('/signin', async (req, res) => {
         isAdmin: user.isAdmin,
         products: user.products,
         workshops: user.workshops,
+        cart: user.cart,
         token: generateToken(user),
       });
     }
@@ -48,6 +49,7 @@ userRouter.post('/signup', async (req, res) => {
       isAdmin: user.isAdmin,
       products: user.products,
       workshops: user.workshops,
+      cart: user.cart,
       token: generateToken(user),
     });
   }

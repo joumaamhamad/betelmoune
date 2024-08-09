@@ -18,7 +18,6 @@ export default function HomePage() {
     dispatch(getProducts());
   }, [dispatch]);
 
-  console.log('productss::', products);
 
   useEffect(() => {
     const fetchWorkshops = async () => {
@@ -65,7 +64,8 @@ export default function HomePage() {
               className="pb-4 bg-white rounded-lg shadow-md overflow-hidden relative group"
             >
               <img
-                src={product.img[0]}
+                src={product.images[0]}
+
                 alt={product.name}
                 className="w-full h-48 object-cover cursor-pointer"
               />
