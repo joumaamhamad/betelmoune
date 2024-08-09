@@ -26,8 +26,8 @@ const Products = () => {
       dispatch(categoriesFilter(category));
       setIsSelected(index);
     } else {
-      dispatch(getProducts());
       dispatch(setProductsEmpty());
+      dispatch(getProducts());
       setIsSelected(null);
     }
   };
@@ -82,7 +82,7 @@ const Products = () => {
                 >
                   <Link to={`/products/${product.slug}`}>
                     <img
-                      src={product.img[0]}
+                      src={product.images[0]}
                       alt={product.name}
                       className="w-full h-48 object-cover rounded-lg"
                     />

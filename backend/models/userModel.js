@@ -13,6 +13,7 @@ const userSchema = new mongoose.Schema({
 
   workshops: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Workshop' }],
 
+
   profileImage: {
     type: String,
     default: '',
@@ -24,6 +25,9 @@ const userSchema = new mongoose.Schema({
     default: '',
     required: false
   },
+
+  cart: { type: Array },
+
 });
 
 const User = mongoose.model('User', userSchema);

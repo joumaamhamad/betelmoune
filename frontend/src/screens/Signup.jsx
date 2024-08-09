@@ -15,7 +15,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
-import { signUp } from '../store/authSlice';
+import { signUp, getCart } from '../store/authSlice';
 
 function Copyright(props) {
   return (
@@ -68,13 +68,14 @@ export default function SignUp() {
   useEffect(() => {
     if (user) {
       toast.success('Account is created!!');
+      dispatch(getCart(user.cart));
       navigate('/');
       firstNameRef.current.value = '';
       lastNameRef.current.value = '';
       emailRef.current.value = '';
       passwordRef.current.value = '';
     }
-  }, [navigate, user]);
+  }, [navigate, dispatch, user]);
 
   return (
     <ThemeProvider theme={defaultTheme}>

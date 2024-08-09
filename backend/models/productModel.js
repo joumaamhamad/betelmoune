@@ -4,14 +4,11 @@ const productSchema = new mongoose.Schema({
   productId: mongoose.Schema.Types.ObjectId,
   name: { type: String },
   price: { type: Number },
-  img: { type: String },
+  img: { type: Array },
   category: { type: String },
   description: { type: String },
-  // displayedBy: {
-  //   type: mongoose.Schema.Types.ObjectId,
-  //   ref: 'User',
-  //   required: true,
-  // },
+  slug: { type: String },
+  quantity: { type: Number },
 });
 
 const Product = mongoose.model('Product', productSchema);

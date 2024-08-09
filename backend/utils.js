@@ -45,32 +45,27 @@ export const isAdmin = (req, res, next) => {
   }
 };
 
-
-
-export const sendEmail = (user , email) => {
-
+export const sendEmail = (user, email) => {
   const transporter = nodemailer.createTransport({
-
-      service: 'outlook',
-      auth: {
-          user: process.env.EMAIL,
-          pass: process.env.PASSWORD
-      }
+    service: 'outlook',
+    auth: {
+      user: process.env.EMAIL,
+      pass: process.env.PASSWORD,
+    },
   });
-  
+
   const mailOptions = {
-      from: 'mhamad_jomaa@outlook.com',
-      to: email,
-      subject: 'Sign In ',
-      text: `Welcome Back ${user.name}`
+    from: 'mhamad_jomaa@outlook.com',
+    to: email,
+    subject: 'Sign In ',
+    text: `Welcome Back ${user.name}`,
   };
-  
-  transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-          console.error(error);
-      } else {
-          console.log('Email sent: ' + info.response);
-      }
-  });
 
-}
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error(error);
+    } else {
+      console.log('Email sent: ' + info.response);
+    }
+  });
+};

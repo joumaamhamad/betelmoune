@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+
 import { logOut } from '../store/authSlice.js';
 import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
@@ -9,6 +10,8 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import { Link as ScrollLink } from 'react-scroll';
+
 
 const NavBarPlus = () => {
   const navigate = useNavigate();
@@ -59,15 +62,30 @@ const NavBarPlus = () => {
             >
               Workshop
             </Link>
-            <Link to={'/aboutus'} className="text-gray-900 hover:text-gray-600">
+            <ScrollLink
+              to="about"
+              spy={true}
+              smooth={true}
+              offset={50}
+              duration={700}
+              className="text-gray-900 hover:text-gray-600 cursor-pointer"
+            >
               About us
-            </Link>
-            <Link to={'/contact'} className="text-gray-900 hover:text-gray-600">
+            </ScrollLink>
+            <ScrollLink
+              to="contact"
+              spy={true}
+              smooth={true}
+              offset={50}
+              duration={1200}
+              className="text-gray-900 hover:text-gray-600 cursor-pointer"
+            >
               Contact
-            </Link>
+            </ScrollLink>
           </div>
           <div className="flex items-center space-x-4">
             <div className="flex-shrink-0">
+
               {user ? (
                 <div className='flex space-x-4'>
                   <Link to={'/cart'}><Button size="medium">Cart</Button></Link>

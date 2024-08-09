@@ -14,7 +14,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { logIn } from '../store/authSlice';
+import { logIn, getCart } from '../store/authSlice';
 
 function Copyright(props) {
   return (
@@ -62,11 +62,12 @@ export default function SignIn() {
 
   useEffect(() => {
     if (user) {
+      dispatch(getCart(user.cart));
       navigate('/');
       emailRef.current.value = '';
       passwordRef.current.value = '';
     }
-  }, [navigate, user]);
+  }, [navigate, dispatch, user]);
 
   return (
     <ThemeProvider theme={defaultTheme}>
