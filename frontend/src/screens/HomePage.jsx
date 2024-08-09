@@ -18,6 +18,7 @@ export default function HomePage() {
     dispatch(getProducts());
   }, [dispatch]);
 
+
   useEffect(() => {
     const fetchWorkshops = async () => {
       const { data } = await axios.get('/api/workshops');
@@ -64,6 +65,7 @@ export default function HomePage() {
             >
               <img
                 src={product.images[0]}
+
                 alt={product.name}
                 className="w-full h-48 object-cover cursor-pointer"
               />

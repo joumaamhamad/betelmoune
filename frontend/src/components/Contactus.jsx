@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom';
 // import Swal from 'sweetalert2';
 
 export default function Contactus() {
+
+  // eslint-disable-next-line no-unused-vars
   const navigate = useNavigate();
 
   const [firstName, setFirstName] = useState('');
@@ -33,12 +35,14 @@ export default function Contactus() {
       setMessage('');
 
       // navigate('/');
+
       // Swal.fire({
       //   title: 'Success!',
       //   text: 'This is a success message!',
       //   icon: 'success',
       //   confirmButtonText: 'OK',
       // });
+
     } catch (error) {
       toast.error('Error sending message.');
       console.log(getError(error));
@@ -46,6 +50,7 @@ export default function Contactus() {
   };
 
   return (
+
     <div className="flex justify-center items-center py-24 bg-gray-100">
       <div className="w-full max-w-4xl flex flex-col md:flex-row bg-white shadow-lg rounded-lg overflow-hidden">
         <div className="w-full md:w-1/2 p-8 space-y-12">

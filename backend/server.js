@@ -8,6 +8,7 @@ import productsRouter from './routes/productRoutes.js';
 import messagesRouter from './routes/messageRoutes.js';
 import cartRouter from './routes/cartRouter.js';
 
+
 dotenv.config();
 
 console.log('url::', process.env.MONGO_ATLAS);
@@ -37,6 +38,7 @@ app.use('/api/workshops', workshopRouter);
 app.use('/api/products', productsRouter);
 app.use('/api/messages', messagesRouter);
 app.use('/api/cart', cartRouter);
+
 
 app.use((err, req, res, next) => {
   res.status(500).send({ message: err.message });

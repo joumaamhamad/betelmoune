@@ -49,6 +49,7 @@ const Cart = () => {
   }, [cart]);
 
   return (
+
     <div className="p-6 bg-white rounded-lg shadow-lg">
       <h2 className="text-2xl font-bold text-gray-800 mb-6">Your Cart</h2>
       <div className="space-y-6">
@@ -105,6 +106,7 @@ const Cart = () => {
                   </button>
                 </>
               ) : null}
+
             </div>
             <button
               className="absolute bg-red-400 text-black-600 p-2 rounded-full hover:bg-red-300 transition"

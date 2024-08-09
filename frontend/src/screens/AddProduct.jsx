@@ -3,47 +3,64 @@ import React from 'react';
 const AddProduct = () => {
   return (
     <div className="flex items-start justify-start min-h-screen bg-white-100 p-8 pl-32">
-      <div className="bg-white p-8 rounded-lg w-full max-w-2xl mt-5">
+      <div className="bg-white p-6 rounded-lg w-full max-w-4xl">
         <h2 className="text-2xl font-bold mb-6 text-left">Add a new product</h2>
         <form>
-          <div className="mb-4">
-            <label
-              htmlFor="productName"
-              className="block text-gray-700 font-bold mb-2 text-left"
-            >
-              Product Name
-            </label>
-            <input
-              type="text"
-              id="productName"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-500"
-            />
+          <div className="flex flex-wrap mb-4">
+            <div className="w-full lg:w-1/2 pr-2 mb-4">
+              <label
+                htmlFor="productName"
+                className="block text-gray-700 font-bold mb-2 text-left"
+              >
+                Product Name
+              </label>
+              <input
+                type="text"
+                id="productName"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-500"
+              />
+            </div>
+            <div className="w-full lg:w-1/2 pl-2 mb-4">
+              <label
+                htmlFor="price"
+                className="block text-gray-700 font-bold mb-2 text-left"
+              >
+                Price
+              </label>
+              <input
+                type="number"
+                id="price"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-500"
+              />
+            </div>
           </div>
-          <div className="mb-4">
-            <label
-              htmlFor="price"
-              className="block text-gray-700 font-bold mb-2 text-left"
-            >
-              Price
-            </label>
-            <input
-              type="number"
-              id="price"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-500"
-            />
-          </div>
-          <div className="mb-4">
-            <label
-              htmlFor="category"
-              className="block text-gray-700 font-bold mb-2 text-left"
-            >
-              Category
-            </label>
-            <input
-              type="text"
-              id="category"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-500"
-            />
+          <div className="flex flex-wrap mb-4">
+            <div className="w-full lg:w-1/2 pr-2 mb-4">
+              <label
+                htmlFor="category"
+                className="block text-gray-700 font-bold mb-2 text-left"
+              >
+                Category
+              </label>
+              <input
+                type="text"
+                id="category"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-500"
+              />
+            </div>
+            <div className="w-full lg:w-1/2 pl-2 mb-4">
+              <label
+                htmlFor="uploadImage"
+                className="block text-gray-700 font-bold mb-2 text-left"
+              >
+                Upload Image
+              </label>
+              <input
+                type="file"
+                id="uploadImage"
+                className="w-full text-gray-700"
+              />
+            </div>
           </div>
           <div className="mb-4">
             <label
@@ -57,12 +74,6 @@ const AddProduct = () => {
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-500"
               rows="4"
             ></textarea>
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 font-bold mb-2 text-left">
-              Upload Image
-            </label>
-            <input type="file" className="w-full text-gray-700" />
           </div>
           <p className="text-gray-500 text-sm mb-4 text-left">
             Note: Your product will be reviewed before it's published. This may
