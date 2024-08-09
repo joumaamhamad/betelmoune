@@ -14,6 +14,7 @@ export const logIn = createAsyncThunk('auth/logIn', async (data, thunkAPI) => {
       }
     );
     const userData = response.data;
+    console.log('response from signin::' , response.data)
 
     if (userData.message) {
       return false;
@@ -25,6 +26,23 @@ export const logIn = createAsyncThunk('auth/logIn', async (data, thunkAPI) => {
     return rejectWithValue(error.message);
   }
 });
+
+export const updateProfile = createAsyncThunk(
+  'auth/updateProfile',
+  async (profile, thunkAPI) => {
+    const { rejectWithValue } = thunkAPI;
+    try {
+      const response = await axios.put('/api/users/profile', profile);
+      const updatedUserData = response.data;
+      console.log('data when I update::', updatedUserData);
+      localStorage.setItem('userInfo', JSON.stringify(updatedUserData));
+      return updatedUserData;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 
 export const signUp = createAsyncThunk(
   'auth/signUp',
@@ -63,8 +81,6 @@ const AuthSlice = createSlice({
     isLoading: null,
   },
   reducers: {
-    // Empty User State
-
     logOut: (state) => {
       state.user = null;
       state.token = null;
@@ -104,8 +120,25 @@ const AuthSlice = createSlice({
         state.isLoading = false;
         state.error = action.payload;
       });
+
+    // Update Profile Cases
+    builder
+      .addCase(updateProfile.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(updateProfile.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user = action.payload;
+        state.token = action.payload.token;
+      })
+      .addCase(updateProfile.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      });
   },
 });
+
 
 export const { logOut } = AuthSlice.actions;
 export default AuthSlice.reducer;

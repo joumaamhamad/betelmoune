@@ -6,9 +6,13 @@ import userRouter from './routes/userRoutes.js';
 import workshopRouter from './routes/workshopRoutes.js';
 import productsRouter from './routes/productRoutes.js';
 import messagesRouter from './routes/messageRoutes.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 
-dotenv.config();
+dotenv.config(); 
 
 console.log('url::', process.env.MONGO_ATLAS);
 
@@ -36,7 +40,7 @@ app.use('/api/users', userRouter);
 app.use('/api/workshops' , workshopRouter);
 app.use('/api/products', productsRouter);
 app.use('/api/messages' , messagesRouter);
-
+app.use('/backend/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use((err, req, res, next) => {
   res.status(500).send({ message: err.message });
