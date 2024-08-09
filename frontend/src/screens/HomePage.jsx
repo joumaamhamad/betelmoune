@@ -11,6 +11,7 @@ export default function HomePage() {
   const [workshops, setWorkshops] = useState([]);
 
   const products = useSelector((state) => state.productsSlice.products);
+  console.log('prodd::' , products)
 
   const dispatch = useDispatch();
 
@@ -53,23 +54,22 @@ export default function HomePage() {
           </div>
         </div>
       </div>
-      <Aboutus />
 
-      <div className="container mx-auto p-16">
-        <h2 className="text-3xl font-bold mb-8">Daily Deals</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-          {products.map((product) => (
-            <div
-              key={product.productId}
-              className="pb-4 bg-white rounded-lg shadow-md overflow-hidden relative group"
-            >
-              <img
-                src={product.images[0]}
+      
+    </div>
+    <Aboutus />
 
-                alt={product.name}
-                className="w-full h-48 object-cover cursor-pointer"
-              />
-              {/* <div className="absolute inset-0 bg-black bg-opacity-80 opacity-0 group-hover:opacity-100 flex items-center justify-center transition duration-300">
+    <div className="container mx-auto p-16">
+      <h2 className="text-3xl font-bold mb-8">Daily Deals</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+        {products.map((product) => (
+          <div key={product?.productId} className="pb-4 bg-white rounded-lg shadow-md overflow-hidden relative group">
+            <img
+              src={product?.images[0]}
+              alt={product?.name}
+              className="w-full h-48 object-cover cursor-pointer"
+            />
+            {/* <div className="absolute inset-0 bg-black bg-opacity-80 opacity-0 group-hover:opacity-100 flex items-center justify-center transition duration-300">
               <div className="text-white text-center cursor-pointer">
                 <h3 className="text-lg font-bold">{product.name}</h3>
                 <p className="text-gray-300">{product.price}</p>

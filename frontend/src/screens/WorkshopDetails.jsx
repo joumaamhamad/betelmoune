@@ -96,7 +96,7 @@ export default function WorkshopDetails() {
         duration: <span class="font-semibold">{workshop?.duration}hr </span>{' '}
         capacity: <span class="font-semibold">{workshop?.capacity}</span>
       </div>
-      <div className="text-2xl font-bold mb-6">$299</div>
+      <div className="text-2xl font-bold mb-6">{workshop?.price}$</div>
       <div className="grid grid-cols-5 gap-4 mb-6">
         <img
           className="w-full h-52 object-cover rounded-md"

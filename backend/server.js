@@ -6,10 +6,16 @@ import userRouter from './routes/userRoutes.js';
 import workshopRouter from './routes/workshopRoutes.js';
 import productsRouter from './routes/productRoutes.js';
 import messagesRouter from './routes/messageRoutes.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 import cartRouter from './routes/cartRouter.js';
 
 
-dotenv.config();
+
+dotenv.config(); 
 
 console.log('url::', process.env.MONGO_ATLAS);
 
@@ -36,8 +42,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/users', userRouter);
 app.use('/api/workshops', workshopRouter);
 app.use('/api/products', productsRouter);
+app.use('/api/messages' , messagesRouter);
+app.use('/backend/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/api/messages', messagesRouter);
 app.use('/api/cart', cartRouter);
+
 
 
 app.use((err, req, res, next) => {
