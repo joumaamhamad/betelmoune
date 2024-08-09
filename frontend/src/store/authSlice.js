@@ -14,7 +14,7 @@ export const logIn = createAsyncThunk('auth/logIn', async (data, thunkAPI) => {
       }
     );
     const userData = response.data;
-    console.log('response from signin::' , response.data)
+    console.log('response from signin::', response.data);
 
     if (userData.message) {
       return false;
@@ -42,7 +42,6 @@ export const updateProfile = createAsyncThunk(
     }
   }
 );
-
 
 export const signUp = createAsyncThunk(
   'auth/signUp',
@@ -82,7 +81,6 @@ const authSlice = createSlice({
     cart: [],
   },
   reducers: {
-
     // Empty User State
 
     logOut: (state) => {
@@ -148,7 +146,5 @@ const authSlice = createSlice({
   },
 });
 
-
 export const { logOut, getCart } = authSlice.actions;
 export default authSlice.reducer;
-
