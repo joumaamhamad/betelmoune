@@ -11,14 +11,13 @@ export default function HomePage() {
   const [workshops, setWorkshops] = useState([]);
 
   const products = useSelector((state) => state.productsSlice.products);
-  console.log('prodd::' , products)
+  console.log('prodd::', products);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getProducts());
   }, [dispatch]);
-
 
   useEffect(() => {
     const fetchWorkshops = async () => {
@@ -30,7 +29,7 @@ export default function HomePage() {
   }, []);
 
   return (
-    <div>
+    <div> {/* Single parent container */}
       <div className="relative">
         <img
           src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRjuvNQtvyfIon9TONH_qMZetGGFed4ZxvKEUOLWYr6yYm55d0AHzL6i2H2N0FLJnJN5A&usqp=CAU"
@@ -55,27 +54,18 @@ export default function HomePage() {
         </div>
       </div>
 
-      
-    </div>
-    <Aboutus />
+      <Aboutus />
 
-    <div className="container mx-auto p-16">
-      <h2 className="text-3xl font-bold mb-8">Daily Deals</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-        {products.map((product) => (
-          <div key={product?.productId} className="pb-4 bg-white rounded-lg shadow-md overflow-hidden relative group">
-            <img
-              src={product?.images[0]}
-              alt={product?.name}
-              className="w-full h-48 object-cover cursor-pointer"
-            />
-            {/* <div className="absolute inset-0 bg-black bg-opacity-80 opacity-0 group-hover:opacity-100 flex items-center justify-center transition duration-300">
-              <div className="text-white text-center cursor-pointer">
-                <h3 className="text-lg font-bold">{product.name}</h3>
-                <p className="text-gray-300">{product.price}</p>
-                <button className="mt-4 mb-1 bg-transparent border-2 text-white py-1 px-3 rounded">More info</button>
-              </div>
-            </div> */}
+      <div className="container mx-auto p-16">
+        <h2 className="text-3xl font-bold mb-8">Daily Deals</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+          {products.map((product) => (
+            <div key={product?.productId} className="pb-4 bg-white rounded-lg shadow-md overflow-hidden relative group">
+              <img
+                src={product?.images[0]}
+                alt={product?.name}
+                className="w-full h-48 object-cover cursor-pointer"
+              />
               <div className="p-4">
                 <h3 className="text-lg font-bold">{product.name}</h3>
                 <p className="text-gray-600">Price: {product.price}</p>
