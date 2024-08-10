@@ -29,7 +29,6 @@ export default function WorkshopDetails() {
     fetchData();
   }, []);
 
-
   const user = useSelector((state) => state.authSlice.user);
 
   const dispatch = useDispatch();
@@ -85,7 +84,6 @@ export default function WorkshopDetails() {
   useEffect(() => {
     loadFromLocalStorage();
   }, []);
-
 
   return (
     <div className="flex flex-col wrap text-left mt-24 ml-32 mb-24">

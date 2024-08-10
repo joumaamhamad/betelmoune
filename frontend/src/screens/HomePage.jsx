@@ -29,7 +29,9 @@ export default function HomePage() {
   }, []);
 
   return (
-    <div> {/* Single parent container */}
+    <div>
+      {' '}
+      {/* Single parent container */}
       <div className="relative">
         <img
           src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRjuvNQtvyfIon9TONH_qMZetGGFed4ZxvKEUOLWYr6yYm55d0AHzL6i2H2N0FLJnJN5A&usqp=CAU"
@@ -53,14 +55,15 @@ export default function HomePage() {
           </div>
         </div>
       </div>
-
       <Aboutus />
-
       <div className="container mx-auto p-16">
         <h2 className="text-3xl font-bold mb-8">Daily Deals</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
           {products.map((product) => (
-            <div key={product?.productId} className="pb-4 bg-white rounded-lg shadow-md overflow-hidden relative group">
+            <div
+              key={product?.productId}
+              className="pb-4 bg-white rounded-lg shadow-md overflow-hidden relative group"
+            >
               <img
                 src={`/backend/${product.images[0].replace(/\\/g, '/')}`}
                 alt={product?.name}
@@ -77,7 +80,6 @@ export default function HomePage() {
           ))}
         </div>
       </div>
-
       <div className="container mx-auto p-4 pl-16 pr-16 mt-16 mb-16">
         <h1 className="text-center text-2xl font-bold mb-8">#SOME_WORKSHOPS</h1>
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 cursor-pointer">
@@ -99,7 +101,6 @@ export default function HomePage() {
           ))}
         </div>
       </div>
-
       <Contactus />
     </div>
   );

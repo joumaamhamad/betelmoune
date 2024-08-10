@@ -12,7 +12,6 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Link as ScrollLink } from 'react-scroll';
 
-
 const NavBarPlus = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -85,7 +84,6 @@ const NavBarPlus = () => {
           </div>
           <div className="flex items-center space-x-4">
             <div className="flex-shrink-0">
-
               {user ? (
                 <div className='flex space-x-4'>
                   <Link to={'/cart'}><Button size="medium">Cart</Button></Link>
@@ -119,7 +117,7 @@ const NavBarPlus = () => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{"Confirm Logout"}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">{'Confirm Logout'}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             Are you sure you want to log out?
@@ -139,4 +137,3 @@ const NavBarPlus = () => {
 };
 
 export default NavBarPlus;
-
