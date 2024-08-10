@@ -5,8 +5,11 @@ import path from 'path';
 const storage = multer.diskStorage({
   destination: './uploads/productsImages/',
   filename: function (req, file, cb) {
-    cb(null, `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`);
-  }
+    cb(
+      null,
+      `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`
+    );
+  },
 });
 
 // Init upload
@@ -15,7 +18,7 @@ const upload = multer({
   limits: { fileSize: 1000000 }, // 1MB limit
   fileFilter: function (req, file, cb) {
     checkFileType(file, cb);
-  }
+  },
 }).array('images', 4); // Limiting to 4 images
 
 // Check file type
