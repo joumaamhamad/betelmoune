@@ -69,7 +69,7 @@ const Cart = () => {
               }}
             >
               <img
-                src={item.images[0]}
+                src={`/backend/${item.images[0].replace(/\\/g, '/')}`}
                 alt={item.name}
                 className="w-16 h-16 rounded-lg object-cover"
               />
@@ -145,7 +145,7 @@ const Cart = () => {
                 }}
               >
                 <img
-                  src={product.images[0]}
+                  src={`/backend/${product.images[0].replace(/\\/g, '/')}`}
                   alt={product.name}
                   className="w-full h-32 rounded-lg object-cover mb-4"
                 />

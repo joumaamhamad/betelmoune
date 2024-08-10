@@ -85,20 +85,11 @@ const NavBarPlus = () => {
           <div className="flex items-center space-x-4">
             <div className="flex-shrink-0">
               {user ? (
-                <div className="flex space-x-4">
-                  <Link to={'/cart'}>
-                    <Button size="medium">Cart</Button>
-                  </Link>
-                  <Link to={'/profile'}>
-                    <Button variant="outlined">Profile</Button>
-                  </Link>
-                  <Button
-                    onClick={handleClickOpen}
-                    variant="outlined"
-                    color="error"
-                  >
-                    Logout
-                  </Button>
+                <div className='flex space-x-4'>
+                  <Link to={'/cart'}><Button size="medium">Cart</Button></Link>
+                  <Link to={'/addProduct'}><Button size="medium">Add product</Button></Link>
+                  <Link to={'/profile'}><Button variant="outlined">Profile</Button></Link>
+                  <Button onClick={handleClickOpen} variant="outlined" color="error">Logout</Button>
                 </div>
               ) : (
                 <div>
