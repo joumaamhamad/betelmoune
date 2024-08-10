@@ -2,7 +2,6 @@ import mongoose from 'mongoose';
 import Product from './productModel.js';
 
 const userSchema = new mongoose.Schema({
-  
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
   email: { type: String, required: true, unique: true },
@@ -13,21 +12,19 @@ const userSchema = new mongoose.Schema({
 
   workshops: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Workshop' }],
 
-
   profileImage: {
     type: String,
     default: '',
-    required: false
+    required: false,
   },
 
   bio: {
     type: String,
     default: '',
-    required: false
+    required: false,
   },
 
   cart: { type: Array },
-
 });
 
 const User = mongoose.model('User', userSchema);

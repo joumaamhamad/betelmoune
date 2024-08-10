@@ -41,7 +41,7 @@ userRouter.post('/signup', async (req, res) => {
     password: bcrypt.hashSync(req.body.password),
     products: [],
     bio: '',
-    profileImage: ''
+    profileImage: '',
   });
 
   const user = await newUser.save();
@@ -69,7 +69,7 @@ userRouter.get('/:id', async (req, res) => {
   try {
     // Replace with your user identification logic
 
-    console.log(req.params.id)
+    console.log(req.params.id);
 
     const updatedUser = await User.findById(req.params.id);
 
@@ -89,63 +89,69 @@ userRouter.get('/:id', async (req, res) => {
       bio: updatedUser.bio,
       profileImage: updatedUser.profileImage,
     });
-
   } catch (error) {
     res.status(500).send('Server error');
   }
 });
 
-userRouter.put('/profile' , asyncHandler(async (req , res) => {
-  const user = await User.findById(req.body.id);
-
-  if (user) {
-    user.firstName = req.body.firstName || user.firstName;
-    user.lastName = req.body.lastName || user.lastName;
-    user.email = req.body.email || user.email;
-    user.bio = req.body.bio || user.bio;
-    if (req.body.password) {
-      user.password = bcrypt.hashSync(req.body.password);
-    }
-
-    const updatedUser = await user.save();
-
-    res.json({
-      _id: updatedUser._id,
-      firstName: updatedUser.firstName,
-      lastName: updatedUser.lastName,
-      email: updatedUser.email,
-      isAdmin: user.isAdmin,
-      products: user.products,
-      workshops: user.workshops,
-      token: generateToken(user),
-      bio: updatedUser.bio,
-      profileImage: updatedUser.profileImage,
-    });
-  } else {
-    res.status(404);
-    throw new Error('User not found');
-  }
-}))
-
-userRouter.post('/uploadProfileImage' , upload.single('profileImage') , asyncHandler(async (req , res) => {
-  if (req.file) {
+userRouter.put(
+  '/profile',
+  asyncHandler(async (req, res) => {
     const user = await User.findById(req.body.id);
 
     if (user) {
-      user.profileImage = `/${req.file.path}`;
-      await user.save();
+      user.firstName = req.body.firstName || user.firstName;
+      user.lastName = req.body.lastName || user.lastName;
+      user.email = req.body.email || user.email;
+      user.bio = req.body.bio || user.bio;
+      if (req.body.password) {
+        user.password = bcrypt.hashSync(req.body.password);
+      }
 
-      res.status(200).json({
-        path: user.profileImage,
+      const updatedUser = await user.save();
+
+      res.json({
+        _id: updatedUser._id,
+        firstName: updatedUser.firstName,
+        lastName: updatedUser.lastName,
+        email: updatedUser.email,
+        isAdmin: user.isAdmin,
+        products: user.products,
+        workshops: user.workshops,
+        token: generateToken(user),
+        bio: updatedUser.bio,
+        profileImage: updatedUser.profileImage,
       });
     } else {
       res.status(404);
       throw new Error('User not found');
     }
-  } else {
-    res.status(400);
-    throw new Error('No file uploaded');
-  }
-}))
+  })
+);
+
+userRouter.post(
+  '/uploadProfileImage',
+  upload.single('profileImage'),
+  asyncHandler(async (req, res) => {
+    if (req.file) {
+      const user = await User.findById(req.body.id);
+
+      if (user) {
+        user.profileImage = `/${req.file.path}`;
+        await user.save();
+
+        res.status(200).json({
+          path: user.profileImage,
+        });
+      } else {
+        res.status(404);
+        throw new Error('User not found');
+      }
+    } else {
+      res.status(400);
+      throw new Error('No file uploaded');
+    }
+  })
+);
 
 export default userRouter;

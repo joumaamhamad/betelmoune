@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
@@ -52,9 +51,13 @@ const Profile = () => {
       formData.append('id', profile.id);
 
       try {
-        const res = await axios.post('/api/users/uploadProfileImage', formData, {
-          headers: { 'Content-Type': 'multipart/form-data' },
-        });
+        const res = await axios.post(
+          '/api/users/uploadProfileImage',
+          formData,
+          {
+            headers: { 'Content-Type': 'multipart/form-data' },
+          }
+        );
         setProfile({ ...profile, profileImage: res.data.path });
         console.log('Uploaded Image Path:', res.data.path);
       } catch (error) {
@@ -72,10 +75,12 @@ const Profile = () => {
 
   const formatImagePath = (path) => {
     // Replace backslashes with forward slashes and prepend backend URL
-    return path ? `/backend${path.replace(/\\/g, '/')}` : 'https://retratosbarcelona.com/wp-content/uploads/2022/09/Retratos-Barcelona-Linkedin-Photo-Sydney.jpg';
+    return path
+      ? `/backend${path.replace(/\\/g, '/')}`
+      : 'https://retratosbarcelona.com/wp-content/uploads/2022/09/Retratos-Barcelona-Linkedin-Photo-Sydney.jpg';
   };
 
-  console.log(formatImagePath(profile.profileImage))
+  console.log(formatImagePath(profile.profileImage));
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg mt-6 mb-12">
@@ -85,7 +90,9 @@ const Profile = () => {
           alt="Profile"
           className="w-24 h-24 rounded-full"
         />
-        <h2 className="mt-4 text-xl font-semibold">{profile.firstName} {profile.lastName}</h2>
+        <h2 className="mt-4 text-xl font-semibold">
+          {profile.firstName} {profile.lastName}
+        </h2>
         <label className="mt-2 text-blue-500 cursor-pointer hover:underline">
           <input type="file" className="hidden" onChange={handleFileChange} />
           Edit Profile
@@ -150,7 +157,6 @@ const Profile = () => {
         </button>
       </form>
     </div>
-
   );
 };
 

@@ -40,7 +40,6 @@ export default function NavBar() {
         </div>
 
         <Link to="/signin">
-
           <button className="bg-blue-500 text-white py-1 px-3 rounded mr-2">
             Sign in
           </button>
