@@ -20,7 +20,6 @@ const Products = () => {
   const dispatch = useDispatch();
 
   // Select Category
-
   const handleClick = (category, index) => {
     if (isSelected !== index) {
       dispatch(categoriesFilter(category));
@@ -37,7 +36,6 @@ const Products = () => {
   }, [dispatch]);
 
   // Set Categories Filter
-
   useEffect(() => {
     const uniqueCategories = new Set();
     categoriesData.forEach((category) => {
@@ -82,7 +80,7 @@ const Products = () => {
                 >
                   <Link to={`/products/${product.slug}`}>
                     <img
-                      src={product.images[0]}
+                      src={`/backend/${product.images[0].replace(/\\/g, '/')}`}
                       alt={product.name}
                       className="w-full h-48 object-cover rounded-lg"
                     />
@@ -90,7 +88,7 @@ const Products = () => {
                       {product.name}
                     </p>
                     <p className="text-left mt-2 text-gray-600">
-                      {product.price}
+                      {product.price}$
                     </p>
                   </Link>
                 </div>
@@ -103,3 +101,4 @@ const Products = () => {
 };
 
 export default Products;
+

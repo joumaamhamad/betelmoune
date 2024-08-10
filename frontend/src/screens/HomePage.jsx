@@ -62,7 +62,7 @@ export default function HomePage() {
           {products.map((product) => (
             <div key={product?.productId} className="pb-4 bg-white rounded-lg shadow-md overflow-hidden relative group">
               <img
-                src={product?.images[0]}
+                src={`/backend/${product.images[0].replace(/\\/g, '/')}`}
                 alt={product?.name}
                 className="w-full h-48 object-cover cursor-pointer"
               />

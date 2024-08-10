@@ -84,19 +84,19 @@ const ProductsDetails = () => {
         <h3 className="text-3xl font-bold mb-4">{selectedProduct?.name}</h3>
       </div>
       <div className="text-gray-500 mb-4">capacity:</div>
-      <div className="text-2xl font-bold mb-6">{selectedProduct?.price}</div>
+      <div className="text-2xl font-bold mb-6">{selectedProduct?.price}$</div>
       <div className="grid grid-cols-5 gap-4 mb-6">
         {selectedProduct.images.map((img, index) => (
           <img
             key={index}
             className="w-full h-52 object-cover rounded-md"
-            src={img}
+            src={`/backend/${img.replace(/\\/g, '/')}`}
             alt="Product"
           ></img>
         ))}
       </div>
       <div>
-        <h3 className="text-2xl font-bold mb-4">Workshop Details</h3>
+        <h3 className="text-2xl font-bold mb-4">Product Details</h3>
       </div>
       <div className="mb-8">
         <p className="text-gray-500">{selectedProduct?.description}</p>
