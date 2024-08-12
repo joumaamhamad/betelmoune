@@ -37,8 +37,8 @@ function Workshops() {
             <button
               key={cat}
               onClick={() => setFilter(cat)}
-              className={`bg-gray-200 px-4 py-2 rounded ${
-                filter === cat ? 'bg-blue-500 text-white' : ''
+              className={`px-4 py-2 rounded ${
+                filter === cat ? 'bg-blue-500 text-white' : 'bg-gray-200'
               }`}
             >
               {cat}
