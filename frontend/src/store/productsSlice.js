@@ -11,7 +11,6 @@ export const getProducts = createAsyncThunk(
       const response = await axios.get('http://localhost:5000/api/products', {
         method: 'GET',
       });
-
       const productsData = await response.data;
 
       if (productsData.message) {
@@ -25,13 +24,66 @@ export const getProducts = createAsyncThunk(
   }
 );
 
+// Fetch Selected Product
+
+export const fetchProductBySlug = createAsyncThunk(
+  'products/fetchProductBySlug',
+  async (productSlug, thunkAPI) => {
+    const { rejectWithValue } = thunkAPI;
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/api/products/${productSlug.slug}`
+      );
+      const productData = await response.data;
+
+      if (productData.message) {
+        return false;
+      } else {
+        return productData[0];
+      }
+    } catch (error) {
+      rejectWithValue(error.message);
+    }
+  }
+);
+
+// Decrement Available Quantity of Product
+
+export const decrementAvailableQuantity = createAsyncThunk(
+  'products/decrementAvailableQuantity',
+  async (productData, thunkAPI) => {
+    const { rejectWithValue } = thunkAPI;
+    try {
+      const response = await axios.put(
+        'http://localhost:5000/api/products/decrementavailablequantity',
+        productData,
+        {
+          headers: {
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+        }
+      );
+      const productUpdated = response.data;
+
+      if (productUpdated.message) {
+        return productUpdated.message;
+      } else {
+        return productUpdated;
+      }
+    } catch (error) {
+      rejectWithValue(error);
+    }
+  }
+);
+
 const productsSlice = createSlice({
   name: 'products',
   initialState: {
     products: [],
     productsFilter: [],
     categories: [],
-    selectedProduct: [],
+    selectedProduct: null,
+    isAvailable: false,
   },
   reducers: {
     // Select Product
@@ -90,14 +142,26 @@ const productsSlice = createSlice({
       state.products = [];
       state.productsFilter = [];
     },
+
+    // Reset isAvailable State
+    resetAvailableState: (state) => {
+      state.isAvailable = false;
+    },
   },
   extraReducers: (builder) => {
-    builder.addCase(getProducts.fulfilled, (state, action) => {
-      state.products = action.payload;
-      action.payload.forEach((elem) => {
-        state.categories.push(elem.category);
+    builder
+      .addCase(getProducts.fulfilled, (state, action) => {
+        state.products = action.payload;
+        action.payload.forEach((elem) => {
+          state.categories.push(elem.category);
+        });
+      })
+      .addCase(fetchProductBySlug.fulfilled, (state, action) => {
+        state.selectedProduct = action.payload;
+      })
+      .addCase(decrementAvailableQuantity.fulfilled, (state, action) => {
+        state.isAvailable = action.payload;
       });
-    });
   },
 });
 
@@ -106,5 +170,6 @@ export const {
   categoriesFilter,
   filterProducts,
   setProductsEmpty,
+  resetAvailableState,
 } = productsSlice.actions;
 export default productsSlice.reducer;

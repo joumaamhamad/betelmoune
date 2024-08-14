@@ -122,6 +122,35 @@ export const deleteFromCart = createAsyncThunk(
   }
 );
 
+// Return Quantity of Product When Delete From Cart
+
+export const ReturnQuantity = createAsyncThunk(
+  'cart/ReturnQuantity',
+  async (product, thunkAPI) => {
+    const { rejectWithValue } = thunkAPI;
+    try {
+      const response = await axios.put(
+        'http://localhost:5000/api/cart/returnquantity',
+        product,
+        {
+          headers: {
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+        }
+      );
+      const result = response.data;
+
+      if (result.message) {
+        return result.message;
+      } else {
+        return result;
+      }
+    } catch (error) {
+      rejectWithValue(error);
+    }
+  }
+);
+
 const cartSlice = createSlice({
   name: 'cart',
   initialState: {

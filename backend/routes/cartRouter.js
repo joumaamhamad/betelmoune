@@ -16,6 +16,7 @@ cartRouter.post('/product', async (req, res) => {
         quantity: req.body.quantity,
         images: req.body.images,
         description: req.body.description,
+        slug: req.body.slug,
         type: req.body.type,
       },
     },
@@ -68,7 +69,7 @@ cartRouter.post('/workshop', async (req, res) => {
   }
 });
 
-// Change Qunatity of Product
+// Change Quantity of Product
 
 cartRouter.put('/quantity', async (req, res) => {
   const filter = { _id: req.body.userId, 'cart.productId': req.body.productId };
@@ -76,17 +77,19 @@ cartRouter.put('/quantity', async (req, res) => {
     'cart.$.quantity': req.body.quantity,
   };
 
-  // Update Cart
-  const user = await User.updateOne(filter, update);
+  if (req.body.quantity > 0) {
+    // Update Cart
+    const user = await User.updateOne(filter, update);
 
-  if (user) {
-    // Find Cart After Update
-    const user = await User.find(filter);
-    const cart = user[0].cart;
+    if (user) {
+      // Find Cart After Update
+      const user = await User.find(filter);
+      const cart = user[0].cart;
 
-    res.status(200).json(cart);
-  } else {
-    res.status(404).json({ message: 'Check your connection and try again' });
+      res.status(200).json(cart);
+    } else {
+      res.status(404).json({ message: 'Check your connection and try again' });
+    }
   }
 });
 
@@ -111,6 +114,41 @@ cartRouter.put('/deleteFromCart', async (req, res) => {
     res.status(200).json(cart);
   } else {
     res.status(404).json({ message: 'Item Does not exist' });
+  }
+});
+
+// Return Quantity of Product When Delete From Cart
+
+cartRouter.put('/returnquantity', async (req, res) => {
+  const filter = {
+    'products.productId': req.body.itemId,
+  };
+
+  // Find the user to get the current quantity
+  const user = await User.findOne(filter);
+
+  if (user) {
+    const product = user.products.find(
+      (product) => product.productId.toString() === req.body.itemId
+    );
+
+    if (product && req.body.quantity !== 0) {
+      const update = {
+        $inc: { 'products.$.quantity': +req.body.quantity },
+      };
+
+      const updateCheck = await User.updateOne(filter, update);
+
+      if (updateCheck.modifiedCount > 0) {
+        res.status(200).json(updateCheck.acknowledged);
+      } else {
+        res
+          .status(400)
+          .json({ message: 'Check your Connection and try again' });
+      }
+    }
+  } else {
+    res.status(500).json({ message: 'Failed Operation' });
   }
 });
 
