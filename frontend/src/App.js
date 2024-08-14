@@ -29,8 +29,10 @@ const Workshops = lazy(() => import('./screens/Workshops'));
 function App() {
   return (
     <BrowserRouter>
+      {/* remove the comment to show the sidebar */}
       {/* <div className="flex"> */}
       {/* <Sidebar /> */}
+
       <div className="App flex flex-col min-h-screen">
         <NavBarPlus />
 
@@ -59,6 +61,8 @@ function App() {
         <Footer />
         {/* <ToastContainer /> */}
       </div>
+
+      {/* this div return the sidebar */}
       {/* </div> */}
     </BrowserRouter>
   );
