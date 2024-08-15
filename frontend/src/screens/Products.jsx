@@ -13,7 +13,7 @@ const Products = () => {
   const products = useSelector((state) => state.productsSlice.products);
   const categoriesData = useSelector((state) => state.productsSlice.categories);
   const [categories, setCategories] = useState([]);
-  const [isSelected, setIsSelected] = useState(false);
+  const [isSelected, setIsSelected] = useState(null); // Default to null
 
   const searchValue = useRef(null);
 
@@ -21,13 +21,19 @@ const Products = () => {
 
   // Select Category
   const handleClick = (category, index) => {
-    if (isSelected !== index) {
-      dispatch(categoriesFilter(category));
-      setIsSelected(index);
-    } else {
+    if (category === 'All') {
       dispatch(setProductsEmpty());
       dispatch(getProducts());
       setIsSelected(null);
+    } else {
+      if (isSelected !== index) {
+        dispatch(categoriesFilter(category));
+        setIsSelected(index);
+      } else {
+        dispatch(setProductsEmpty());
+        dispatch(getProducts());
+        setIsSelected(null);
+      }
     }
   };
 
@@ -48,7 +54,9 @@ const Products = () => {
     <div className="p-6 font-sans mb-24">
       <div className="max-w-screen-xl mx-auto">
         <h1 className="text-left text-4xl font-bold mb-6">All Products</h1>
+
         <div className="flex flex-wrap justify-center sm:justify-start mb-6 gap-2 sm:gap-4">
+
           {categories.map((category, index) => (
             <button
               key={index}

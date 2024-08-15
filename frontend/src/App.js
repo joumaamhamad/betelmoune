@@ -12,8 +12,12 @@ import WorkshopDetails from './screens/WorkshopDetails';
 import AddProduct from './screens/AddProduct';
 import EditProduct from './screens/EditProduct';
 import Footer from './components/Footer';
-
 import Cart from './screens/Cart';
+import UserList from './screens/UserList';
+import ProductList from './screens/ProductList';
+import WorkshopList from './screens/WorkshopList';
+import AdminDashboard from './screens/AdminDashboard';
+// import Sidebar from './components/Sidebar';
 
 // Lazy load components
 const HomePage = lazy(() => import('./screens/HomePage'));
@@ -25,6 +29,10 @@ const Workshops = lazy(() => import('./screens/Workshops'));
 function App() {
   return (
     <BrowserRouter>
+      {/* remove the comment to show the sidebar */}
+      {/* <div className="flex"> */}
+      {/* <Sidebar /> */}
+
       <div className="App flex flex-col min-h-screen">
         <NavBarPlus />
 
@@ -42,6 +50,10 @@ function App() {
               <Route path="/editProduct" element={<EditProduct />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/userList" element={<UserList />} />
+              <Route path="/productList" element={<ProductList />} />
+              <Route path="/workshopList" element={<WorkshopList />} />
+              <Route path="/adminDashboard" element={<AdminDashboard />} />
             </Routes>
           </Suspense>
         </main>
@@ -49,6 +61,9 @@ function App() {
         <Footer />
         {/* <ToastContainer /> */}
       </div>
+
+      {/* this div return the sidebar */}
+      {/* </div> */}
     </BrowserRouter>
   );
 }
