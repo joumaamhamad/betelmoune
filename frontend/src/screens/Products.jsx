@@ -7,6 +7,7 @@ import {
   categoriesFilter,
   filterProducts,
   setProductsEmpty,
+  resetAvailableState,
 } from '../store/productsSlice';
 
 const Products = () => {
@@ -52,14 +53,16 @@ const Products = () => {
   }, [categoriesData]);
 
   return (
-    <div className="p-6 font-sans mb-24">
+    <div
+      className="p-6 font-sans mb-24"
+      onLoad={() => dispatch(resetAvailableState())}
+    >
       <div className="max-w-screen-xl mx-auto">
 
         <h1 className="text-left text-4xl font-bold mb-6">All Products<span className='text-xl'>{user?.products?.length>0 ? <Link to={'/editproduct'}><p>Editproducts(For Testing)</p></Link> : ''}</span></h1>
         
 
         <div className="flex flex-wrap justify-center sm:justify-start mb-6 gap-2 sm:gap-4">
-
 
           {categories.map((category, index) => (
             <button
@@ -80,7 +83,10 @@ const Products = () => {
             placeholder="Search products"
             className="w-full px-4 py-2 border border-gray-300 rounded"
             ref={searchValue}
-            onChange={() => dispatch(filterProducts(searchValue.current.value))}
+            onChange={() => {
+              setIsSelected(null);
+              dispatch(filterProducts(searchValue.current.value));
+            }}
           />
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">

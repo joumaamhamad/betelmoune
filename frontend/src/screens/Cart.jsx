@@ -58,7 +58,21 @@ const Cart = () => {
     }
   };
 
+
+  useEffect(() => {
+    if (changedQuantityData && isAvailable !== 1 && isAvailable !== undefined) {
+      console.log(changedQuantityData);
+      console.log(isAvailable);
+      dispatch(changeQuantity(changedQuantityData));
+    }
+  }, [dispatch, isAvailable, changedQuantityData]);
+
+  // Delete Item from Cart
+
+  const deleteHanlder = (itemId, type, quantity) => {
+
   const deleteHandler = (itemId, type, quantity) => {
+
     const itemData =
       type === 'product'
         ? {
