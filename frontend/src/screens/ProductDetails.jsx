@@ -72,7 +72,7 @@ const ProductsDetails = () => {
   // Click on Add to Cart
 
   const handleAddToCart = () => {
-    if (!isProductExist) {
+    if (user && !isProductExist) {
       const productData = {
         userId: user._id,
         productId: selectedProduct.productId,
@@ -86,7 +86,7 @@ const ProductsDetails = () => {
       };
       dispatch(decrementAvailableQuantity(productData));
       setProductExist(productData);
-    } else {
+    } else if (user) {
       // Increament Quantity if Item Exist :
 
       // data for update quantity by available quantity of product
@@ -105,6 +105,7 @@ const ProductsDetails = () => {
       dispatch(decrementAvailableQuantity(productDataForAvailable));
       setChangeQuantityData(productDataForChangeQuantity);
     }
+    console.log('Welcome ya Guest');
   };
 
   // Check Availability of Product
@@ -116,7 +117,6 @@ const ProductsDetails = () => {
       dispatch(addProductToCart(productExist));
       setProductExist({ quantity: 0 });
       setIsAddedToCart(true);
-      saveToLocalStorage('cart', selectedProduct, 20);
     } else if (isAvailable === undefined) {
       setPopUp(true);
     }

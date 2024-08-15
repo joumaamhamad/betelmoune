@@ -62,7 +62,9 @@ const Cart = () => {
   };
 
   useEffect(() => {
-    if (changedQuantityData && isAvailable !== 1) {
+    if (changedQuantityData && isAvailable !== 1 && isAvailable !== undefined) {
+      console.log(changedQuantityData);
+      console.log(isAvailable);
       dispatch(changeQuantity(changedQuantityData));
     }
   }, [dispatch, isAvailable, changedQuantityData]);
