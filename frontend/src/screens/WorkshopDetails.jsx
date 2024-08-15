@@ -4,16 +4,25 @@ import { getError } from '../utils';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { addWorkshopToCart } from '../store/cartSlice';
+
+import ConfirmationPopup from '../components/ConfirmationPopup';
+
 import { selectWorkshop } from '../store/workshopsSlice';
 
+
 export default function WorkshopDetails() {
+  
   const params = useParams();
   const [workshop, setWorkshop] = useState();
+
+
+  console.log(workshop)
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   // console.log('iddddd::' , id);
+
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -32,7 +41,7 @@ export default function WorkshopDetails() {
     };
 
     fetchData();
-  }, []);
+  }, [params.slug]);
 
   const user = useSelector((state) => state.authSlice.user);
   const selectedWorkshop = useSelector(
@@ -100,14 +109,41 @@ export default function WorkshopDetails() {
     loadFromLocalStorage();
   }, []);
 
+  // State for Popup
+  const [showPopup, setShowPopup] = useState(false);
+
+  // Handle Register Button Click
+  const handleRegisterClick = () => {
+    setShowPopup(true);
+  };
+
+  // Handle Confirm Action
+  const handleConfirm = async () => {
+    setShowPopup(false);
+    try {
+      console.log('Sending userId:', user._id);
+      await axios.put(`/api/workshops/${workshop._id}/register`, {
+        userId: user._id,
+      });
+      navigate(`/workshopContent/${workshop.slug}`);
+    } catch (error) {
+      console.log(getError(error));
+    }
+  };
+
+  // Handle Cancel Action
+  const handleCancel = () => {
+    setShowPopup(false);
+  };
+
   return (
     <div className="flex flex-col wrap text-left mt-24 ml-32 mb-24">
       <div>
         <h3 className="text-3xl font-bold mb-4">{workshop?.name}</h3>
       </div>
       <div className="text-gray-500 mb-4">
-        duration: <span class="font-semibold">{workshop?.duration}hr </span>{' '}
-        capacity: <span class="font-semibold">{workshop?.capacity}</span>
+        duration: <span className="font-semibold">{workshop?.duration}hr </span>{' '}
+        capacity: <span className="font-semibold">{workshop?.capacity}</span>
       </div>
       <div className="text-2xl font-bold mb-6">{workshop?.price}$</div>
       <div className="grid grid-cols-5 gap-4 mb-6">
@@ -154,10 +190,18 @@ export default function WorkshopDetails() {
             Add to cart
           </button>
         )}
-        <button className="bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded hover:bg-gray-300">
+        <button
+          className="bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded hover:bg-gray-300"
+          onClick={handleRegisterClick}
+        >
           Register
         </button>
       </div>
+
+      {/* Render Confirmation Popup */}
+      {showPopup && (
+        <ConfirmationPopup onConfirm={handleConfirm} onCancel={handleCancel} />
+      )}
     </div>
   );
 }

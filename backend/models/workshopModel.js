@@ -21,6 +21,7 @@ const workshopSchema = new mongoose.Schema(
     price: { type: Number, default: 0 },
     images: [{ type: String }],
     type: { type: String, required: true },
+    content: [{ type: String }],
   },
   {
     timestamps: true,

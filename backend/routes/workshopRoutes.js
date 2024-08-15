@@ -24,4 +24,26 @@ workshopRouter.get('/slug/:slug', async (req, res) => {
   }
 });
 
+workshopRouter.put('/:id/register', async (req, res) => {
+  
+  console.log('lllll')
+  try {
+    console.log('lllll')
+    const workshop = await Workshop.findById(req.params.id);
+    if (workshop) {
+      if (!workshop.registeredUsers.includes(req.body.userId)) {
+        workshop.registeredUsers.push(req.body.userId);
+        await workshop.save();
+        res.status(200).json({ message: 'User registered successfully' });
+      } else {
+        res.status(400).json({ message: 'User is already registered' });
+      }
+    } else {
+      res.status(404).json({ message: 'Workshop not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: getError(error) });
+  }
+});
+
 export default workshopRouter;

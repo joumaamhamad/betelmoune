@@ -3,9 +3,8 @@ import axios from 'axios';
 import { getCart } from './authSlice';
 
 // Add Product To Cart
-
 export const addProductToCart = createAsyncThunk(
-  'products/addToCart',
+  'cart/addProductToCart',
   async (products, thunkAPI) => {
     const { rejectWithValue, dispatch } = thunkAPI;
     try {
@@ -27,15 +26,14 @@ export const addProductToCart = createAsyncThunk(
         return productsData;
       }
     } catch (error) {
-      rejectWithValue(error.message);
+      return rejectWithValue(error.message);
     }
   }
 );
 
 // Add Workshop To Cart
-
 export const addWorkshopToCart = createAsyncThunk(
-  'products/addToCart',
+  'cart/addWorkshopToCart',
   async (workshops, thunkAPI) => {
     const { rejectWithValue, dispatch } = thunkAPI;
     try {
@@ -57,13 +55,12 @@ export const addWorkshopToCart = createAsyncThunk(
         return workshopsData;
       }
     } catch (error) {
-      rejectWithValue(error.message);
+      return rejectWithValue(error.message);
     }
   }
 );
 
 // Change Quantity of Product
-
 export const changeQuantity = createAsyncThunk(
   'cart/changeQuantity',
   async (product, thunkAPI) => {
@@ -87,13 +84,12 @@ export const changeQuantity = createAsyncThunk(
         return updateProduct;
       }
     } catch (error) {
-      rejectWithValue(error.message);
+      return rejectWithValue(error.message);
     }
   }
 );
 
 // Delete Item from Cart
-
 export const deleteFromCart = createAsyncThunk(
   'cart/deleteFromCart',
   async (item, thunkAPI) => {
@@ -117,21 +113,20 @@ export const deleteFromCart = createAsyncThunk(
         return updatedData;
       }
     } catch (error) {
-      rejectWithValue(error.message);
+      return rejectWithValue(error.message);
     }
   }
 );
 
-// Return Quantity of Product When Delete From Cart
-
-export const ReturnQuantity = createAsyncThunk(
-  'cart/ReturnQuantity',
-  async (product, thunkAPI) => {
-    const { rejectWithValue } = thunkAPI;
+// Clear Cart
+export const clearCart = createAsyncThunk(
+  'cart/clearCart',
+  async (userId, thunkAPI) => {
+    const { rejectWithValue, dispatch } = thunkAPI;
     try {
       const response = await axios.put(
-        'http://localhost:5000/api/cart/returnquantity',
-        product,
+        'http://localhost:5000/api/cart/clearCart',
+        { userId },
         {
           headers: {
             'Content-Type': 'application/json; charset=UTF-8',
@@ -146,7 +141,32 @@ export const ReturnQuantity = createAsyncThunk(
         return result;
       }
     } catch (error) {
-      rejectWithValue(error);
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+// Return Quantity of Product When Delete From Cart
+export const ReturnQuantity = createAsyncThunk(
+  'cart/ReturnQuantity',
+  async (product, thunkAPI) => {
+    const { rejectWithValue, dispatch } = thunkAPI;
+    try {
+      const response = await axios.put(
+        'http://localhost:5000/api/cart/returnquantity',
+        product,
+        {
+          headers: {
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+        }
+      );
+
+      const updatedCart = await response.data;
+      dispatch(getCart(updatedCart));
+      return updatedCart;
+    } catch (error) {
+      return rejectWithValue(error.message);
     }
   }
 );
@@ -160,7 +180,9 @@ const cartSlice = createSlice({
     selectedProduct: [],
   },
   reducers: {},
-  extraReducers: (builder) => {},
+  extraReducers: (builder) => {
+    // Handle additional cases here
+  },
 });
 
 export default cartSlice.reducer;

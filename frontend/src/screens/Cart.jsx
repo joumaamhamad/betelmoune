@@ -21,11 +21,10 @@ const Cart = () => {
   const navigate = useNavigate();
 
   // Change Quantity of Product
-
   const isAvailable = useSelector((state) => state.productsSlice.isAvailable);
   const [changedQuantityData, setChangedQuantityData] = useState(false);
 
-  const qunatityHanlder = (product, operator) => {
+  const quantityHandler = (product, operator) => {
     if (operator === '-') {
       const productData = {
         userId: user._id,
@@ -35,7 +34,6 @@ const Cart = () => {
       dispatch(changeQuantity(productData));
 
       // Increment Available Quantity
-
       const incrementProductData = {
         userId: user._id,
         itemId: product.productId,
@@ -51,15 +49,15 @@ const Cart = () => {
       setChangedQuantityData(productData);
 
       // Decrement Available Quantity
-
-      const incrementProductData = {
+      const decrementProductData = {
         userId: user._id,
         productId: product.productId,
         quantity: 1,
       };
-      dispatch(decrementAvailableQuantity(incrementProductData));
+      dispatch(decrementAvailableQuantity(decrementProductData));
     }
   };
+
 
   useEffect(() => {
     if (changedQuantityData && isAvailable !== 1 && isAvailable !== undefined) {
@@ -72,6 +70,9 @@ const Cart = () => {
   // Delete Item from Cart
 
   const deleteHanlder = (itemId, type, quantity) => {
+
+  const deleteHandler = (itemId, type, quantity) => {
+
     const itemData =
       type === 'product'
         ? {
@@ -85,8 +86,29 @@ const Cart = () => {
             itemId: itemId,
             type: type,
           };
+
     dispatch(deleteFromCart(itemData));
     dispatch(ReturnQuantity(itemData));
+  };
+
+  // Update quantity data if necessary
+  useEffect(() => {
+    if (changedQuantityData && isAvailable !== 1) {
+      dispatch(changeQuantity(changedQuantityData));
+    }
+  }, [dispatch, isAvailable, changedQuantityData]);
+
+  // Calculate total price
+  const totalPrice = cart.reduce((acc, item) => {
+    return acc + item.price * item.quantity;
+  }, 0);
+
+  useEffect(() => {
+    console.log(cart);
+  }, [cart]);
+
+  const checkOutHandler = () => {
+    navigate('/shippingAddress');
   };
 
   return (
@@ -131,7 +153,7 @@ const Cart = () => {
                 <>
                   <button
                     className="bg-gray-300 text-gray-700 text-xl px-4 rounded-md hover:bg-gray-400 transition"
-                    onClick={() => qunatityHanlder(item, '-')}
+                    onClick={() => quantityHandler(item, '-')}
                   >
                     -
                   </button>
@@ -140,7 +162,7 @@ const Cart = () => {
                   </span>
                   <button
                     className="bg-gray-300 text-gray-700 text-xl px-4 rounded-md hover:bg-gray-400 transition"
-                    onClick={() => qunatityHanlder(item, '+')}
+                    onClick={() => quantityHandler(item, '+')}
                   >
                     +
                   </button>
@@ -152,8 +174,8 @@ const Cart = () => {
               style={{ top: '-8%', right: '-10px' }}
               onClick={() =>
                 item.type === 'product'
-                  ? deleteHanlder(item.productId, item.type, item.quantity)
-                  : deleteHanlder(item.workshopId, item.type)
+                  ? deleteHandler(item.productId, item.type, item.quantity)
+                  : deleteHandler(item.workshopId, item.type)
               }
             >
               <IoClose />
@@ -161,15 +183,22 @@ const Cart = () => {
           </div>
         ))}
       </div>
+
+      {/* Total Price Div */}
       {cart.length !== 0 ? (
         <div className="mt-6">
-          <button className="w-full bg-red-500 text-white py-3 rounded-lg text-center hover:bg-red-600 transition">
+          <div className="flex items-center justify-center text-xl font-semibold text-gray-800 mb-4">
+            <span>Total Price:</span>
+            <span>${totalPrice.toFixed(2)}</span>
+          </div>
+          <button onClick={checkOutHandler} className="w-1/4 bg-red-500 text-white py-3 rounded-lg text-center hover:bg-red-600 transition">
             Checkout
           </button>
         </div>
       ) : (
         "You Don't have any Items in Cart"
       )}
+
       {user !== null ? (
         <div className="mt-12">
           <h3 className="text-xl font-bold text-gray-800 mb-4">
@@ -193,7 +222,7 @@ const Cart = () => {
                 <h4 className="text-lg font-medium text-gray-800">
                   {product.name}
                 </h4>
-                <p className="text-sm text-gray-600">{product.price}</p>
+                <p className="text-sm text-gray-600">${product.price}</p>
               </div>
             ))}
           </div>
