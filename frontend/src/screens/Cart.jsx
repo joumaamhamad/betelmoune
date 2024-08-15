@@ -58,21 +58,15 @@ const Cart = () => {
     }
   };
 
-
   useEffect(() => {
     if (changedQuantityData && isAvailable !== 1 && isAvailable !== undefined) {
-      console.log(changedQuantityData);
-      console.log(isAvailable);
       dispatch(changeQuantity(changedQuantityData));
     }
   }, [dispatch, isAvailable, changedQuantityData]);
 
   // Delete Item from Cart
 
-  const deleteHanlder = (itemId, type, quantity) => {
-
   const deleteHandler = (itemId, type, quantity) => {
-
     const itemData =
       type === 'product'
         ? {
@@ -91,21 +85,11 @@ const Cart = () => {
     dispatch(ReturnQuantity(itemData));
   };
 
-  // Update quantity data if necessary
-  useEffect(() => {
-    if (changedQuantityData && isAvailable !== 1) {
-      dispatch(changeQuantity(changedQuantityData));
-    }
-  }, [dispatch, isAvailable, changedQuantityData]);
-
   // Calculate total price
   const totalPrice = cart.reduce((acc, item) => {
+    console.log(item);
     return acc + item.price * item.quantity;
   }, 0);
-
-  useEffect(() => {
-    console.log(cart);
-  }, [cart]);
 
   const checkOutHandler = () => {
     navigate('/shippingAddress');
@@ -191,7 +175,10 @@ const Cart = () => {
             <span>Total Price:</span>
             <span>${totalPrice.toFixed(2)}</span>
           </div>
-          <button onClick={checkOutHandler} className="w-1/4 bg-red-500 text-white py-3 rounded-lg text-center hover:bg-red-600 transition">
+          <button
+            onClick={checkOutHandler}
+            className="w-1/4 bg-red-500 text-white py-3 rounded-lg text-center hover:bg-red-600 transition"
+          >
             Checkout
           </button>
         </div>
