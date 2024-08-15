@@ -122,6 +122,16 @@ export const deleteFromCart = createAsyncThunk(
   }
 );
 
+
+export const clearCart = createAsyncThunk(
+  'cart/clearCart',
+  async (userId, thunkAPI) => {
+    const { rejectWithValue, dispatch } = thunkAPI;
+    try {
+      const response = await axios.put(
+        'http://localhost:5000/api/cart/clearCart',
+        { userId },
+
 // Return Quantity of Product When Delete From Cart
 
 export const ReturnQuantity = createAsyncThunk(
@@ -132,12 +142,25 @@ export const ReturnQuantity = createAsyncThunk(
       const response = await axios.put(
         'http://localhost:5000/api/cart/returnquantity',
         product,
+
         {
           headers: {
             'Content-Type': 'application/json; charset=UTF-8',
           },
         }
       );
+
+      const updatedCart = await response.data;
+      dispatch(getCart(updatedCart));
+      return updatedCart;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+
+
       const result = response.data;
 
       if (result.message) {
@@ -150,6 +173,7 @@ export const ReturnQuantity = createAsyncThunk(
     }
   }
 );
+
 
 const cartSlice = createSlice({
   name: 'cart',

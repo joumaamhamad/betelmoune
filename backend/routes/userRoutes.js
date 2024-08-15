@@ -4,6 +4,11 @@ import bcrypt from 'bcryptjs';
 import { isAuth, isAdmin, generateToken, sendEmail } from '../utils.js';
 import asyncHandler from 'express-async-handler';
 import upload from '../middleware/upload.js';
+import uploadProducts from '../middleware/uploadProducts.js';
+// const fs = require('fs');
+// const path = require('path');
+import fs from 'fs';
+import path from 'path'
 
 const userRouter = express.Router();
 
@@ -153,5 +158,67 @@ userRouter.post(
     }
   })
 );
+
+userRouter.put('/user/products/:userId', uploadProducts, async (req, res) => {
+  const { userId } = req.params;
+  const { productId } = req.body;
+  const { name, price, category, description, quantity } = req.body;
+  const images = req.files.map(file => file.path);
+
+  console.log(req.body);
+  console.log(req.files);
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const product = user.products.id(productId);
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    // Update product details
+    product.name = name;
+    product.price = price;
+    product.category = category;
+    product.description = description;
+    product.quantity = quantity;
+
+    // Handle image updates
+    if (images.length) {
+      // Delete old images if new ones are provided
+      product.images.forEach(oldImage => {
+        const oldImagePath = path.join(__dirname, '..', oldImage);
+        if (fs.existsSync(oldImagePath)) {
+          fs.unlinkSync(oldImagePath);  // Delete the old image
+        }
+      });
+
+      console.log('images::',images);
+      product.images = images;  // Update with new images
+    }
+
+    await user.save();
+
+    res.json({ message: 'Product updated successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error });
+  }
+});
+
+userRouter.get('/user/products/:userId', async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    res.json(user.products);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching products', error });
+  }
+});
+
 
 export default userRouter;

@@ -20,10 +20,12 @@ const Cart = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+
   // Change Quantity of Product
 
   const isAvailable = useSelector((state) => state.productsSlice.isAvailable);
   const [changedQuantityData, setChangedQuantityData] = useState(false);
+
 
   const qunatityHanlder = (product, operator) => {
     if (operator === '-') {
@@ -61,6 +63,14 @@ const Cart = () => {
     }
   };
 
+
+  const deleteHanlder = (itemId, type) => {
+    const itemData = {
+      userId: user._id,
+      itemId: itemId,
+      type: type,
+    };
+
   useEffect(() => {
     if (changedQuantityData && isAvailable !== 1) {
       dispatch(changeQuantity(changedQuantityData));
@@ -83,9 +93,25 @@ const Cart = () => {
             itemId: itemId,
             type: type,
           };
+
     dispatch(deleteFromCart(itemData));
     dispatch(ReturnQuantity(itemData));
   };
+
+
+  // Calculate total price
+  const totalPrice = cart.reduce((acc, item) => {
+    return acc + item.price * item.quantity;
+  }, 0);
+
+  useEffect(() => {
+    console.log(cart);
+  }, [cart]);
+
+  const checkOutHandler = () => {
+    navigate('/shippingAddress');
+  }
+
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-lg">
@@ -159,15 +185,22 @@ const Cart = () => {
           </div>
         ))}
       </div>
+
+      {/* Total Price Div */}
       {cart.length !== 0 ? (
         <div className="mt-6">
-          <button className="w-full bg-red-500 text-white py-3 rounded-lg text-center hover:bg-red-600 transition">
+          <div className="flex items-center justify-center text-xl font-semibold text-gray-800 mb-4">
+            <span>Total Price:</span>
+            <span>${totalPrice.toFixed(2)}</span>
+          </div>
+          <button onClick={checkOutHandler} className="w-1/4 bg-red-500 text-white py-3 rounded-lg text-center hover:bg-red-600 transition">
             Checkout
           </button>
         </div>
       ) : (
         "You Don't have any Items in Cart"
       )}
+
       {user !== null ? (
         <div className="mt-12">
           <h3 className="text-xl font-bold text-gray-800 mb-4">
@@ -191,7 +224,7 @@ const Cart = () => {
                 <h4 className="text-lg font-medium text-gray-800">
                   {product.name}
                 </h4>
-                <p className="text-sm text-gray-600">{product.price}</p>
+                <p className="text-sm text-gray-600">${product.price}</p>
               </div>
             ))}
           </div>
