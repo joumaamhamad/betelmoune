@@ -54,15 +54,9 @@ const Products = () => {
     <div className="p-6 font-sans mb-24">
       <div className="max-w-screen-xl mx-auto">
         <h1 className="text-left text-4xl font-bold mb-6">All Products</h1>
-        <div className="flex space-x-4 mb-6">
-          <button
-            className={`px-4 py-2 rounded ${
-              isSelected === null ? 'bg-blue-500 text-white' : 'bg-gray-200'
-            }`}
-            onClick={() => handleClick('All', null)}
-          >
-            All
-          </button>
+
+        <div className="flex flex-wrap justify-center sm:justify-start mb-6 gap-2 sm:gap-4">
+
           {categories.map((category, index) => (
             <button
               key={index}
@@ -75,6 +69,7 @@ const Products = () => {
             </button>
           ))}
         </div>
+
         <div className="mb-6">
           <input
             type="text"

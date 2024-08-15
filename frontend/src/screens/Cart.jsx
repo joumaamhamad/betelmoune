@@ -1,9 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { IoClose } from 'react-icons/io5';
-import { changeQuantity, deleteFromCart } from '../store/cartSlice';
-import { selectProduct } from '../store/productsSlice';
+import {
+  changeQuantity,
+  deleteFromCart,
+  ReturnQuantity,
+} from '../store/cartSlice';
+import {
+  decrementAvailableQuantity,
+  selectProduct,
+} from '../store/productsSlice';
 
 const Cart = () => {
   const user = useSelector((state) => state.authSlice.user);
@@ -15,6 +22,9 @@ const Cart = () => {
 
   // Change Quantity of Product
 
+  const isAvailable = useSelector((state) => state.productsSlice.isAvailable);
+  const [changedQuantityData, setChangedQuantityData] = useState(false);
+
   const qunatityHanlder = (product, operator) => {
     if (operator === '-') {
       const productData = {
@@ -23,30 +33,59 @@ const Cart = () => {
         quantity: product.quantity - 1,
       };
       dispatch(changeQuantity(productData));
+
+      // Increment Available Quantity
+
+      const incrementProductData = {
+        userId: user._id,
+        itemId: product.productId,
+        quantity: 1,
+      };
+      dispatch(ReturnQuantity(incrementProductData));
     } else {
       const productData = {
         userId: user._id,
         productId: product.productId,
         quantity: product.quantity + 1,
       };
-      dispatch(changeQuantity(productData));
+      setChangedQuantityData(productData);
+
+      // Decrement Available Quantity
+
+      const incrementProductData = {
+        userId: user._id,
+        productId: product.productId,
+        quantity: 1,
+      };
+      dispatch(decrementAvailableQuantity(incrementProductData));
     }
   };
 
+  useEffect(() => {
+    if (changedQuantityData && isAvailable !== 1) {
+      dispatch(changeQuantity(changedQuantityData));
+    }
+  }, [dispatch, isAvailable, changedQuantityData]);
+
   // Delete Item from Cart
 
-  const deleteHanlder = (itemId, type) => {
-    const itemData = {
-      userId: user._id,
-      itemId: itemId,
-      type: type,
-    };
+  const deleteHanlder = (itemId, type, quantity) => {
+    const itemData =
+      type === 'product'
+        ? {
+            userId: user._id,
+            itemId: itemId,
+            quantity: quantity,
+            type: type,
+          }
+        : {
+            userId: user._id,
+            itemId: itemId,
+            type: type,
+          };
     dispatch(deleteFromCart(itemData));
+    dispatch(ReturnQuantity(itemData));
   };
-
-  useEffect(() => {
-    console.log(cart);
-  }, [cart]);
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-lg">
@@ -64,8 +103,8 @@ const Cart = () => {
               onClick={() => {
                 dispatch(selectProduct(item));
                 item.type === 'product'
-                  ? navigate('/products/:slug')
-                  : navigate('/workshop/:slug');
+                  ? navigate(`/products/${item.slug}`)
+                  : navigate(`/workshop/${item.slug}`);
               }}
             >
               <img
@@ -111,7 +150,7 @@ const Cart = () => {
               style={{ top: '-8%', right: '-10px' }}
               onClick={() =>
                 item.type === 'product'
-                  ? deleteHanlder(item.productId, item.type)
+                  ? deleteHanlder(item.productId, item.type, item.quantity)
                   : deleteHanlder(item.workshopId, item.type)
               }
             >
@@ -141,7 +180,7 @@ const Cart = () => {
                 className="bg-white border cursor-pointer rounded-lg p-4 shadow-md w-1/3"
                 onClick={() => {
                   dispatch(selectProduct(product));
-                  navigate('/products/:slug');
+                  navigate(`/products/${product.slug}`);
                 }}
               >
                 <img

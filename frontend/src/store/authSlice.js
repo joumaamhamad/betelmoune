@@ -14,7 +14,6 @@ export const logIn = createAsyncThunk('auth/logIn', async (data, thunkAPI) => {
       }
     );
     const userData = response.data;
-    console.log('response from signin::', response.data);
 
     if (userData.message) {
       return false;
