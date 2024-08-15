@@ -11,7 +11,7 @@ export default function HomePage() {
   const [workshops, setWorkshops] = useState([]);
 
   const products = useSelector((state) => state.productsSlice.products);
-  console.log('prodd::', products);
+  // console.log('prodd::', products);
 
   const dispatch = useDispatch();
 

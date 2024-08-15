@@ -4,14 +4,26 @@ import { getError } from '../utils';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { addWorkshopToCart } from '../store/cartSlice';
+
 import ConfirmationPopup from '../components/ConfirmationPopup';
+
+import { selectWorkshop } from '../store/workshopsSlice';
+
 
 export default function WorkshopDetails() {
   
   const params = useParams();
   const [workshop, setWorkshop] = useState();
 
+
   console.log(workshop)
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  // console.log('iddddd::' , id);
+
+
   useEffect(() => {
     window.scrollTo(0, 0);
   });
@@ -20,7 +32,8 @@ export default function WorkshopDetails() {
     const fetchData = async () => {
       try {
         const { data } = await axios.get(`/api/workshops/slug/${params.slug}`);
-        console.log('data::', data);
+        // console.log('data::', data);
+        dispatch(selectWorkshop(data));
         setWorkshop(data);
       } catch (error) {
         console.log(getError(error));
@@ -31,30 +44,40 @@ export default function WorkshopDetails() {
   }, [params.slug]);
 
   const user = useSelector((state) => state.authSlice.user);
-
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const selectedWorkshop = useSelector(
+    (state) => state.workshopsSlice.selectedWorkshop
+  );
 
   // Add to Cart
 
   const [isAddedToCart, setIsAddedToCart] = useState(false);
+  const cart = useSelector((state) => state.authSlice.cart);
+
+  // Check if Exist in Cart
 
   const handleAddToCart = () => {
-    const workshopData = {
-      userId: user._id,
-      workshopId: workshop._id,
-      name: workshop.name,
-      price: workshop.capacity,
-      images: workshop.images,
-      description: workshop.description,
-      duration: workshop.duration,
-      date: workshop.date,
-      type: 'workshop',
-    };
+    const isWorkshopInCart = cart.some(
+      (item) =>
+        item.workshopId === selectedWorkshop._id &&
+        item.workshopId !== undefined
+    );
+    setIsAddedToCart(true);
 
-    setIsAddedToCart(!isAddedToCart);
-    dispatch(addWorkshopToCart(workshopData));
-    saveToLocalStorage('cart', workshop, 20);
+    if (!isWorkshopInCart) {
+      const workshopData = {
+        userId: user._id,
+        workshopId: selectedWorkshop._id,
+        name: selectedWorkshop.name,
+        price: selectedWorkshop.capacity,
+        images: selectedWorkshop.images,
+        description: selectedWorkshop.description,
+        duration: selectedWorkshop.duration,
+        date: selectedWorkshop.date,
+        type: 'workshop',
+      };
+      dispatch(addWorkshopToCart(workshopData));
+      saveToLocalStorage('cart', cart, 20);
+    }
   };
 
   // Save in LocalStorage for 20 minutes
