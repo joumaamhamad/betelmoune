@@ -10,6 +10,7 @@ import {
 } from '../store/productsSlice';
 
 const Products = () => {
+  const user = useSelector((state) => state.authSlice.user);
   const products = useSelector((state) => state.productsSlice.products);
   const categoriesData = useSelector((state) => state.productsSlice.categories);
   const [categories, setCategories] = useState([]);
@@ -47,7 +48,8 @@ const Products = () => {
   return (
     <div className="p-6 font-sans mb-24">
       <div className="max-w-screen-xl mx-auto">
-        <h1 className="text-left text-4xl font-bold mb-6">All Products</h1>
+        <h1 className="text-left text-4xl font-bold mb-6">All Products<span className='text-xl'>{user?.products?.length>0 ? <Link to={'/editproduct'}><p>Editproducts(For Testing)</p></Link> : ''}</span></h1>
+        
         <div className="flex space-x-4 mb-6">
           {categories.map((category, index) => (
             <button

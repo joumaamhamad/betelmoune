@@ -114,4 +114,19 @@ cartRouter.put('/deleteFromCart', async (req, res) => {
   }
 });
 
+// Clear Cart
+cartRouter.put('/clearCart', async (req, res) => {
+  const filter = { _id: req.body.userId };
+  const update = { cart: [] };
+
+  const user = await User.updateOne(filter, update);
+
+  if (user) {
+    res.status(200).json([]);
+  } else {
+    res.status(404).json({ message: 'Unable to clear the cart' });
+  }
+});
+
+
 export default cartRouter;

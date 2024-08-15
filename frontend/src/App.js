@@ -14,6 +14,8 @@ import EditProduct from './screens/EditProduct';
 import Footer from './components/Footer';
 
 import Cart from './screens/Cart';
+import ShippingAddressScreen from './screens/ShippingAddressScreen';
+import WorkshopContent from './screens/WorkshopContent';
 
 // Lazy load components
 const HomePage = lazy(() => import('./screens/HomePage'));
@@ -42,6 +44,8 @@ function App() {
               <Route path="/editProduct" element={<EditProduct />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path='/shippingAddress' element={<ShippingAddressScreen />} />
+              <Route path='/workshopContent/:slug' element={<WorkshopContent />} />
             </Routes>
           </Suspense>
         </main>
