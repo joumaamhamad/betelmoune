@@ -20,14 +20,11 @@ const Cart = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-
   // Change Quantity of Product
-
   const isAvailable = useSelector((state) => state.productsSlice.isAvailable);
   const [changedQuantityData, setChangedQuantityData] = useState(false);
 
-
-  const qunatityHanlder = (product, operator) => {
+  const quantityHandler = (product, operator) => {
     if (operator === '-') {
       const productData = {
         userId: user._id,
@@ -37,7 +34,6 @@ const Cart = () => {
       dispatch(changeQuantity(productData));
 
       // Increment Available Quantity
-
       const incrementProductData = {
         userId: user._id,
         itemId: product.productId,
@@ -53,33 +49,16 @@ const Cart = () => {
       setChangedQuantityData(productData);
 
       // Decrement Available Quantity
-
-      const incrementProductData = {
+      const decrementProductData = {
         userId: user._id,
         productId: product.productId,
         quantity: 1,
       };
-      dispatch(decrementAvailableQuantity(incrementProductData));
+      dispatch(decrementAvailableQuantity(decrementProductData));
     }
   };
 
-
-  const deleteHanlder = (itemId, type) => {
-    const itemData = {
-      userId: user._id,
-      itemId: itemId,
-      type: type,
-    };
-
-  useEffect(() => {
-    if (changedQuantityData && isAvailable !== 1) {
-      dispatch(changeQuantity(changedQuantityData));
-    }
-  }, [dispatch, isAvailable, changedQuantityData]);
-
-  // Delete Item from Cart
-
-  const deleteHanlder = (itemId, type, quantity) => {
+  const deleteHandler = (itemId, type, quantity) => {
     const itemData =
       type === 'product'
         ? {
@@ -98,6 +77,12 @@ const Cart = () => {
     dispatch(ReturnQuantity(itemData));
   };
 
+  // Update quantity data if necessary
+  useEffect(() => {
+    if (changedQuantityData && isAvailable !== 1) {
+      dispatch(changeQuantity(changedQuantityData));
+    }
+  }, [dispatch, isAvailable, changedQuantityData]);
 
   // Calculate total price
   const totalPrice = cart.reduce((acc, item) => {
@@ -110,8 +95,7 @@ const Cart = () => {
 
   const checkOutHandler = () => {
     navigate('/shippingAddress');
-  }
-
+  };
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-lg">
@@ -155,7 +139,7 @@ const Cart = () => {
                 <>
                   <button
                     className="bg-gray-300 text-gray-700 text-xl px-4 rounded-md hover:bg-gray-400 transition"
-                    onClick={() => qunatityHanlder(item, '-')}
+                    onClick={() => quantityHandler(item, '-')}
                   >
                     -
                   </button>
@@ -164,7 +148,7 @@ const Cart = () => {
                   </span>
                   <button
                     className="bg-gray-300 text-gray-700 text-xl px-4 rounded-md hover:bg-gray-400 transition"
-                    onClick={() => qunatityHanlder(item, '+')}
+                    onClick={() => quantityHandler(item, '+')}
                   >
                     +
                   </button>
@@ -176,8 +160,8 @@ const Cart = () => {
               style={{ top: '-8%', right: '-10px' }}
               onClick={() =>
                 item.type === 'product'
-                  ? deleteHanlder(item.productId, item.type, item.quantity)
-                  : deleteHanlder(item.workshopId, item.type)
+                  ? deleteHandler(item.productId, item.type, item.quantity)
+                  : deleteHandler(item.workshopId, item.type)
               }
             >
               <IoClose />
