@@ -8,9 +8,67 @@ import uploadProducts from '../middleware/uploadProducts.js';
 // const fs = require('fs');
 // const path = require('path');
 import fs from 'fs';
-import path from 'path'
+import path from 'path';
 
 const userRouter = express.Router();
+
+userRouter.get('/', async (req, res) => {
+  const users = await User.find();
+  res.send(users);
+});
+
+userRouter.delete('/delete/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedUser = await User.findByIdAndDelete(id);
+
+    if (!deletedUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json({ message: 'User deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error });
+  }
+});
+
+userRouter.put(
+  '/:id',
+  asyncHandler(async (req, res) => {
+    try {
+      const user = await User.findById(req.params.id);
+
+      if (user) {
+        user.firstName = req.body.firstName || user.firstName;
+        user.lastName = req.body.lastName || user.lastName;
+        user.email = req.body.email || user.email;
+        user.isAdmin =
+          req.body.isAdmin !== undefined ? req.body.isAdmin : user.isAdmin;
+        if (req.body.password) {
+          user.password = bcrypt.hashSync(req.body.password);
+        }
+
+        const updatedUser = await user.save();
+
+        res.json({
+          _id: updatedUser._id,
+          firstName: updatedUser.firstName,
+          lastName: updatedUser.lastName,
+          email: updatedUser.email,
+          isAdmin: updatedUser.isAdmin,
+          products: updatedUser.products,
+          workshops: updatedUser.workshops,
+          bio: updatedUser.bio,
+          profileImage: updatedUser.profileImage,
+        });
+      } else {
+        res.status(404).send({ message: 'User not found' });
+      }
+    } catch (error) {
+      res.status(500).send({ message: 'Error updating user', error });
+    }
+  })
+);
 
 userRouter.post('/signin', async (req, res) => {
   console.log(req.body.email);
@@ -163,7 +221,7 @@ userRouter.put('/user/products/:userId', uploadProducts, async (req, res) => {
   const { userId } = req.params;
   const { productId } = req.body;
   const { name, price, category, description, quantity } = req.body;
-  const images = req.files.map(file => file.path);
+  const images = req.files.map((file) => file.path);
 
   console.log(req.body);
   console.log(req.files);
@@ -189,15 +247,15 @@ userRouter.put('/user/products/:userId', uploadProducts, async (req, res) => {
     // Handle image updates
     if (images.length) {
       // Delete old images if new ones are provided
-      product.images.forEach(oldImage => {
+      product.images.forEach((oldImage) => {
         const oldImagePath = path.join(__dirname, '..', oldImage);
         if (fs.existsSync(oldImagePath)) {
-          fs.unlinkSync(oldImagePath);  // Delete the old image
+          fs.unlinkSync(oldImagePath); // Delete the old image
         }
       });
 
-      console.log('images::',images);
-      product.images = images;  // Update with new images
+      console.log('images::', images);
+      product.images = images; // Update with new images
     }
 
     await user.save();
@@ -219,6 +277,5 @@ userRouter.get('/user/products/:userId', async (req, res) => {
     res.status(500).json({ message: 'Error fetching products', error });
   }
 });
-
 
 export default userRouter;

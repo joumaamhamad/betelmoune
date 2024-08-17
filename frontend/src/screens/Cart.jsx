@@ -58,7 +58,6 @@ const Cart = () => {
     }
   };
 
-
   useEffect(() => {
     if (changedQuantityData && isAvailable !== 1 && isAvailable !== undefined) {
       console.log(changedQuantityData);
@@ -69,10 +68,8 @@ const Cart = () => {
 
   // Delete Item from Cart
 
-  const deleteHanlder = (itemId, type, quantity) => {
-
+  // const deleteHanlder = (itemId, type, quantity) => {
   const deleteHandler = (itemId, type, quantity) => {
-
     const itemData =
       type === 'product'
         ? {
@@ -92,6 +89,7 @@ const Cart = () => {
   };
 
   // Update quantity data if necessary
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
     if (changedQuantityData && isAvailable !== 1) {
       dispatch(changeQuantity(changedQuantityData));
@@ -103,6 +101,7 @@ const Cart = () => {
     return acc + item.price * item.quantity;
   }, 0);
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
     console.log(cart);
   }, [cart]);
@@ -191,7 +190,10 @@ const Cart = () => {
             <span>Total Price:</span>
             <span>${totalPrice.toFixed(2)}</span>
           </div>
-          <button onClick={checkOutHandler} className="w-1/4 bg-red-500 text-white py-3 rounded-lg text-center hover:bg-red-600 transition">
+          <button
+            onClick={checkOutHandler}
+            className="w-1/4 bg-red-500 text-white py-3 rounded-lg text-center hover:bg-red-600 transition"
+          >
             Checkout
           </button>
         </div>
@@ -231,5 +233,5 @@ const Cart = () => {
     </div>
   );
 };
-
+// };
 export default Cart;

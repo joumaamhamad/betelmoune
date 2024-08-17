@@ -6,7 +6,7 @@ import NavBarPlus from './components/NavBarPlus';
 import Profile from './screens/Profile';
 
 // import Footer from './components/Footer'; // Uncomment if you want to use the Footer
-import { ToastContainer } from 'react-toastify';
+// import { ToastContainer } from 'react-toastify';
 import ProductsDetails from './screens/ProductDetails';
 import WorkshopDetails from './screens/WorkshopDetails';
 import AddProduct from './screens/AddProduct';
@@ -22,7 +22,6 @@ import ProductList from './screens/ProductList';
 import WorkshopList from './screens/WorkshopList';
 import AdminDashboard from './screens/AdminDashboard';
 // import Sidebar from './components/Sidebar';
-
 
 // Lazy load components
 const HomePage = lazy(() => import('./screens/HomePage'));
@@ -55,13 +54,18 @@ function App() {
               <Route path="/editProduct" element={<EditProduct />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/profile" element={<Profile />} />
-              <Route path='/shippingAddress' element={<ShippingAddressScreen />} />
-              <Route path='/workshopContent/:slug' element={<WorkshopContent />} />
+              <Route
+                path="/shippingAddress"
+                element={<ShippingAddressScreen />}
+              />
+              <Route
+                path="/workshopContent/:slug"
+                element={<WorkshopContent />}
+              />
               <Route path="/userList" element={<UserList />} />
               <Route path="/productList" element={<ProductList />} />
               <Route path="/workshopList" element={<WorkshopList />} />
               <Route path="/adminDashboard" element={<AdminDashboard />} />
-
             </Routes>
           </Suspense>
         </main>

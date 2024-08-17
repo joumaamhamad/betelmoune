@@ -1,5 +1,6 @@
 import express from 'express';
 import Workshop from '../models/workshopModel.js';
+import asyncHandler from 'express-async-handler';
 import User from '../models/userModel.js';
 import { isAuth, isAdmin, generateToken } from '../utils.js';
 
@@ -8,6 +9,21 @@ const workshopRouter = express.Router();
 workshopRouter.get('/', async (req, res) => {
   const workshops = await Workshop.find();
   res.send(workshops);
+});
+
+workshopRouter.delete('/delete/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedWorkshop = await Workshop.findByIdAndDelete(id);
+
+    if (!deletedWorkshop) {
+      return res.status(404).json({ message: 'Workshop not found' });
+    }
+
+    res.status(200).json({ message: 'Workshop deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error });
+  }
 });
 
 workshopRouter.get('/slug/:slug', async (req, res) => {
@@ -24,11 +40,44 @@ workshopRouter.get('/slug/:slug', async (req, res) => {
   }
 });
 
+workshopRouter.put(
+  '/:id',
+  asyncHandler(async (req, res) => {
+    try {
+      const workshop = await Workshop.findById(req.params.id);
+
+      if (workshop) {
+        workshop.name = req.body.name || workshop.name;
+        workshop.slug = req.body.slug || workshop.slug;
+        workshop.description = req.body.description || workshop.description;
+        workshop.date = req.body.date || workshop.date;
+        workshop.duration = req.body.duration || workshop.duration;
+        workshop.capacity = req.body.capacity || workshop.capacity;
+
+        const updatedWorkshop = await workshop.save();
+
+        res.json({
+          _id: updatedWorkshop._id,
+          name: updatedWorkshop.name,
+          slug: updatedWorkshop.slug,
+          description: updatedWorkshop.description,
+          date: updatedWorkshop.date,
+          duration: updatedWorkshop.duration,
+          capacity: updatedWorkshop.capacity,
+        });
+      } else {
+        res.status(404).send({ message: 'Workshop not found' });
+      }
+    } catch (error) {
+      res.status(500).send({ message: 'Error updating workshop', error });
+    }
+  })
+);
+
 workshopRouter.put('/:id/register', async (req, res) => {
-  
-  console.log('lllll')
+  console.log('lllll');
   try {
-    console.log('lllll')
+    console.log('lllll');
     const workshop = await Workshop.findById(req.params.id);
     if (workshop) {
       if (!workshop.registeredUsers.includes(req.body.userId)) {
