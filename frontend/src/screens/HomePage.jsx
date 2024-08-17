@@ -65,7 +65,7 @@ export default function HomePage() {
               className="pb-4 bg-white rounded-lg shadow-md overflow-hidden relative group"
             >
               <img
-                src={`/backend/${product.images[0].replace(/\\/g, '/')}`}
+                src={`/backend/${product?.images[0]?.replace(/\\/g, '/')}`}
                 alt={product?.name}
                 className="w-full h-48 object-cover cursor-pointer"
               />

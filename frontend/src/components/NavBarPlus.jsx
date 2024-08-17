@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { logOut } from '../store/authSlice.js';
 import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
@@ -13,14 +13,18 @@ import { CiShoppingCart } from 'react-icons/ci';
 import { FcAddDatabase } from 'react-icons/fc';
 import { Transition } from '@headlessui/react';
 import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
+import { scroller } from 'react-scroll';
 
 const NavBarPlus = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
   const user = useSelector((state) => state.authSlice.user);
 
   const [isOpen, setIsOpen] = useState(false);
   const [open, setOpen] = useState(false);
+  const [scrollToAbout, setScrollToAbout] = useState(false);
+  const [scrollToContact, setScrollToContact] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -39,6 +43,54 @@ const NavBarPlus = () => {
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
+  };
+
+  useEffect(() => {
+    if (scrollToAbout && location.pathname === '/') {
+      scroller.scrollTo('about', {
+        smooth: true,
+        offset: 50,
+        duration: 700,
+      });
+      setScrollToAbout(false);
+    }
+  }, [scrollToAbout, location.pathname]);
+
+  const handleAboutClick = () => {
+    if (location.pathname !== '/') {
+      setScrollToAbout(true);
+      navigate('/');
+    } else {
+      scroller.scrollTo('about', {
+        smooth: true,
+        offset: 50,
+        duration: 700,
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (scrollToContact && location.pathname === '/') {
+      scroller.scrollTo('contact', {
+        smooth: true,
+        offset: 70,
+        duration: 1200,
+      });
+      setScrollToContact(false);
+    }
+  }, [scrollToContact, location.pathname]);
+
+  const handleContactClick = () => {
+    if (location.pathname !== '/') {
+      setScrollToContact(true);
+      navigate('/');
+    } else {
+      scroller.scrollTo('contact', {
+        smooth: true,
+        offset: 70,
+        duration: 1200,
+      });
+    }
   };
 
   return (
@@ -80,12 +132,18 @@ const NavBarPlus = () => {
             <Link to="/workshops" className="text-gray-900 hover:text-gray-600">
               Workshop
             </Link>
-            <Link to="/about" className="text-gray-900 hover:text-gray-600">
+            <span
+              onClick={handleAboutClick}
+              className="text-gray-900 hover:text-gray-600 cursor-pointer"
+            >
               About us
-            </Link>
-            <Link to="/contact" className="text-gray-900 hover:text-gray-600">
+            </span>
+            <span
+              onClick={handleContactClick}
+              className="text-gray-900 hover:text-gray-600 cursor-pointer"
+            >
               Contact
-            </Link>
+            </span>
           </div>
 
           {/* Action Buttons */}

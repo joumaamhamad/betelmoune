@@ -1,30 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import {
+  getWorkshops,
+  deleteWorkshop,
+  updateWorkshop,
+} from '../store/workshopsSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const WorkshopList = () => {
-  const initialWorkshops = [
-    {
-      id: 1,
-      name: 'shoes',
-      slug: 'sample-workshop',
-      description: 'this is a workshop',
-      date: '2024-08-05T14:00:00.000+00:00',
-      duration: 2,
-      capacity: 15,
-    },
-    {
-      id: 2,
-      name: 'shoes',
-      slug: 'sample-workshop',
-      description: 'this is a workshop',
-      date: '2024-08-05T14:00:00.000+00:00',
-      duration: 2,
-      capacity: 15,
-    },
-  ];
+  const workshops = useSelector((state) => state.workshopsSlice.workshops);
+  const loading = useSelector((state) => state.workshopsSlice.loading);
+  const error = useSelector((state) => state.workshopsSlice.error);
 
-  const [workshops, setWorkshops] = useState(initialWorkshops);
+  const dispatch = useDispatch();
   const [editingWorkshop, setEditingWorkshop] = useState(null);
-  const [editFormData, setEditFormData] = useState({
+  const [formValues, setFormValues] = useState({
     name: '',
     slug: '',
     description: '',
@@ -32,19 +21,29 @@ const WorkshopList = () => {
     duration: '',
     capacity: '',
   });
-  const [newWorkshop, setNewWorkshop] = useState({
-    name: '',
-    slug: '',
-    description: '',
-    date: '',
-    duration: '',
-    capacity: '',
-  });
-  const [isCreating, setIsCreating] = useState(false);
+
+  useEffect(() => {
+    dispatch(getWorkshops());
+  }, [dispatch]);
+
+  const handleDeleteClick = (workshopId) => {
+    const confirmDelete = window.confirm(
+      'Are you sure you want to delete this workshop?'
+    );
+    if (confirmDelete) {
+      dispatch(deleteWorkshop(workshopId))
+        .then(() => {
+          dispatch(getWorkshops());
+        })
+        .catch((err) => {
+          console.error('Failed to delete workshop:', err);
+        });
+    }
+  };
 
   const handleEditClick = (workshop) => {
-    setEditingWorkshop(workshop.id);
-    setEditFormData({
+    setEditingWorkshop(workshop._id);
+    setFormValues({
       name: workshop.name,
       slug: workshop.slug,
       description: workshop.description,
@@ -54,78 +53,34 @@ const WorkshopList = () => {
     });
   };
 
-  const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    if (isCreating) {
-      setNewWorkshop({
-        ...newWorkshop,
-        [name]: type === 'checkbox' ? checked : value,
-      });
-    } else {
-      setEditFormData({
-        ...editFormData,
-        [name]: type === 'checkbox' ? checked : value,
-      });
-    }
-  };
-
   const handleSaveClick = () => {
-    setWorkshops(
-      workshops.map((workshop) =>
-        workshop.id === editingWorkshop
-          ? { ...workshop, ...editFormData }
-          : workshop
-      )
-    );
+    dispatch(updateWorkshop({ id: editingWorkshop, ...formValues }));
     setEditingWorkshop(null);
   };
 
-  const handleCreateClick = () => {
-    setIsCreating(true);
-    setNewWorkshop({
-      name: '',
-      slug: '',
-      description: '',
-      date: '',
-      duration: '',
-      capacity: '',
+  const handleInputChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormValues({
+      ...formValues,
+      [name]: type === 'checkbox' ? checked : value,
     });
   };
 
-  const handleAddNewWorkshop = () => {
-    const newId = workshops.length + 1; // Or generate a unique ID as needed
-    setWorkshops([...workshops, { id: newId, ...newWorkshop }]);
-    setIsCreating(false);
-    setNewWorkshop({
-      name: '',
-      slug: '',
-      description: '',
-      date: '',
-      duration: '',
-      capacity: '',
-    });
-  };
+  if (loading) {
+    return <div className="text-center">Loading...</div>;
+  }
 
-  const handleCancelCreate = () => {
-    setIsCreating(false);
-    setNewWorkshop({
-      name: '',
-      slug: '',
-      description: '',
-      date: '',
-      duration: '',
-      capacity: '',
-    });
-  };
-
-  const handleDeleteClick = (workshopId) => {
-    const confirmDelete = window.confirm(
-      'Are you sure you want to delete this workshop?'
+  if (error) {
+    return (
+      <div className="text-center text-red-500">
+        Failed to load users: {error}
+      </div>
     );
-    if (confirmDelete) {
-      setWorkshops(workshops.filter((workshop) => workshop.id !== workshopId));
-    }
-  };
+  }
+
+  if (workshops.length === 0) {
+    return <div className="text-center">No Workshops Found</div>;
+  }
 
   return (
     <div className="min-h-screen p-6">
@@ -135,82 +90,10 @@ const WorkshopList = () => {
 
       <main className="p-6">
         <div className="mb-4">
-          <button
-            onClick={handleCreateClick}
-            className="flex bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
-          >
+          <button className="flex bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
             Create Workshop
           </button>
         </div>
-
-        {isCreating && (
-          <div className="mb-6">
-            <h2 className="text-2xl mb-4">Add New Workshop</h2>
-            <div className="mb-4">
-              <input
-                type="text"
-                name="name"
-                placeholder="Name"
-                required
-                value={newWorkshop.name}
-                onChange={handleInputChange}
-                className="border rounded px-2 py-1 mb-2"
-              />
-              <input
-                type="text"
-                name="slug"
-                placeholder="Slug"
-                value={newWorkshop.slug}
-                onChange={handleInputChange}
-                className="border rounded px-2 py-1 mb-2"
-              />
-              <input
-                type="text"
-                name="description"
-                placeholder="Description"
-                value={newWorkshop.description}
-                onChange={handleInputChange}
-                className="border rounded px-2 py-1 mb-2"
-              />
-              <input
-                type="date"
-                name="date"
-                placeholder="Date"
-                value={newWorkshop.date}
-                onChange={handleInputChange}
-                className="border rounded px-2 py-1 mb-2"
-              />
-              <input
-                type="number"
-                name="duration"
-                placeholder="Duration"
-                value={newWorkshop.duration}
-                onChange={handleInputChange}
-                className="border rounded px-2 py-1 mb-2"
-              />
-              <input
-                type="number"
-                name="capacity"
-                placeholder="Capacity"
-                value={newWorkshop.capacity}
-                onChange={handleInputChange}
-                className="border rounded px-2 py-1 mb-2"
-              />
-            </div>
-            <button
-              onClick={handleAddNewWorkshop}
-              className="bg-green-500 text-white px-4 py-2 rounded-md mr-2 hover:bg-green-600"
-            >
-              Add Workshop
-            </button>
-            <button
-              onClick={handleCancelCreate}
-              className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600"
-            >
-              Cancel
-            </button>
-          </div>
-        )}
 
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white shadow-md rounded-lg">
@@ -228,91 +111,88 @@ const WorkshopList = () => {
             </thead>
             <tbody>
               {workshops.map((workshop) => (
-                <tr key={workshop.id} className="border-t">
-                  <td className="py-2 px-4">{workshop.id}</td>
+                <tr key={workshop._id} className="border-t">
+                  <td className="py-2 px-4">{workshop._id}</td>
                   <td className="py-2 px-4">
-                    {editingWorkshop === workshop.id ? (
+                    {editingWorkshop === workshop._id ? (
                       <input
                         type="text"
                         name="name"
-                        value={editFormData.name}
+                        value={formValues.name}
                         onChange={handleInputChange}
-                        className="border rounded px-2 py-1"
+                        className="border rounded p-1"
                       />
                     ) : (
                       workshop.name
                     )}
                   </td>
                   <td className="py-2 px-4">
-                    {editingWorkshop === workshop.id ? (
+                    {editingWorkshop === workshop._id ? (
                       <input
                         type="text"
                         name="slug"
-                        value={editFormData.price}
+                        value={formValues.slug}
                         onChange={handleInputChange}
-                        className="border rounded px-2 py-1"
+                        className="border rounded p-1"
                       />
                     ) : (
                       workshop.slug
                     )}
                   </td>
                   <td className="py-2 px-4">
-                    {editingWorkshop === workshop.id ? (
+                    {editingWorkshop === workshop._id ? (
                       <input
                         type="text"
                         name="description"
-                        value={editFormData.description}
+                        value={formValues.description}
                         onChange={handleInputChange}
-                        className="border rounded px-2 py-1"
+                        className="border rounded p-1"
                       />
                     ) : (
                       workshop.description
                     )}
                   </td>
-
                   <td className="py-2 px-4">
-                    {editingWorkshop === workshop.id ? (
+                    {editingWorkshop === workshop._id ? (
                       <input
-                        type="number"
+                        type="datetime-local"
                         name="date"
-                        value={editFormData.date}
+                        value={formValues.date}
                         onChange={handleInputChange}
-                        className="border rounded px-2 py-1"
+                        className="border rounded p-1"
                       />
                     ) : (
                       workshop.date
                     )}
                   </td>
-
                   <td className="py-2 px-4">
-                    {editingWorkshop === workshop.id ? (
+                    {editingWorkshop === workshop._id ? (
                       <input
                         type="number"
                         name="duration"
-                        value={editFormData.duration}
+                        value={formValues.duration}
                         onChange={handleInputChange}
-                        className="border rounded px-2 py-1"
+                        className="border rounded p-1"
                       />
                     ) : (
                       workshop.duration
                     )}
                   </td>
                   <td className="py-2 px-4">
-                    {editingWorkshop === workshop.id ? (
+                    {editingWorkshop === workshop._id ? (
                       <input
                         type="number"
                         name="capacity"
-                        value={editFormData.capacity}
+                        value={formValues.capacity}
                         onChange={handleInputChange}
-                        className="border rounded px-2 py-1"
+                        className="border rounded p-1"
                       />
                     ) : (
                       workshop.capacity
                     )}
                   </td>
-
                   <td className="py-2 px-4">
-                    {editingWorkshop === workshop.id ? (
+                    {editingWorkshop === workshop._id ? (
                       <button
                         onClick={handleSaveClick}
                         className="text-green-500 hover:underline"
@@ -320,19 +200,21 @@ const WorkshopList = () => {
                         Save
                       </button>
                     ) : (
-                      <button
-                        onClick={() => handleEditClick(workshop)}
-                        className="text-blue-500 hover:underline"
-                      >
-                        Edit
-                      </button>
+                      <>
+                        <button
+                          onClick={() => handleEditClick(workshop)}
+                          className="text-blue-500 hover:underline"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => handleDeleteClick(workshop._id)}
+                          className="text-red-500 hover:underline"
+                        >
+                          Delete
+                        </button>
+                      </>
                     )}
-                    <button
-                      onClick={() => handleDeleteClick(workshop.id)}
-                      className="ml-4 text-red-500 hover:underline"
-                    >
-                      Delete
-                    </button>
                   </td>
                 </tr>
               ))}

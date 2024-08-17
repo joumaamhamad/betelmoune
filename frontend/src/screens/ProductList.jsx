@@ -1,30 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import {
+  deleteProduct,
+  getProducts,
+  updateProduct,
+} from '../store/productsSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 const ProductList = () => {
-  const initialProducts = [
-    {
-      id: 1,
-      name: 'shoes',
-      price: '100',
-      category: 'cloth',
-      description: 'this is a shoes',
-      slug: 'sample-product',
-      quantity: 10,
-    },
-    {
-      id: 2,
-      name: 'shoes',
-      price: '100',
-      category: 'cloth',
-      description: 'this is a shoes',
-      slug: 'sample-product',
-      quantity: 10,
-    },
-  ];
+  const products = useSelector((state) => state.productsSlice.products);
 
-  const [products, setProducts] = useState(initialProducts);
+  const dispatch = useDispatch();
   const [editingProduct, setEditingProduct] = useState(null);
-  const [editFormData, setEditFormData] = useState({
+  const [formValues, setFormValues] = useState({
     name: '',
     price: '',
     category: '',
@@ -32,19 +20,29 @@ const ProductList = () => {
     slug: '',
     quantity: '',
   });
-  const [newProduct, setNewProduct] = useState({
-    name: '',
-    price: '',
-    category: '',
-    description: '',
-    slug: '',
-    quantity: '',
-  });
-  const [isCreating, setIsCreating] = useState(false);
+
+  useEffect(() => {
+    dispatch(getProducts());
+  }, [dispatch]);
+
+  const handleDeleteClick = (productId) => {
+    const confirmDelete = window.confirm(
+      'Are you sure you want to delete this product?'
+    );
+    if (confirmDelete) {
+      dispatch(deleteProduct(productId))
+        .then(() => {
+          dispatch(getProducts());
+        })
+        .catch((err) => {
+          console.error('Failed to delete product:', err);
+        });
+    }
+  };
 
   const handleEditClick = (product) => {
-    setEditingProduct(product.id);
-    setEditFormData({
+    setEditingProduct(product._id);
+    setFormValues({
       name: product.name,
       price: product.price,
       category: product.category,
@@ -54,77 +52,23 @@ const ProductList = () => {
     });
   };
 
-  const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    if (isCreating) {
-      setNewProduct({
-        ...newProduct,
-        [name]: type === 'checkbox' ? checked : value,
-      });
-    } else {
-      setEditFormData({
-        ...editFormData,
-        [name]: type === 'checkbox' ? checked : value,
-      });
-    }
-  };
-
   const handleSaveClick = () => {
-    setProducts(
-      products.map((product) =>
-        product.id === editingProduct
-          ? { ...product, ...editFormData }
-          : product
-      )
-    );
+    dispatch(updateProduct({ id: editingProduct, ...formValues }))
+      .then(() => {
+        dispatch(getProducts());
+      })
+      .catch((err) => {
+        console.error('Failed to update product:', err);
+      });
     setEditingProduct(null);
   };
 
-  const handleCreateClick = () => {
-    setIsCreating(true);
-    setNewProduct({
-      name: '',
-      price: '',
-      category: '',
-      description: '',
-      slug: '',
-      quantity: '',
+  const handleInputChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormValues({
+      ...formValues,
+      [name]: type === 'checkbox' ? checked : value,
     });
-  };
-
-  const handleAddNewProduct = () => {
-    const newId = products.length + 1; // Or generate a unique ID as needed
-    setProducts([...products, { id: newId, ...newProduct }]);
-    setIsCreating(false);
-    setNewProduct({
-      name: '',
-      price: '',
-      category: '',
-      description: '',
-      slug: '',
-      quantity: '',
-    });
-  };
-
-  const handleCancelCreate = () => {
-    setIsCreating(false);
-    setNewProduct({
-      name: '',
-      price: '',
-      category: '',
-      description: '',
-      slug: '',
-      quantity: '',
-    });
-  };
-
-  const handleDeleteClick = (productId) => {
-    const confirmDelete = window.confirm(
-      'Are you sure you want to delete this product?'
-    );
-    if (confirmDelete) {
-      setProducts(products.filter((product) => product.id !== productId));
-    }
   };
 
   return (
@@ -135,81 +79,12 @@ const ProductList = () => {
 
       <main className="p-6">
         <div className="mb-4">
-          <button
-            onClick={handleCreateClick}
-            className="flex bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
-          >
-            Create Product
-          </button>
+          <Link to={`../addProduct`}>
+            <button className="flex bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+              Create Product
+            </button>
+          </Link>
         </div>
-
-        {isCreating && (
-          <div className="mb-6">
-            <h2 className="text-2xl mb-4">Add New Product</h2>
-            <div className="mb-4">
-              <input
-                type="text"
-                name="name"
-                placeholder="Name"
-                value={newProduct.name}
-                onChange={handleInputChange}
-                className="border rounded px-2 py-1 mb-2"
-              />
-              <input
-                type="number"
-                name="price"
-                placeholder="Price"
-                value={newProduct.price}
-                onChange={handleInputChange}
-                className="border rounded px-2 py-1 mb-2"
-              />
-              <input
-                type="text"
-                name="category"
-                placeholder="Category"
-                value={newProduct.category}
-                onChange={handleInputChange}
-                className="border rounded px-2 py-1 mb-2"
-              />
-              <input
-                type="text"
-                name="description"
-                placeholder="Description"
-                value={newProduct.description}
-                onChange={handleInputChange}
-                className="border rounded px-2 py-1 mb-2"
-              />
-              <input
-                type="text"
-                name="slug"
-                placeholder="Slug"
-                value={newProduct.slug}
-                onChange={handleInputChange}
-                className="border rounded px-2 py-1 mb-2"
-              />
-              <input
-                type="number"
-                name="quantity"
-                placeholder="Quantity"
-                value={newProduct.quantity}
-                onChange={handleInputChange}
-                className="border rounded px-2 py-1 mb-2"
-              />
-            </div>
-            <button
-              onClick={handleAddNewProduct}
-              className="bg-green-500 text-white px-4 py-2 rounded-md mr-2 hover:bg-green-600"
-            >
-              Add Product
-            </button>
-            <button
-              onClick={handleCancelCreate}
-              className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600"
-            >
-              Cancel
-            </button>
-          </div>
-        )}
 
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white shadow-md rounded-lg">
@@ -227,92 +102,88 @@ const ProductList = () => {
             </thead>
             <tbody>
               {products.map((product) => (
-                <tr key={product.id} className="border-t">
-                  <td className="py-2 px-4">{product.id}</td>
+                <tr key={product._id} className="border-t">
+                  <td className="py-2 px-4">{product._id}</td>
                   <td className="py-2 px-4">
-                    {editingProduct === product.id ? (
+                    {editingProduct === product._id ? (
                       <input
                         type="text"
                         name="name"
-                        value={editFormData.name}
+                        value={formValues.name}
                         onChange={handleInputChange}
-                        className="border rounded px-2 py-1"
+                        className="border rounded p-1"
                       />
                     ) : (
                       product.name
                     )}
                   </td>
                   <td className="py-2 px-4">
-                    {editingProduct === product.id ? (
+                    {editingProduct === product._id ? (
                       <input
                         type="number"
                         name="price"
-                        value={editFormData.price}
+                        value={formValues.price}
                         onChange={handleInputChange}
-                        className="border rounded px-2 py-1"
+                        className="border rounded p-1"
                       />
                     ) : (
                       product.price
                     )}
                   </td>
                   <td className="py-2 px-4">
-                    {editingProduct === product.id ? (
+                    {editingProduct === product._id ? (
                       <input
                         type="text"
                         name="category"
-                        value={editFormData.category}
+                        value={formValues.category}
                         onChange={handleInputChange}
-                        className="border rounded px-2 py-1"
+                        className="border rounded p-1"
                       />
                     ) : (
                       product.category
                     )}
                   </td>
-
                   <td className="py-2 px-4">
-                    {editingProduct === product.id ? (
+                    {editingProduct === product._id ? (
                       <input
                         type="text"
                         name="description"
-                        value={editFormData.description}
+                        value={formValues.description}
                         onChange={handleInputChange}
-                        className="border rounded px-2 py-1"
+                        className="border rounded p-1"
                       />
                     ) : (
                       product.description
                     )}
                   </td>
-
                   <td className="py-2 px-4">
-                    {editingProduct === product.id ? (
+                    {editingProduct === product._id ? (
                       <input
                         type="text"
                         name="slug"
-                        value={editFormData.slug}
+                        value={formValues.slug}
                         onChange={handleInputChange}
-                        className="border rounded px-2 py-1"
+                        className="border rounded p-1"
                       />
                     ) : (
                       product.slug
                     )}
                   </td>
-
                   <td className="py-2 px-4">
-                    {editingProduct === product.id ? (
+                    {editingProduct === product._id ? (
                       <input
                         type="number"
                         name="quantity"
-                        value={editFormData.quantity}
+                        value={formValues.quantity}
                         onChange={handleInputChange}
-                        className="border rounded px-2 py-1"
+                        className="border rounded p-1"
                       />
                     ) : (
                       product.quantity
                     )}
                   </td>
-
                   <td className="py-2 px-4">
-                    {editingProduct === product.id ? (
+                    {editingProduct === product._id ? (
                       <button
                         onClick={handleSaveClick}
                         className="text-green-500 hover:underline"
@@ -320,19 +191,21 @@ const ProductList = () => {
                         Save
                       </button>
                     ) : (
-                      <button
-                        onClick={() => handleEditClick(product)}
-                        className="text-blue-500 hover:underline"
-                      >
-                        Edit
-                      </button>
+                      <>
+                        <button
+                          onClick={() => handleEditClick(product)}
+                          className="text-blue-500 hover:underline"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => handleDeleteClick(product._id)}
+                          className="text-red-500 hover:underline"
+                        >
+                          Delete
+                        </button>
+                      </>
                     )}
-                    <button
-                      onClick={() => handleDeleteClick(product.id)}
-                      className="ml-4 text-red-500 hover:underline"
-                    >
-                      Delete
-                    </button>
                   </td>
                 </tr>
               ))}
