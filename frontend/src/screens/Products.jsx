@@ -58,12 +58,20 @@ const Products = () => {
       onLoad={() => dispatch(resetAvailableState())}
     >
       <div className="max-w-screen-xl mx-auto">
-
-        <h1 className="text-left text-4xl font-bold mb-6">All Products<span className='text-xl'>{user?.products?.length>0 ? <Link to={'/editproduct'}><p>Editproducts(For Testing)</p></Link> : ''}</span></h1>
-        
+        <h1 className="text-left text-4xl font-bold mb-6">
+          All Products
+          <span className="text-xl">
+            {user?.products?.length > 0 ? (
+              <Link to={'/editproduct'}>
+                <p>Editproducts(For Testing)</p>
+              </Link>
+            ) : (
+              ''
+            )}
+          </span>
+        </h1>
 
         <div className="flex flex-wrap justify-center sm:justify-start mb-6 gap-2 sm:gap-4">
-
           {categories.map((category, index) => (
             <button
               key={index}
@@ -99,7 +107,7 @@ const Products = () => {
                 >
                   <Link to={`/products/${product.slug}`}>
                     <img
-                      src={`/backend/${product.images[0].replace(/\\/g, '/')}`}
+                      src={`/backend/${product.images[0]?.replace(/\\/g, '/')}`}
                       alt={product.name}
                       className="w-full h-48 object-cover rounded-lg"
                     />

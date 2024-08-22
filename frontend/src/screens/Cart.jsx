@@ -87,7 +87,6 @@ const Cart = () => {
 
   // Calculate total price
   const totalPrice = cart.reduce((acc, item) => {
-    console.log(item);
     return acc + item.price * item.quantity;
   }, 0);
 

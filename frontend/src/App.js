@@ -21,8 +21,8 @@ import UserList from './screens/UserList';
 import ProductList from './screens/ProductList';
 import WorkshopList from './screens/WorkshopList';
 import AdminDashboard from './screens/AdminDashboard';
+import ChatGroup from './screens/ChatGroup';
 // import Sidebar from './components/Sidebar';
-
 
 // Lazy load components
 const HomePage = lazy(() => import('./screens/HomePage'));
@@ -55,13 +55,19 @@ function App() {
               <Route path="/editProduct" element={<EditProduct />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/profile" element={<Profile />} />
-              <Route path='/shippingAddress' element={<ShippingAddressScreen />} />
-              <Route path='/workshopContent/:slug' element={<WorkshopContent />} />
+              <Route
+                path="/shippingAddress"
+                element={<ShippingAddressScreen />}
+              />
+              <Route
+                path="/workshopContent/:slug"
+                element={<WorkshopContent />}
+              />
               <Route path="/userList" element={<UserList />} />
               <Route path="/productList" element={<ProductList />} />
               <Route path="/workshopList" element={<WorkshopList />} />
               <Route path="/adminDashboard" element={<AdminDashboard />} />
-
+              <Route path="/chatgroup" element={<ChatGroup />} />
             </Routes>
           </Suspense>
         </main>
