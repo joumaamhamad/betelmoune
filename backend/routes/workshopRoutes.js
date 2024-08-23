@@ -95,4 +95,18 @@ workshopRouter.put('/:id/register', async (req, res) => {
   }
 });
 
+workshopRouter.get('/myworkshops/:userId', async (req, res) => {
+  const { userId } = req.params;
+  try {
+      const workshops = await Workshop.find({ registeredUsers: userId });
+      if (workshops.length > 0) {
+          res.json(workshops);
+      } else {
+          res.status(404).json({ message: 'No workshops found for this user' });
+      }
+  } catch (error) {
+      res.status(500).json({ message: 'Server error' });
+  }
+});
+
 export default workshopRouter;

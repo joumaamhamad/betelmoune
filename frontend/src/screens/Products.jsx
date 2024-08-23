@@ -9,8 +9,10 @@ import {
   setProductsEmpty,
   resetAvailableState,
 } from '../store/productsSlice';
+import { useTranslation } from 'react-i18next';
 
 const Products = () => {
+  const { t } = useTranslation();
   const user = useSelector((state) => state.authSlice.user);
   const products = useSelector((state) => state.productsSlice.products);
   const categoriesData = useSelector((state) => state.productsSlice.categories);
@@ -23,7 +25,7 @@ const Products = () => {
 
   // Select Category
   const handleClick = (category, index) => {
-    if (category === 'All') {
+    if (category === t('All')) {
       dispatch(setProductsEmpty());
       dispatch(getProducts());
       setIsSelected(null);
@@ -88,7 +90,7 @@ const Products = () => {
         <div className="mb-6">
           <input
             type="text"
-            placeholder="Search products"
+            placeholder={t('Search products')}
             className="w-full px-4 py-2 border border-gray-300 rounded"
             ref={searchValue}
             onChange={() => {
@@ -107,10 +109,7 @@ const Products = () => {
                 >
                   <Link to={`/products/${product.slug}`}>
                     <img
-                      src={`/backend/${product?.images[0]?.replace(
-                        /\\/g,
-                        '/'
-                      )}`}
+                      src={`/backend/${product?.images[0]?.replace(/\\/g, '/')}`}
                       alt={product.name}
                       className="w-full h-48 object-cover rounded-lg"
                     />
