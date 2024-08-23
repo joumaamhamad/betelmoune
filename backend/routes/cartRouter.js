@@ -119,17 +119,39 @@ cartRouter.put('/deleteFromCart', async (req, res) => {
 
 // Clear Cart
 cartRouter.put('/clearCart', async (req, res) => {
-  const filter = { _id: req.body.userId };
-  const update = { cart: [] };
+  try {
+    const userId = req.body.userId;
 
-  const user = await User.updateOne(filter, update);
+    // Fetch the user before updating the cart
+    let user = await User.findById(userId);
 
-  if (user) {
-    res.status(200).json([]);
-  } else {
-    res.status(404).json({ message: 'Unable to clear the cart' });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Log the cart before clearing
+    console.log('Cart before clearing:', user.cart);
+
+    // Update the user's cart to be empty
+    const update = { cart: [] };
+    await User.updateOne({ _id: userId }, update);
+
+    // Fetch the user again to see the cart after clearing
+    user = await User.findById(userId);
+
+    // Log the cart after clearing
+    console.log('Cart after clearing:', user.cart);
+
+    // Respond with the before and after cart states
+    res.status(200).json({
+      message: 'Cart is cleared!!',
+    });
+  } catch (error) {
+    console.error('Error clearing cart:', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 });
+
 
 // Return Quantity of Product When Delete From Cart
 

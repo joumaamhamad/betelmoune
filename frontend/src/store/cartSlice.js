@@ -23,6 +23,7 @@ export const addProductToCart = createAsyncThunk(
         return productsData.message;
       } else {
         dispatch(getCart(productsData));
+        localStorage.setItem('cart', JSON.stringify(productsData)); 
         return productsData;
       }
     } catch (error) {
@@ -134,10 +135,14 @@ export const clearCart = createAsyncThunk(
         }
       );
       const result = response.data;
+      console.log('resss',result)
 
       if (result.message) {
         return result.message;
       } else {
+        // Clear localStorage and update state
+        localStorage.removeItem('cart');
+        console.log('tttttt')
         return result;
       }
     } catch (error) {
@@ -146,7 +151,11 @@ export const clearCart = createAsyncThunk(
   }
 );
 
+
 // Return Quantity of Product When Minus qunatity Or Delete From Cart
+
+
+
 export const ReturnQuantity = createAsyncThunk(
   'cart/ReturnQuantity',
   async (product, thunkAPI) => {
@@ -173,14 +182,18 @@ export const ReturnQuantity = createAsyncThunk(
 const cartSlice = createSlice({
   name: 'cart',
   initialState: {
-    products: [],
+    products: JSON.parse(localStorage.getItem('cart')) || [],
     productsFilter: [],
     categories: [],
     selectedProduct: [],
   },
   reducers: {},
   extraReducers: (builder) => {
-    // Handle additional cases here
+    // builder
+    //   .addCase(getCart.fulfilled, (state, action) => {
+    //     state.products = action.payload;
+    //     localStorage.setItem('cart', JSON.stringify(action.payload));
+    //   });
   },
 });
 

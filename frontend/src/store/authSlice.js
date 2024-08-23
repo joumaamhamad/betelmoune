@@ -18,7 +18,7 @@ export const logIn = createAsyncThunk('auth/logIn', async (data, thunkAPI) => {
     if (userData.message) {
       return false;
     } else {
-      localStorage.setItem('userInfo', userData);
+      localStorage.setItem('userInfo', JSON.stringify(userData));
       return userData;
     }
   } catch (error) {
@@ -42,56 +42,90 @@ export const updateProfile = createAsyncThunk(
   }
 );
 
-export const signUp = createAsyncThunk(
-  'auth/signUp',
-  async (data, thunkAPI) => {
-    const { rejectWithValue } = thunkAPI;
-    try {
-      const response = await axios.post(
-        'http://localhost:5000/api/users/signup',
-        data,
-        {
-          headers: {
-            'Content-Type': 'application/json; charset=UTF-8',
-          },
-        }
-      );
-      const userData = response.data;
-
-      if (userData.message) {
-        return false;
-      } else {
-        localStorage.setItem('userInfo', userData);
-        return userData;
+export const signUp = createAsyncThunk('auth/signUp', async (data, thunkAPI) => {
+  const { rejectWithValue } = thunkAPI;
+  try {
+    const response = await axios.post(
+      'http://localhost:5000/api/users/signup',
+      data,
+      {
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
       }
-    } catch (error) {
-      return rejectWithValue(error.message);
+    );
+    const userData = response.data;
+
+    if (userData.message) {
+      return false;
+    } else {
+      localStorage.setItem('userInfo', JSON.stringify(userData));
+      return userData;
     }
+  } catch (error) {
+    return rejectWithValue(error.message);
   }
-);
+});
+
+
+
+//----------------------------------------------------------------------------------
+
+const initialState = {
+  user: (() => {
+    try {
+      // 3m ye5ida ka array of object not object
+      const userInfo = localStorage.getItem('userInfo');
+      console.log('Retrieved userInfo from localStorage:', userInfo);
+      return userInfo ? JSON.parse(userInfo) : null;
+    } catch (e) {
+      console.error('Failed to parse userInfo:', e);
+      return null;
+    }
+  })(),
+  token: (() => {
+    try {
+      // 3m ye5ida ka array of object not object
+      const userInfo = localStorage.getItem('userInfo');
+      console.log(userInfo);
+      const parsed = userInfo ? JSON.parse(userInfo) : null;
+      return parsed?.token || null;
+    } catch (e) {
+      console.error('Failed to parse userInfo token:', e);
+      return null;
+    }
+  })(),
+  error: null,
+  isLoading: false,
+  cart: JSON.parse(localStorage.getItem('cart')) || [],
+};
+
+// const initialState = {
+//   user: null,
+//   token: null,
+//   error: null,
+//   isLoading: null,
+//   cart: [],
+// };
+
 
 const authSlice = createSlice({
   name: 'auth',
-  initialState: {
-    user: null,
-    token: null,
-    error: null,
-    isLoading: null,
-    cart: [],
-  },
+  initialState,
   reducers: {
     // Empty User State
-
     logOut: (state) => {
       state.user = null;
       state.token = null;
       state.isLoading = false;
       state.error = null;
+      localStorage.removeItem('userInfo');
+      localStorage.removeItem('cart');
     },
-
     // Get Cart Data
     getCart: (state, action) => {
-      state.cart = action.payload;
+      state.cart = action.payload; // Assuming the response structure
+      localStorage.setItem('cart', JSON.stringify(action.payload));
     },
   },
   extraReducers: (builder) => {
@@ -105,6 +139,7 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.user = action.payload;
         state.token = action.payload.token;
+        localStorage.setItem('userInfo', JSON.stringify(action.payload));
       })
       .addCase(logIn.rejected, (state, action) => {
         state.isLoading = false;
@@ -121,6 +156,7 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.user = action.payload;
         state.token = action.payload.token;
+        localStorage.setItem('userInfo', JSON.stringify(action.payload));
       })
       .addCase(signUp.rejected, (state, action) => {
         state.isLoading = false;
@@ -137,11 +173,14 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.user = action.payload;
         state.token = action.payload.token;
+        localStorage.setItem('userInfo', JSON.stringify(action.payload));
       })
       .addCase(updateProfile.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       });
+
+      
   },
 });
 

@@ -16,8 +16,10 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { signUp, getCart } from '../store/authSlice';
+import { useTranslation } from 'react-i18next';
 
 function Copyright(props) {
+  const { t } = useTranslation();
   return (
     <Typography
       variant="body2"
@@ -38,6 +40,7 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignUp() {
+  const { t } = useTranslation();
   const user = useSelector((state) => state.authSlice.user);
 
   const firstNameRef = useRef(null);
@@ -67,7 +70,7 @@ export default function SignUp() {
 
   useEffect(() => {
     if (user) {
-      toast.success('Account is created!!');
+      toast.success(t('Account is created!!'));
       dispatch(getCart(user.cart));
       navigate('/');
       firstNameRef.current.value = '';
@@ -75,7 +78,7 @@ export default function SignUp() {
       emailRef.current.value = '';
       passwordRef.current.value = '';
     }
-  }, [navigate, dispatch, user]);
+  }, [navigate, dispatch, user, t]);
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -93,7 +96,7 @@ export default function SignUp() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign up
+            {t('Sign Up')}
           </Typography>
           <Box
             component="form"
@@ -110,7 +113,7 @@ export default function SignUp() {
                   fullWidth
                   id="firstName"
                   inputRef={firstNameRef}
-                  label="First Name"
+                  label={t('First Name')}
                   autoFocus
                 />
               </Grid>
@@ -120,7 +123,7 @@ export default function SignUp() {
                   fullWidth
                   id="lastName"
                   inputRef={lastNameRef}
-                  label="Last Name"
+                  label={t('Last Name')}
                   name="lastName"
                   autoComplete="family-name"
                 />
@@ -131,7 +134,7 @@ export default function SignUp() {
                   fullWidth
                   id="email"
                   inputRef={emailRef}
-                  label="Email Address"
+                  label={t('Email Address')}
                   name="email"
                   autoComplete="email"
                 />
@@ -142,7 +145,7 @@ export default function SignUp() {
                   fullWidth
                   inputRef={passwordRef}
                   name="password"
-                  label="Password"
+                  label={t('Password')}
                   type="password"
                   id="password"
                   autoComplete="new-password"
@@ -153,7 +156,7 @@ export default function SignUp() {
                   control={
                     <Checkbox value="allowExtraEmails" color="primary" />
                   }
-                  label="I want to receive inspiration, marketing promotions and updates via email."
+                  label={t('I want to receive inspiration, marketing promotions and updates via email.')}
                 />
               </Grid>
             </Grid>
@@ -163,12 +166,12 @@ export default function SignUp() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign Up
+              {t('Sign Up')}
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link href="/signin" variant="body2">
-                  Already have an account? Sign in
+                  {t('Already have an account? Sign in')}
                 </Link>
               </Grid>
             </Grid>

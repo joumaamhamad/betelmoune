@@ -21,6 +21,59 @@ productsRouter.get('/', async (req, res) => {
   }
 });
 
+// DELETE Product
+productsRouter.delete('/delete/:productId', async (req, res) => {
+  try {
+    const { productId } = req.params;
+
+    // Attempt to find and delete the product within the products array
+    const result = await User.updateOne(
+      { 'products._id': productId }, // Match the product by productId
+      { $pull: { products: { _id: productId } } } // Remove the matched product
+    );
+
+    if (result.nModified > 0) {
+      res.status(200).json({ message: 'Product deleted successfully' });
+    } else {
+      res.status(404).json({ message: 'Product not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Server Error', error: error.message });
+  }
+});
+
+// UPDATE Product
+productsRouter.put('/update/:productId', async (req, res) => {
+  try {
+    const { productId } = req.params;
+
+    // Attempt to find and update the product within the products array
+    const result = await User.updateOne(
+      { 'products._id': productId }, // Match the product by productId
+      {
+        $set: {
+          'products.$.name': req.body.name,
+          'products.$.price': req.body.price,
+          'products.$.category': req.body.category,
+          'products.$.description': req.body.description,
+          'products.$.slug': req.body.slug,
+          'products.$.quantity': req.body.quantity,
+        },
+      }
+    );
+
+    if (result.modifiedCount > 0) {
+      res.status(200).json({ message: 'Product updated successfully' });
+    } else {
+      res.status(404).json({ message: 'Product not found' });
+    }
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: 'Error updating product', error: error.message });
+  }
+});
+
 // Add Product
 
 productsRouter.post('/addProduct/:id', upload, async (req, res) => {
@@ -113,5 +166,7 @@ productsRouter.put('/decrementavailablequantity', async (req, res) => {
     res.status(500).json({ message: 'Failed Operation' });
   }
 });
+
+
 
 export default productsRouter;

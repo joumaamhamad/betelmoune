@@ -9,12 +9,15 @@ import {
   FaMediumM,
   FaTiktok,
 } from 'react-icons/fa';
+import { useTranslation } from 'react-i18next';
 
 export default function Footer() {
+  const { t } = useTranslation();
+
   return (
     <div className="bg-gray-800 text-white py-8">
       <div className="container mx-auto flex flex-col items-center">
-        <div className="flex justify-center space-x-6 mb-8">
+        <div className="flex justify-center space-x-6 mb-8 rtl:space-x-reverse">
           <a href="#" className="text-gray-400 hover:text-white">
             <FaFacebookF size={30} />
           </a>
@@ -38,24 +41,26 @@ export default function Footer() {
           </a>
         </div>
         <div className="text-center mb-8">
-          <h1 className="font-bold text-lg">Bel Elmouneh</h1>
-          <p className="text-gray-400">Copyright © 2024 Bel Elmouneh, Inc.</p>
+          <h1 className="font-bold text-lg">{t('Bet Elmouneh')}</h1>
+          <p className="text-gray-400">
+            {t('Copyright')} © 2024 {t('Bet Elmouneh')}, Inc.
+          </p>
         </div>
-        <div className="flex justify-center space-x-6">
+        <div className="flex justify-center space-x-6 rtl:space-x-reverse">
           <a href="#" className="text-gray-400 hover:text-white">
-            Legal Stuff
+            {t('Legal Stuff')}
           </a>
           <a href="#" className="text-gray-400 hover:text-white">
-            Privacy Policy
+            {t('Privacy Policy')}
           </a>
           <a href="#" className="text-gray-400 hover:text-white">
-            Security
+            {t('Security')}
           </a>
           <a href="#" className="text-gray-400 hover:text-white">
-            Website Accessibility
+            {t('Website Accessibility')}
           </a>
           <a href="#" className="text-gray-400 hover:text-white">
-            Manage Cookies
+            {t('Manage Cookies')}
           </a>
         </div>
       </div>

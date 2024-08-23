@@ -3,10 +3,10 @@ import axios from 'axios';
 import { getError } from '../utils';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-// import Swal from 'sweetalert2';
+import { useTranslation } from 'react-i18next';
 
 export default function Contactus() {
-  // eslint-disable-next-line no-unused-vars
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const [firstName, setFirstName] = useState('');
@@ -27,22 +27,16 @@ export default function Contactus() {
 
       console.log('datasss', data);
 
-      // toast.success('Message sent successfully!');
+      toast.success(t('Message sent successfully!'));
       setFirstName('');
       setLastName('');
       setEmail('');
       setMessage('');
 
-      // navigate('/');
+      navigate('/');
 
-      // Swal.fire({
-      //   title: 'Success!',
-      //   text: 'This is a success message!',
-      //   icon: 'success',
-      //   confirmButtonText: 'OK',
-      // });
     } catch (error) {
-      toast.error('Error sending message.');
+      toast.error(t('Error sending message.'));
       console.log(getError(error));
     }
   };
@@ -53,7 +47,7 @@ export default function Contactus() {
         <div className="w-full max-w-4xl flex flex-col md:flex-row bg-white shadow-lg rounded-lg overflow-hidden">
           <div className="w-full md:w-1/2 p-8 space-y-12">
             <h2 className="text-2xl font-semibold mb-6">
-              Get in touch with us
+              {t('Get in touch with us')}
             </h2>
             <div className="flex items-center mb-4">
               <svg
@@ -67,7 +61,7 @@ export default function Contactus() {
                 href="mailto:mhamad_jomaa@outlook.com"
                 className="text-gray-700"
               >
-                mhamad_jomaa@outlook.com
+                {t('Contact Email')}: mhamad_jomaa@outlook.com
               </a>
             </div>
             <div className="flex items-center mb-4">
@@ -79,7 +73,7 @@ export default function Contactus() {
                 <path d="M6.62 10.79a15.72 15.72 0 006.59 6.59l2.2-2.2a1 1 0 011.17-.24c1.26.5 2.6.78 3.99.78a1 1 0 011 1V19a1 1 0 01-1 1C7.91 20 4 16.09 4 11a1 1 0 011-1h2.01a1 1 0 011 .79z"></path>
               </svg>
               <a href="tel:(916) 70583380" className="text-gray-700">
-                (916) 70583380
+                {t('Contact Phone')}: (916) 70583380
               </a>
             </div>
             <div className="flex items-center">
@@ -91,7 +85,7 @@ export default function Contactus() {
                 <path d="M12 2C8.1 2 5 5.1 5 9c0 6.1 7 13 7 13s7-6.9 7-13c0-3.9-3.1-7-7-7zm0 9.5c-1.4 0-2.5-1.1-2.5-2.5S10.6 6.5 12 6.5s2.5 1.1 2.5 2.5S13.4 11.5 12 11.5z"></path>
               </svg>
               <p className="text-gray-700 mr-20 mt-4">
-                500 Office Center Drive, Suite 400, Fort Washington, PA 19034
+                {t('Contact Address')}: 500 Office Center Drive, Suite 400, Fort Washington, PA 19034
               </p>
             </div>
           </div>
@@ -103,7 +97,7 @@ export default function Contactus() {
                     htmlFor="firstName"
                     className="block text-sm font-medium text-gray-700"
                   >
-                    First Name
+                    {t('First Name')}
                   </label>
                   <input
                     value={firstName}
@@ -119,7 +113,7 @@ export default function Contactus() {
                     htmlFor="lastName"
                     className="block text-sm font-medium text-gray-700"
                   >
-                    Last Name
+                    {t('Last Name')}
                   </label>
                   <input
                     value={lastName}
@@ -136,7 +130,7 @@ export default function Contactus() {
                   htmlFor="email"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Email (privacy policy)<span className="text-red-500">*</span>
+                  {t('Email (privacy policy)')}<span className="text-red-500">*</span>
                 </label>
                 <input
                   value={email}
@@ -153,7 +147,7 @@ export default function Contactus() {
                   htmlFor="message"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Message
+                  {t('Message')}
                 </label>
                 <textarea
                   value={message}
@@ -170,7 +164,7 @@ export default function Contactus() {
                   type="submit"
                   className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                 >
-                  Send
+                  {t('Send')}
                 </button>
               </div>
             </form>

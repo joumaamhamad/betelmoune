@@ -15,8 +15,10 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logIn, getCart } from '../store/authSlice';
+import { useTranslation } from 'react-i18next';
 
 function Copyright(props) {
+  const { t } = useTranslation();
   return (
     <Typography
       variant="body2"
@@ -34,11 +36,10 @@ function Copyright(props) {
   );
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
-
 const defaultTheme = createTheme();
 
 export default function SignIn() {
+  const { t } = useTranslation();
   const user = useSelector((state) => state.authSlice.user);
 
   const emailRef = useRef(null);
@@ -85,7 +86,7 @@ export default function SignIn() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            {t('Sign In')}
           </Typography>
           <Box
             component="form"
@@ -99,7 +100,7 @@ export default function SignIn() {
               fullWidth
               id="email"
               inputRef={emailRef}
-              label="Email Address"
+              label={t('Email Address')}
               name="email"
               autoComplete="email"
               autoFocus
@@ -110,14 +111,14 @@ export default function SignIn() {
               fullWidth
               inputRef={passwordRef}
               name="password"
-              label="Password"
+              label={t('Password')}
               type="password"
               id="password"
               autoComplete="current-password"
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
+              label={t('Remember me')}
             />
             <Button
               type="submit"
@@ -125,17 +126,17 @@ export default function SignIn() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              {t('Sign In')}
             </Button>
             <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">
-                  Forgot password?
+                  {t('Forgot password?')}
                 </Link>
               </Grid>
               <Grid item>
                 <Link href="/signup" variant="body2">
-                  {"Don't have an account? Sign Up"}
+                  {t("Don't have an account? Sign Up")}
                 </Link>
               </Grid>
             </Grid>

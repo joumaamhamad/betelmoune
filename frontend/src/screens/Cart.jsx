@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { IoClose } from 'react-icons/io5';
+import { useTranslation } from 'react-i18next';
 import {
   changeQuantity,
   deleteFromCart,
@@ -13,6 +14,7 @@ import {
 } from '../store/productsSlice';
 
 const Cart = () => {
+  const { t } = useTranslation();
   const user = useSelector((state) => state.authSlice.user);
   const cart = useSelector((state) => state.authSlice.cart);
   const products = useSelector((state) => state.productsSlice.products);
@@ -66,6 +68,7 @@ const Cart = () => {
 
   // Delete Item from Cart
 
+
   const deleteHandler = (itemId, type, quantity) => {
     const itemData =
       type === 'product'
@@ -85,10 +88,30 @@ const Cart = () => {
     dispatch(ReturnQuantity(itemData));
   };
 
+
   // Calculate total price
   const totalPrice = cart.reduce((acc, item) => {
     return acc + item.price * item.quantity;
   }, 0);
+
+
+  // Update quantity data if necessary
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  useEffect(() => {
+    if (changedQuantityData && isAvailable !== 1) {
+      dispatch(changeQuantity(changedQuantityData));
+    }
+  }, [dispatch, isAvailable, changedQuantityData]);
+
+  const totalPrice = cart?.reduce((acc, item) => {
+    return acc + item.price * item.quantity;
+  }, 0);
+
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  useEffect(() => {
+    console.log('cart::', cart);
+  }, [cart]);
+
 
   const checkOutHandler = () => {
     navigate('/shippingAddress');
@@ -96,9 +119,9 @@ const Cart = () => {
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-lg">
-      <h2 className="text-2xl font-bold text-gray-800 mb-6">Your Cart</h2>
+      <h2 className="text-2xl font-bold text-gray-800 mb-6">{t('Your Cart')}</h2>
       <div className="space-y-6">
-        {cart.map((item, index) => (
+        {cart?.map((item, index) => (
           <div
             key={index}
             className={`flex items-center justify-between relative ${
@@ -124,7 +147,7 @@ const Cart = () => {
                   {item.name}
                 </h3>
                 <p className="text-sm text-left text-gray-500 italic">
-                  {item.type === 'product' ? 'Product' : 'Workshop'}
+                  {item.type === 'product' ? t('Product') : t('Workshop')}
                 </p>
                 <p className="text-base text-left font-semibold text-gray-700">
                   ${item.price}
@@ -168,27 +191,27 @@ const Cart = () => {
       </div>
 
       {/* Total Price Div */}
-      {cart.length !== 0 ? (
+      {cart?.length !== 0 ? (
         <div className="mt-6">
           <div className="flex items-center justify-center text-xl font-semibold text-gray-800 mb-4">
-            <span>Total Price:</span>
+            <span>{t('Total Price:')}</span>
             <span>${totalPrice.toFixed(2)}</span>
           </div>
-          <button
-            onClick={checkOutHandler}
-            className="w-1/4 bg-red-500 text-white py-3 rounded-lg text-center hover:bg-red-600 transition"
-          >
-            Checkout
+
+
+          <button onClick={checkOutHandler} className="w-1/4 bg-red-500 text-white py-3 rounded-lg text-center hover:bg-red-600 transition">
+            {t('Checkout')}
+
           </button>
         </div>
       ) : (
-        "You Don't have any Items in Cart"
+        <p>{t("You Don't have any Items in Cart")}</p>
       )}
 
       {user !== null ? (
         <div className="mt-12">
           <h3 className="text-xl font-bold text-gray-800 mb-4">
-            You May Also Like
+            {t('You May Also Like')}
           </h3>
           <div className="flex space-x-4">
             {products.slice(0, 3).map((product, index) => (
@@ -217,5 +240,5 @@ const Cart = () => {
     </div>
   );
 };
-
+// };
 export default Cart;
