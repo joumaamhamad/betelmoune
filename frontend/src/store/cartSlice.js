@@ -152,11 +152,14 @@ export const clearCart = createAsyncThunk(
 );
 
 
-// Return Quantity of Product When Delete From Cart
+// Return Quantity of Product When Minus qunatity Or Delete From Cart
+
+
+
 export const ReturnQuantity = createAsyncThunk(
   'cart/ReturnQuantity',
   async (product, thunkAPI) => {
-    const { rejectWithValue, dispatch } = thunkAPI;
+    const { rejectWithValue } = thunkAPI;
     try {
       const response = await axios.put(
         'http://localhost:5000/api/cart/returnquantity',
@@ -169,7 +172,6 @@ export const ReturnQuantity = createAsyncThunk(
       );
 
       const updatedCart = await response.data;
-      dispatch(getCart(updatedCart));
       return updatedCart;
     } catch (error) {
       return rejectWithValue(error.message);

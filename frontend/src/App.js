@@ -23,6 +23,10 @@ import UserList from './screens/UserList';
 import ProductList from './screens/ProductList';
 import WorkshopList from './screens/WorkshopList';
 import AdminDashboard from './screens/AdminDashboard';
+
+import ChatGroup from './screens/ChatGroup';
+// import Sidebar from './components/Sidebar';
+
 import MyWorkshops from './screens/MyWorkshops';
 import { FaLanguage } from 'react-icons/fa';
 import { FaRobot } from 'react-icons/fa'; // Import chatbot icon
@@ -155,6 +159,7 @@ function App() {
                 <Route path="/workshopList" element={<WorkshopList />} />
                 <Route path="/adminDashboard" element={<AdminDashboard />} />
                 <Route path='/myWorkshops' element={<MyWorkshops />} />
+                <Route path="/chatgroup" element={<ChatGroup />} />
               </Routes>
             </Suspense>
           </main>
@@ -163,6 +168,7 @@ function App() {
         </div>
       </BrowserRouter>
     </I18nextProvider>
+
   );
 }
 

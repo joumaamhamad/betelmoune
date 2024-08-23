@@ -62,15 +62,13 @@ const Cart = () => {
 
   useEffect(() => {
     if (changedQuantityData && isAvailable !== 1 && isAvailable !== undefined) {
-      console.log(changedQuantityData);
-      console.log(isAvailable);
       dispatch(changeQuantity(changedQuantityData));
     }
   }, [dispatch, isAvailable, changedQuantityData]);
 
   // Delete Item from Cart
 
-  // const deleteHanlder = (itemId, type, quantity) => {
+
   const deleteHandler = (itemId, type, quantity) => {
     const itemData =
       type === 'product'
@@ -90,6 +88,13 @@ const Cart = () => {
     dispatch(ReturnQuantity(itemData));
   };
 
+
+  // Calculate total price
+  const totalPrice = cart.reduce((acc, item) => {
+    return acc + item.price * item.quantity;
+  }, 0);
+
+
   // Update quantity data if necessary
   // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
@@ -106,6 +111,7 @@ const Cart = () => {
   useEffect(() => {
     console.log('cart::', cart);
   }, [cart]);
+
 
   const checkOutHandler = () => {
     navigate('/shippingAddress');
@@ -191,6 +197,7 @@ const Cart = () => {
             <span>{t('Total Price:')}</span>
             <span>${totalPrice.toFixed(2)}</span>
           </div>
+
 
           <button onClick={checkOutHandler} className="w-1/4 bg-red-500 text-white py-3 rounded-lg text-center hover:bg-red-600 transition">
             {t('Checkout')}

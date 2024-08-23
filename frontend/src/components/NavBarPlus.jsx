@@ -13,10 +13,15 @@ import { CiShoppingCart } from 'react-icons/ci';
 import { FcAddDatabase } from 'react-icons/fc';
 import { Transition } from '@headlessui/react';
 import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
+
+import { IoChatbox } from 'react-icons/io5';
+import { resetChatsFeature } from '../store/chatsSlice.js';
+
 import { useTranslation } from 'react-i18next';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { scroller } from 'react-scroll';
+
 
 
 const NavBarPlus = () => {
@@ -39,6 +44,7 @@ const NavBarPlus = () => {
 
   const handleClickOpen = () => {
     setOpen(true);
+    dispatch(resetChatsFeature());
   };
 
   const handleClose = () => {
@@ -210,6 +216,15 @@ const NavBarPlus = () => {
                 <Link to="/addProduct">
                   <Button size="medium" title={t('add product')}>
                     <FcAddDatabase className="text-3xl" />
+                  </Button>
+                </Link>
+                <Link to="/chatgroup">
+                  <Button
+                    size="medium"
+                    title="chat group"
+                    sx={{ color: 'rgb(153,192,255)' }}
+                  >
+                    <IoChatbox className="text-[28px] mt-1" />
                   </Button>
                 </Link>
                 <Link to="/profile">

@@ -117,7 +117,6 @@ cartRouter.put('/deleteFromCart', async (req, res) => {
   }
 });
 
-
 // Clear Cart
 cartRouter.put('/clearCart', async (req, res) => {
   try {
@@ -154,7 +153,6 @@ cartRouter.put('/clearCart', async (req, res) => {
 });
 
 
-
 // Return Quantity of Product When Delete From Cart
 
 cartRouter.put('/returnquantity', async (req, res) => {
@@ -189,6 +187,5 @@ cartRouter.put('/returnquantity', async (req, res) => {
     res.status(500).json({ message: 'Failed Operation' });
   }
 });
-
 
 export default cartRouter;
