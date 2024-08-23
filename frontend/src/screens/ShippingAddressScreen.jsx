@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { useSelector , useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { clearCart } from '../store/cartSlice';
+import { getCart } from '../store/authSlice';
+import PopupMessage from '../components/PopupMessage'; // Import PopupMessage component
 
 export default function ShippingAddressScreen() {
   const navigate = useNavigate();
@@ -11,14 +13,13 @@ export default function ShippingAddressScreen() {
   const user = useSelector((state) => state.authSlice.user);
   const cart = useSelector((state) => state.authSlice.cart);
 
-  console.log('cart:::',cart)
-
   const [fullName, setFullName] = useState('');
   const [address, setAddress] = useState('');
   const [city, setCity] = useState('');
   const [postalCode, setPostalCode] = useState('');
   const [country, setCountry] = useState('');
-  const [paymentMethod, setPaymentMethod] = useState('Stripe'); 
+  const [paymentMethod, setPaymentMethod] = useState('Stripe');
+  const [showPopup, setShowPopup] = useState(false); // State to control the popup visibility
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -39,28 +40,32 @@ export default function ShippingAddressScreen() {
         country,
       },
       paymentMethod,
-      shippingPrice: 20, 
+      shippingPrice: 20,
       totalPrice: cart.reduce((acc, item) => acc + item.price * item.quantity, 0),
       user: user._id,
     };
 
     try {
       const { data } = await axios.post('/api/orders', orderData);
-      alert('The order is saved!');
-
-      
       dispatch(clearCart(user._id));
-
-      navigate('/cart');
+      dispatch(getCart([]));
+      setShowPopup(true); // Show the popup on successful order submission
     } catch (err) {
       console.error('Order submission failed', err);
     }
   };
+
+  const closePopup = () => {
+    setShowPopup(false);
+    navigate('/cart'); // Navigate after closing the popup
+  };
+
   return (
     <div>
       <div className="w-1/2 mx-auto p-4 mt-6 mb-12">
         <h1 className="text-2xl font-bold my-3">Shipping Address</h1>
         <form onSubmit={submitHandler} className="space-y-4">
+          {/* Form fields */}
           <div className="mb-3">
             <label htmlFor="fullName" className="block text-sm font-medium text-gray-700">
               Full Name
@@ -156,6 +161,17 @@ export default function ShippingAddressScreen() {
           </div>
         </form>
       </div>
+
+      {showPopup && (
+        <PopupMessage
+          message={{
+            title: 'Order Confirmed',
+            body: 'Your order has been placed successfully!',
+            buttonText: 'OK',
+          }}
+          onClose={closePopup}
+        />
+      )}
     </div>
   );
 }

@@ -8,8 +8,10 @@ import {
   filterProducts,
   setProductsEmpty,
 } from '../store/productsSlice';
+import { useTranslation } from 'react-i18next';
 
 const Products = () => {
+  const { t } = useTranslation();
   const user = useSelector((state) => state.authSlice.user);
   const products = useSelector((state) => state.productsSlice.products);
   const categoriesData = useSelector((state) => state.productsSlice.categories);
@@ -22,7 +24,7 @@ const Products = () => {
 
   // Select Category
   const handleClick = (category, index) => {
-    if (category === 'All') {
+    if (category === t('All')) {
       dispatch(setProductsEmpty());
       dispatch(getProducts());
       setIsSelected(null);
@@ -55,12 +57,18 @@ const Products = () => {
     <div className="p-6 font-sans mb-24">
       <div className="max-w-screen-xl mx-auto">
 
-        <h1 className="text-left text-4xl font-bold mb-6">All Products<span className='text-xl'>{user?.products?.length>0 ? <Link to={'/editproduct'}><p>Editproducts(For Testing)</p></Link> : ''}</span></h1>
-        
+        <h1 className="text-left text-4xl font-bold mb-6">
+          {t('All Products')}
+          <span className='text-xl'>
+            {user?.products?.length > 0 ? (
+              <Link to={'/editproduct'}>
+                <p>{t('Edit products (For Testing)')}</p>
+              </Link>
+            ) : ''}
+          </span>
+        </h1>
 
         <div className="flex flex-wrap justify-center sm:justify-start mb-6 gap-2 sm:gap-4">
-
-
           {categories.map((category, index) => (
             <button
               key={index}
@@ -77,7 +85,7 @@ const Products = () => {
         <div className="mb-6">
           <input
             type="text"
-            placeholder="Search products"
+            placeholder={t('Search products')}
             className="w-full px-4 py-2 border border-gray-300 rounded"
             ref={searchValue}
             onChange={() => dispatch(filterProducts(searchValue.current.value))}
@@ -93,7 +101,7 @@ const Products = () => {
                 >
                   <Link to={`/products/${product.slug}`}>
                     <img
-                      src={`/backend/${product.images[0].replace(/\\/g, '/')}`}
+                      src={`/backend/${product?.images[0]?.replace(/\\/g, '/')}`}
                       alt={product.name}
                       className="w-full h-48 object-cover rounded-lg"
                     />

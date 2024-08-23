@@ -8,18 +8,17 @@ import {
   resetAvailableState,
 } from '../store/productsSlice';
 import { Transition } from '@headlessui/react';
+import { useTranslation } from 'react-i18next';
 
 const ProductsDetails = () => {
+  const { t } = useTranslation();
   const user = useSelector((state) => state.authSlice.user);
-
   const selectedProduct = useSelector(
     (state) => state.productsSlice.selectedProduct
   );
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // Fetch Product When reload the page
   const { slug } = useParams();
 
   useEffect(() => {
@@ -27,8 +26,6 @@ const ProductsDetails = () => {
       dispatch(fetchProductBySlug({ slug }));
     }
   }, [dispatch, slug]);
-
-  // Quantity of Product
 
   const [quantity, setQuantity] = useState(1);
   const [productExist, setProductExist] = useState({ quantity: 0 });
@@ -45,14 +42,10 @@ const ProductsDetails = () => {
     }
   };
 
-  // Add to Cart
-
   const [isAddedToCart, setIsAddedToCart] = useState(false);
   const cart = useSelector((state) => state.authSlice.cart);
   const [isProductExist, setProductIsExist] = useState(false);
   const isAvailable = useSelector((state) => state.productsSlice.isAvailable);
-
-  // Check if Exist in Cart
 
   useEffect(() => {
     if (selectedProduct) {
@@ -68,8 +61,6 @@ const ProductsDetails = () => {
       }
     }
   }, [cart, isProductExist, selectedProduct]);
-
-  // Click on Add to Cart
 
   const handleAddToCart = () => {
     if (!isProductExist) {
@@ -87,16 +78,12 @@ const ProductsDetails = () => {
       dispatch(decrementAvailableQuantity(productData));
       setProductExist(productData);
     } else {
-      // Increament Quantity if Item Exist :
-
-      // data for update quantity by available quantity of product
       const productDataForAvailable = {
         userId: user._id,
         productId: selectedProduct.productId,
         quantity: quantity,
       };
 
-      // data for update quantity in frontend cart
       const productDataForChangeQuantity = {
         userId: user._id,
         productId: selectedProduct.productId,
@@ -106,8 +93,6 @@ const ProductsDetails = () => {
       setChangeQuantityData(productDataForChangeQuantity);
     }
   };
-
-  // Check Availability of Product
 
   const [popUp, setPopUp] = useState(false);
 
@@ -130,8 +115,6 @@ const ProductsDetails = () => {
       setPopUp(true);
     }
   }, [dispatch, isAvailable, changeQuantityData]);
-
-  // Save in LocalStorage for 20 minutes
 
   const saveToLocalStorage = (key, value, expirationInMinutes) => {
     const now = new Date();
@@ -162,7 +145,7 @@ const ProductsDetails = () => {
   }, []);
 
   if (!selectedProduct) {
-    return <div>Loading...</div>;
+    return <div>{t('Loading...')}</div>;
   }
 
   return (
@@ -173,7 +156,7 @@ const ProductsDetails = () => {
       <div>
         <h3 className="text-3xl font-bold mb-4">{selectedProduct?.name}</h3>
       </div>
-      <div className="text-gray-500 mb-4">capacity:</div>
+      <div className="text-gray-500 mb-4">{t('Capacity')}:</div>
       <div className="text-2xl font-bold mb-6">{selectedProduct?.price}$</div>
       <div className="grid grid-cols-5 gap-4 mb-6">
         {selectedProduct.images.map((img, index) => (
@@ -181,12 +164,12 @@ const ProductsDetails = () => {
             key={index}
             className="w-full h-52 object-cover rounded-md"
             src={`/backend/${img.replace(/\\/g, '/')}`}
-            alt="Product"
+            alt={t('Product Image')}
           ></img>
         ))}
       </div>
       <div>
-        <h3 className="text-2xl font-bold mb-4">Product Details</h3>
+        <h3 className="text-2xl font-bold mb-4">{t('Product Details')}</h3>
       </div>
       <div className="mb-8">
         <p className="text-gray-500">{selectedProduct?.description}</p>
@@ -213,17 +196,17 @@ const ProductsDetails = () => {
         </div>
         {isAddedToCart ? (
           <button
-            className={`bg-green-500 text-white font-semibold py-2 px-4 rounded hover:bg-green-600`}
+            className="bg-green-500 text-white font-semibold py-2 px-4 rounded hover:bg-green-600"
             onClick={() => navigate('/cart')}
           >
-            View in cart
+            {t('View in cart')}
           </button>
         ) : (
           <button
-            className={`bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600`}
+            className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600"
             onClick={() => handleAddToCart()}
           >
-            Add to cart
+            {t('Add to cart')}
           </button>
         )}
       </div>
@@ -239,10 +222,10 @@ const ProductsDetails = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <div className="bg-white p-6 rounded-lg shadow-lg w-1/3 text-center">
             <h2 className="text-2xl font-semibold text-red-600">
-              Item Not Available
+              {t('Item Not Available')}
             </h2>
             <p className="mt-4 text-gray-700">
-              We're sorry, but this item Quantity is currently not available.
+              {t("We're sorry, but this item Quantity is currently not available.")}
             </p>
             <button
               onClick={() => {
@@ -252,13 +235,13 @@ const ProductsDetails = () => {
               }}
               className="m-3 px-4 py-2 bg-red-600 hover:bg-red-400 text-white rounded"
             >
-              Close
+              {t('Close')}
             </button>
             <button
               onClick={() => navigate('/cart')}
               className="m-3 px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded"
             >
-              View Cart
+              {t('View Cart')}
             </button>
           </div>
         </div>

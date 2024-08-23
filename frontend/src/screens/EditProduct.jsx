@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 
 const EditProduct = () => {
+  const { t } = useTranslation();
   const [products, setProducts] = useState([]);
   const user = useSelector((state) => state.authSlice.user);
 
@@ -12,12 +14,12 @@ const EditProduct = () => {
         const response = await axios.get(`/api/users/user/products/${user._id}`);
         setProducts(response.data);
       } catch (error) {
-        console.error('Error fetching products:', error);
+        console.error(t('Error fetching products:'), error);
       }
     };
 
     fetchProducts();
-  }, [user._id]);
+  }, [user._id, t]);
 
   const handleEditProduct = async (formData, productId) => {
     try {
@@ -30,7 +32,7 @@ const EditProduct = () => {
       const response = await axios.get(`/api/users/user/products/${user._id}`);
       setProducts(response.data);
     } catch (error) {
-      console.error('Error updating product:', error);
+      console.error(t('Error updating product:'), error);
     }
   };
 
@@ -54,7 +56,7 @@ const EditProduct = () => {
   return (
     <div className="flex items-start justify-start min-h-screen bg-white-100 p-4 pl-32 mb-24">
       <div className="bg-white p-8 rounded-lg w-3/4">
-        <h2 className="text-2xl font-bold mb-6 text-left">Edit product</h2>
+        <h2 className="text-2xl font-bold mb-6 text-left">{t('Edit product')}</h2>
         {products.map((product) => (
           <form
             className='mb-16'
@@ -80,38 +82,38 @@ const EditProduct = () => {
             }}
             encType="multipart/form-data"
           >
-            <h3 className="text-xl font-semibold mb-4 text-left">Product details</h3>
+            <h3 className="text-xl font-semibold mb-4 text-left">{t('Product details')}</h3>
             <div className="mb-4 flex space-x-4">
               <div className="flex-1">
-                <label htmlFor="productName" className="block text-gray-700 font-bold mb-4 text-left">Product name</label>
+                <label htmlFor="productName" className="block text-gray-700 font-bold mb-4 text-left">{t('Product name')}</label>
                 <input
                   type="text"
                   id="productName"
                   defaultValue={product.name}
                   className="w-full px-3 py-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-500"
                 />
-                <label htmlFor="price" className="block text-gray-700 font-bold mb-4 text-left mt-4">Price</label>
+                <label htmlFor="price" className="block text-gray-700 font-bold mb-4 text-left mt-4">{t('Price')}</label>
                 <input
                   type="number"
                   id="price"
                   defaultValue={product.price}
                   className="w-full px-3 py-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-500"
                 />
-                <label htmlFor="category" className="block text-gray-700 font-bold mb-4 text-left mt-4">Category</label>
+                <label htmlFor="category" className="block text-gray-700 font-bold mb-4 text-left mt-4">{t('Category')}</label>
                 <input
                   type="text"
                   id="category"
                   defaultValue={product.category}
                   className="w-96 px-3 py-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-500"
                 />
-                <label htmlFor="description" className="block text-gray-700 font-bold mb-4 text-left mt-4">Description</label>
+                <label htmlFor="description" className="block text-gray-700 font-bold mb-4 text-left mt-4">{t('Description')}</label>
                 <textarea
                   id="description"
                   defaultValue={product.description}
                   className="w-full px-3 py-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-500"
                   rows="4"
                 ></textarea>
-                <label htmlFor="quantity" className="block text-gray-700 font-bold mb-4 text-left mt-4">Quantity</label>
+                <label htmlFor="quantity" className="block text-gray-700 font-bold mb-4 text-left mt-4">{t('Quantity')}</label>
                 <input
                   type="number"
                   id="quantity"
@@ -120,7 +122,7 @@ const EditProduct = () => {
                 />
               </div>
               <div className="flex-2">
-                <h3 className="text-xl font-semibold mb-4 text-left">Product images</h3>
+                <h3 className="text-xl font-semibold mb-4 text-left">{t('Product images')}</h3>
                 <div className="grid grid-cols-2 gap-4">
                   {product.images.map((image, index) => (
                     <div key={index} className="group relative flex flex-col items-center">
@@ -134,7 +136,7 @@ const EditProduct = () => {
                           htmlFor={`image-upload-${index}`}
                           className="bg-blue-500 text-white font-bold py-2 px-4 rounded cursor-pointer"
                         >
-                          Edit
+                          {t('Edit')}
                         </label>
                         <input
                           type="file"
@@ -153,7 +155,7 @@ const EditProduct = () => {
               type="submit"
               className="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 focus:outline-none focus:ring focus:border-blue-700"
             >
-              Save
+              {t('Save')}
             </button>
           </form>
         ))}

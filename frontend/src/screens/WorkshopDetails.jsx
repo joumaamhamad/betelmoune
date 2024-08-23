@@ -1,38 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getError } from '../utils';
-import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+import axios from 'axios';
+import { getError } from '../utils';
 import { addWorkshopToCart } from '../store/cartSlice';
-
+import { selectWorkshop } from '../store/workshopsSlice';
 import ConfirmationPopup from '../components/ConfirmationPopup';
 
-import { selectWorkshop } from '../store/workshopsSlice';
-
-
 export default function WorkshopDetails() {
-  
+  const { t } = useTranslation();
   const params = useParams();
   const [workshop, setWorkshop] = useState();
-
-
-  console.log(workshop)
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // console.log('iddddd::' , id);
-
-
   useEffect(() => {
     window.scrollTo(0, 0);
-  });
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const { data } = await axios.get(`/api/workshops/slug/${params.slug}`);
-        // console.log('data::', data);
         dispatch(selectWorkshop(data));
         setWorkshop(data);
       } catch (error) {
@@ -41,19 +32,15 @@ export default function WorkshopDetails() {
     };
 
     fetchData();
-  }, [params.slug]);
+  }, [params.slug, dispatch]);
 
   const user = useSelector((state) => state.authSlice.user);
   const selectedWorkshop = useSelector(
     (state) => state.workshopsSlice.selectedWorkshop
   );
 
-  // Add to Cart
-
   const [isAddedToCart, setIsAddedToCart] = useState(false);
   const cart = useSelector((state) => state.authSlice.cart);
-
-  // Check if Exist in Cart
 
   const handleAddToCart = () => {
     const isWorkshopInCart = cart.some(
@@ -68,7 +55,7 @@ export default function WorkshopDetails() {
         userId: user._id,
         workshopId: selectedWorkshop._id,
         name: selectedWorkshop.name,
-        price: selectedWorkshop.capacity,
+        price: selectedWorkshop.price,
         images: selectedWorkshop.images,
         description: selectedWorkshop.description,
         duration: selectedWorkshop.duration,
@@ -79,8 +66,6 @@ export default function WorkshopDetails() {
       saveToLocalStorage('cart', cart, 20);
     }
   };
-
-  // Save in LocalStorage for 20 minutes
 
   const saveToLocalStorage = (key, value, expirationInMinutes) => {
     const now = new Date();
@@ -106,22 +91,18 @@ export default function WorkshopDetails() {
   };
 
   useEffect(() => {
-    loadFromLocalStorage();
+    loadFromLocalStorage('cart');
   }, []);
 
-  // State for Popup
   const [showPopup, setShowPopup] = useState(false);
 
-  // Handle Register Button Click
   const handleRegisterClick = () => {
     setShowPopup(true);
   };
 
-  // Handle Confirm Action
   const handleConfirm = async () => {
     setShowPopup(false);
     try {
-      console.log('Sending userId:', user._id);
       await axios.put(`/api/workshops/${workshop._id}/register`, {
         userId: user._id,
       });
@@ -131,7 +112,6 @@ export default function WorkshopDetails() {
     }
   };
 
-  // Handle Cancel Action
   const handleCancel = () => {
     setShowPopup(false);
   };
@@ -142,34 +122,21 @@ export default function WorkshopDetails() {
         <h3 className="text-3xl font-bold mb-4">{workshop?.name}</h3>
       </div>
       <div className="text-gray-500 mb-4">
-        duration: <span className="font-semibold">{workshop?.duration}hr </span>{' '}
-        capacity: <span className="font-semibold">{workshop?.capacity}</span>
+        {t('Duration')}: <span className="font-semibold">{workshop?.duration}hr</span> {t('Capacity')}: <span className="font-semibold">{workshop?.capacity}</span>
       </div>
-      <div className="text-2xl font-bold mb-6">{workshop?.price}$</div>
+      <div className="text-2xl font-bold mb-6">{workshop?.price}${t('Price')}</div>
       <div className="grid grid-cols-5 gap-4 mb-6">
-        <img
-          className="w-full h-52 object-cover rounded-md"
-          src={workshop?.images[0]}
-          alt="Product img 1"
-        ></img>
-        <img
-          className="w-full h-52 object-cover rounded-md"
-          src={workshop?.images[1]}
-          alt="Product img 2"
-        ></img>
-        <img
-          className="w-full h-52 object-cover rounded-md"
-          src={workshop?.images[2]}
-          alt="Product img 3"
-        ></img>
-        <img
-          className="w-full h-52 object-cover rounded-md"
-          src={workshop?.images[3]}
-          alt="Product img 4"
-        ></img>
+        {workshop?.images.map((image, index) => (
+          <img
+            key={index}
+            className="w-full h-52 object-cover rounded-md"
+            src={image}
+            alt={`Workshop img ${index + 1}`}
+          />
+        ))}
       </div>
       <div>
-        <h3 className="text-2xl font-bold mb-4">Workshop Details</h3>
+        <h3 className="text-2xl font-bold mb-4">{t('Workshop Details')}</h3>
       </div>
       <div className="mb-8">
         <p className="text-gray-500">{workshop?.description}</p>
@@ -177,30 +144,35 @@ export default function WorkshopDetails() {
       <div className="flex justify-end space-x-4 mr-72">
         {isAddedToCart ? (
           <button
-            className={`bg-green-500 text-white font-semibold py-2 px-4 rounded hover:bg-green-600`}
+            className="bg-green-500 text-white font-semibold py-2 px-4 rounded hover:bg-green-600"
             onClick={() => navigate('/cart')}
           >
-            View in cart
+            {t('View in Cart')}
           </button>
         ) : (
           <button
-            className={`bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600`}
-            onClick={() => handleAddToCart()}
+            className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600"
+            onClick={handleAddToCart}
           >
-            Add to cart
+            {t('Add to Cart')}
           </button>
         )}
         <button
           className="bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded hover:bg-gray-300"
           onClick={handleRegisterClick}
         >
-          Register
+          {t('Register')}
         </button>
       </div>
 
-      {/* Render Confirmation Popup */}
       {showPopup && (
-        <ConfirmationPopup onConfirm={handleConfirm} onCancel={handleCancel} />
+        <ConfirmationPopup
+          message={t('Are you sure you want to register for this workshop?')}
+          onConfirm={handleConfirm}
+          onCancel={handleCancel}
+          confirmLabel={t('Yes')}
+          cancelLabel={t('No')}
+        />
       )}
     </div>
   );

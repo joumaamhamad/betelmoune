@@ -1,5 +1,6 @@
 import express from 'express';
 import User from '../models/userModel.js';
+import Workshop from '../models/workshopModel.js';
 import bcrypt from 'bcryptjs';
 import { isAuth, isAdmin, generateToken, sendEmail } from '../utils.js';
 import asyncHandler from 'express-async-handler';
@@ -11,6 +12,7 @@ import fs from 'fs';
 import path from 'path'
 
 const userRouter = express.Router();
+
 
 userRouter.post('/signin', async (req, res) => {
   console.log(req.body.email);
@@ -179,14 +181,14 @@ userRouter.put('/user/products/:userId', uploadProducts, async (req, res) => {
       return res.status(404).json({ message: 'Product not found' });
     }
 
-    // Update product details
+    
     product.name = name;
     product.price = price;
     product.category = category;
     product.description = description;
     product.quantity = quantity;
 
-    // Handle image updates
+    
     if (images.length) {
       // Delete old images if new ones are provided
       product.images.forEach(oldImage => {
@@ -197,7 +199,7 @@ userRouter.put('/user/products/:userId', uploadProducts, async (req, res) => {
       });
 
       console.log('images::',images);
-      product.images = images;  // Update with new images
+      product.images = images;  
     }
 
     await user.save();
@@ -219,6 +221,58 @@ userRouter.get('/user/products/:userId', async (req, res) => {
     res.status(500).json({ message: 'Error fetching products', error });
   }
 });
+
+userRouter.put('/:userId/workshops' , async (req , res) => {
+  const { userId } = req.params;
+  const { workshopId, workshopData } = req.body;
+
+  try {
+      const user = await User.findById(userId);
+      if (!user) {
+          return res.status(404).json({ message: 'User not found' });
+      }
+
+      const workshopIndex = user.workshops.findIndex(workshop => workshop._id.toString() === workshopId);
+      if (workshopIndex !== -1) {
+          user.workshops[workshopIndex] = workshopData;
+      } else {
+          user.workshops.push(workshopData);
+      }
+
+      await user.save();
+
+      const workshop = await Workshop.findById(workshopId);
+      if (workshop) {
+          // console.log('Registered Users before removal:', workshop.registeredUsers);
+          workshop.registeredUsers = workshop.registeredUsers.filter(id => id.toString() !== userId.toString());
+          // console.log('Registered Users after removal:', workshop.registeredUsers);
+
+          await workshop.save();
+      } else {
+          return res.status(404).json({ message: 'Workshop not found' });
+      }
+
+      res.status(200).json({ message: 'Workshops updated successfully', user });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Server error' });
+  }
+})
+
+userRouter.get('/myworkshops/:userId', async (req, res) => {
+  const { userId } = req.params;
+  try {
+      const user = await User.findById(userId).populate('workshops');
+      if (user) {
+          res.json(user.workshops);
+      } else {
+          res.status(404).json({ message: 'User not found' });
+      }
+  } catch (error) {
+      res.status(500).json({ message: 'Server error' });
+  }
+});
+
 
 
 export default userRouter;

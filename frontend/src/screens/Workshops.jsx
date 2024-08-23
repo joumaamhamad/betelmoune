@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { getError } from '../utils';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 function Workshops() {
+  const { t } = useTranslation();
   const [workshops, setWorkshops] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filter, setFilter] = useState('All');
@@ -31,8 +33,8 @@ function Workshops() {
   return (
     <div className="p-6 font-sans mb-24">
       <div className="max-w-screen-xl mx-auto">
-        <h1 className="text-left text-4xl font-bold mb-6">All Workshops</h1>
-        <div className="flex space-x-4 mb-6">
+        <h1 className="text-left text-4xl font-bold mb-6">{t('All Workshops')}</h1>
+        <div className="flex space-x-4 mb-6 rtl:space-x-reverse">
           {['All', 'Upcoming', 'Trending', 'Free', 'Premium'].map((cat) => (
             <button
               key={cat}
@@ -41,20 +43,20 @@ function Workshops() {
                 filter === cat ? 'bg-blue-500 text-white' : 'bg-gray-200'
               }`}
             >
-              {cat}
+              {t(cat)}
             </button>
           ))}
         </div>
         <div className="mb-6">
           <input
             type="text"
-            placeholder="Search workshops"
+            placeholder={t('Search workshops')}
             className="w-full px-4 py-2 border border-gray-300 rounded"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-        <h2 className="text-left text-2xl font-bold mb-6">Featured</h2>
+        <h2 className="text-left text-2xl font-bold mb-6">{t('Featured')}</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
           {filteredWorkshops.map((workshop) => (
             <div

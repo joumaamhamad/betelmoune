@@ -13,14 +13,21 @@ import { CiShoppingCart } from 'react-icons/ci';
 import { FcAddDatabase } from 'react-icons/fc';
 import { Transition } from '@headlessui/react';
 import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
+import { useTranslation } from 'react-i18next';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 
 const NavBarPlus = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.authSlice.user);
+  const { i18n } = useTranslation();
 
   const [isOpen, setIsOpen] = useState(false);
   const [open, setOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null); // For dropdown menu
+  const isMenuOpen = Boolean(anchorEl);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -41,13 +48,21 @@ const NavBarPlus = () => {
     setIsOpen(!isOpen);
   };
 
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <nav className="bg-white border-b border-gray-200">
       <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex-shrink-0">
             <Link to="/" className="text-xl font-bold text-gray-900">
-              Bel Elmouneh
+              {t('Bet Elmouneh')}
             </Link>
           </div>
 
@@ -55,7 +70,7 @@ const NavBarPlus = () => {
           <div className="md:hidden flex items-center">
             <button
               className="text-gray-900 hover:text-gray-600 focus:outline-none"
-              aria-label="Toggle menu"
+              aria-label={t('Toggle menu')}
               onClick={toggleMenu}
             >
               {isOpen ? (
@@ -67,22 +82,60 @@ const NavBarPlus = () => {
           </div>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex md:space-x-8 md:items-center">
+          <div className="hidden md:flex md:space-x-8 md:items-center rtl:space-x-reverse">
             <Link to="/" className="text-gray-900 hover:text-gray-600">
-              Home
+              {t('Home')}
             </Link>
             <Link to="/products" className="text-gray-900 hover:text-gray-600">
-              Products
+              {t('Products')}
             </Link>
             <Link to="/workshops" className="text-gray-900 hover:text-gray-600">
-              Workshop
+              {t('Workshops')}
             </Link>
+            {user ? (
+              <Link to="/myWorkshops" className="text-gray-900 hover:text-gray-600">
+                {t('My Workshops')}
+              </Link>
+            ) : null}
             <Link to="/about" className="text-gray-900 hover:text-gray-600">
-              About us
+              {t('About us')}
             </Link>
             <Link to="/contact" className="text-gray-900 hover:text-gray-600">
-              Contact
+              {t('Contact')}
             </Link>
+            {user && user.isAdmin ? (
+              <div className="relative">
+<Button
+  onClick={handleMenuClick}
+  variant="outlined"
+  color="primary"
+  style={{ fontSize: '0.75rem', padding: '3px 6px' }} // Custom size
+>
+  {t('Admin')}
+</Button>
+                <Menu
+                  anchorEl={anchorEl}
+                  open={isMenuOpen}
+                  onClose={handleMenuClose}
+                  MenuListProps={{
+                    'aria-labelledby': 'basic-button',
+                  }}
+                >
+                  <MenuItem component={Link} to="/userList" onClick={handleMenuClose}>
+                    {t('User List')}
+                  </MenuItem>
+                  <MenuItem component={Link} to="/productList" onClick={handleMenuClose}>
+                    {t('Product List')}
+                  </MenuItem>
+                  <MenuItem component={Link} to="/workshopList" onClick={handleMenuClose}>
+                    {t('Workshop List')}
+                  </MenuItem>
+                  <MenuItem component={Link} to="/adminDashboard" onClick={handleMenuClose}>
+                    {t('Admin Dashboard')}
+                  </MenuItem>
+                </Menu>
+              </div>
+            ) : null}
           </div>
 
           {/* Action Buttons */}
@@ -90,18 +143,18 @@ const NavBarPlus = () => {
             {user ? (
               <>
                 <Link to="/cart">
-                  <Button size="medium" title="cart">
+                  <Button size="medium" title={t('cart')}>
                     <CiShoppingCart className="text-3xl" />
                   </Button>
                 </Link>
                 <Link to="/addProduct">
-                  <Button size="medium" title="add product">
+                  <Button size="medium" title={t('add product')}>
                     <FcAddDatabase className="text-3xl" />
                   </Button>
                 </Link>
                 <Link to="/profile">
                   <Button variant="outlined" style={{ margin: '3px 7px' }}>
-                    Profile
+                    {t('Profile')}
                   </Button>
                 </Link>
                 <Button
@@ -110,7 +163,7 @@ const NavBarPlus = () => {
                   color="error"
                   style={{ margin: '3px 7px' }}
                 >
-                  Logout
+                  {t('Logout')}
                 </Button>
               </>
             ) : (
@@ -121,7 +174,7 @@ const NavBarPlus = () => {
                     color="primary"
                     style={{ margin: '3px 7px' }}
                   >
-                    Sign in
+                    {t('Sign in')}
                   </Button>
                 </Link>
                 <Link to="/signup">
@@ -130,7 +183,7 @@ const NavBarPlus = () => {
                     color="inherit"
                     style={{ margin: '3px 7px' }}
                   >
-                    Sign up
+                    {t('Sign up')}
                   </Button>
                 </Link>
               </>
@@ -162,36 +215,68 @@ const NavBarPlus = () => {
                 onClick={toggleMenu}
                 className="block text-gray-900 hover:text-gray-600"
               >
-                Home
+                {t('Home')}
               </Link>
               <Link
                 to="/products"
                 onClick={toggleMenu}
                 className="block text-gray-900 hover:text-gray-600"
               >
-                Products
+                {t('Products')}
               </Link>
               <Link
                 to="/workshops"
                 onClick={toggleMenu}
                 className="block text-gray-900 hover:text-gray-600"
               >
-                Workshop
+                {t('Workshops')}
               </Link>
               <Link
                 to="/about"
                 onClick={toggleMenu}
                 className="block text-gray-900 hover:text-gray-600"
               >
-                About us
+                {t('About us')}
               </Link>
               <Link
                 to="/contact"
                 onClick={toggleMenu}
                 className="block text-gray-900 hover:text-gray-600"
               >
-                Contact
+                {t('Contact')}
               </Link>
+              {user && user.isAdmin ? (
+                <>
+                  <Link
+                    to="/userList"
+                    onClick={toggleMenu}
+                    className="block text-gray-900 hover:text-gray-600"
+                  >
+                    {t('User List')}
+                  </Link>
+                  <Link
+                    to="/productList"
+                    onClick={toggleMenu}
+                    className="block text-gray-900 hover:text-gray-600"
+                  >
+                    {t('Product List')}
+                  </Link>
+                  <Link
+                    to="/workshopList"
+                    onClick={toggleMenu}
+                    className="block text-gray-900 hover:text-gray-600"
+                  >
+                    {t('Workshop List')}
+                  </Link>
+                  <Link
+                    to="/adminDashboard"
+                    onClick={toggleMenu}
+                    className="block text-gray-900 hover:text-gray-600"
+                  >
+                    {t('Admin Dashboard')}
+                  </Link>
+                </>
+              ) : null}
             </div>
           </div>
         </div>
@@ -204,18 +289,18 @@ const NavBarPlus = () => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{'Confirm Logout'}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">{t('Confirm Logout')}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Are you sure you want to log out?
+            {t('Are you sure you want to log out?')}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
-            Cancel
+            {t('Cancel')}
           </Button>
           <Button onClick={handleConfirmLogout} color="error" autoFocus>
-            Logout
+            {t('Logout')}
           </Button>
         </DialogActions>
       </Dialog>

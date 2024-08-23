@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import Product from './productModel.js';
+import workshop from './workshopModel.js';
 
 const userSchema = new mongoose.Schema({
   firstName: { type: String, required: true },
@@ -10,7 +11,7 @@ const userSchema = new mongoose.Schema({
 
   products: [Product.schema],
 
-  workshops: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Workshop' }],
+  workshops: [workshop.schema],
 
   profileImage: {
     type: String,
