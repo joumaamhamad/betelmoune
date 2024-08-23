@@ -14,13 +14,8 @@ import productsRouter from './routes/productRoutes.js';
 import messagesRouter from './routes/messageRoutes.js';
 import orderRouter from './routes/orderRoutes.js';
 import cartRouter from './routes/cartRouter.js';
-import chatsRouter from './routes/chatRoutes.js';
-
-// Setup path for file imports
-import orderRouter from './routes/orderRoutes.js'
-import path from 'path';
 import chartRouter from './routes/chartRoutes.js';
-import { fileURLToPath } from 'url';
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
