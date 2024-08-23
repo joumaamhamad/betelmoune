@@ -15,6 +15,7 @@ import messagesRouter from './routes/messageRoutes.js';
 import orderRouter from './routes/orderRoutes.js';
 import cartRouter from './routes/cartRouter.js';
 import chartRouter from './routes/chartRoutes.js';
+import chatsRouter from './routes/chatRoutes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -54,6 +55,7 @@ app.use('/backend/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/api/cart', cartRouter);
 app.use('/api/orders', orderRouter);
 app.use('/api/charts' , chartRouter)
+app.use('/api/chats', chatsRouter);
 
 
 app.use((err, req, res, next) => {
