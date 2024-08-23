@@ -89,10 +89,6 @@ const Cart = () => {
   };
 
 
-  // Calculate total price
-  const totalPrice = cart.reduce((acc, item) => {
-    return acc + item.price * item.quantity;
-  }, 0);
 
 
   // Update quantity data if necessary
@@ -240,5 +236,5 @@ const Cart = () => {
     </div>
   );
 };
-// };
+
 export default Cart;
