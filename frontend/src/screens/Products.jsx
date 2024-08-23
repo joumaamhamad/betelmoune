@@ -7,6 +7,7 @@ import {
   categoriesFilter,
   filterProducts,
   setProductsEmpty,
+  resetAvailableState,
 } from '../store/productsSlice';
 import { useTranslation } from 'react-i18next';
 
@@ -54,17 +55,21 @@ const Products = () => {
   }, [categoriesData]);
 
   return (
-    <div className="p-6 font-sans mb-24">
+    <div
+      className="p-6 font-sans mb-24"
+      onLoad={() => dispatch(resetAvailableState())}
+    >
       <div className="max-w-screen-xl mx-auto">
-
         <h1 className="text-left text-4xl font-bold mb-6">
-          {t('All Products')}
-          <span className='text-xl'>
+          All Products
+          <span className="text-xl">
             {user?.products?.length > 0 ? (
               <Link to={'/editproduct'}>
-                <p>{t('Edit products (For Testing)')}</p>
+                <p>Editproducts(For Testing)</p>
               </Link>
-            ) : ''}
+            ) : (
+              ''
+            )}
           </span>
         </h1>
 
@@ -88,7 +93,10 @@ const Products = () => {
             placeholder={t('Search products')}
             className="w-full px-4 py-2 border border-gray-300 rounded"
             ref={searchValue}
-            onChange={() => dispatch(filterProducts(searchValue.current.value))}
+            onChange={() => {
+              setIsSelected(null);
+              dispatch(filterProducts(searchValue.current.value));
+            }}
           />
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">

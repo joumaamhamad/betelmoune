@@ -24,6 +24,36 @@ export const getProducts = createAsyncThunk(
   }
 );
 
+// Delete a product
+export const deleteProduct = createAsyncThunk(
+  'products/deleteProduct',
+  async (productData, { rejectWithValue }) => {
+    try {
+      const { id, ...productDetails } = productData;
+      const response = await axios.put(
+        `/api/products/update/${id}`,
+        productDetails
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+// update a product
+export const updateProduct = createAsyncThunk(
+  'products/updateProduct',
+  async (productData) => {
+    const { id, ...productDetails } = productData;
+    const response = await axios.put(
+      `/api/products/update/${id}`,
+      productDetails
+    );
+    return response.data;
+  }
+);
+
 // Fetch Selected Product
 
 export const fetchProductBySlug = createAsyncThunk(
@@ -161,6 +191,22 @@ const productsSlice = createSlice({
       })
       .addCase(decrementAvailableQuantity.fulfilled, (state, action) => {
         state.isAvailable = action.payload;
+      }) // Handling deleteProduct
+      .addCase(deleteProduct.fulfilled, (state, action) => {
+        state.products = state.products.filter(
+          (product) => product._id !== action.payload
+        );
+      })
+      .addCase(deleteProduct.rejected, (state, action) => {
+        state.error = action.payload;
+      }) //Handling updateProduct
+      .addCase(updateProduct.fulfilled, (state, action) => {
+        const updatedProductIndex = state.products.findIndex(
+          (product) => product._id === action.payload._id
+        );
+        if (updatedProductIndex !== -1) {
+          state.users[updatedProductIndex] = action.payload;
+        }
       });
   },
 });

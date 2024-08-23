@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { logOut } from '../store/authSlice.js';
 import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
@@ -16,18 +16,26 @@ import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
 import { useTranslation } from 'react-i18next';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import { scroller } from 'react-scroll';
+
 
 const NavBarPlus = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
   const user = useSelector((state) => state.authSlice.user);
   const { i18n } = useTranslation();
 
   const [isOpen, setIsOpen] = useState(false);
   const [open, setOpen] = useState(false);
+
   const [anchorEl, setAnchorEl] = useState(null); // For dropdown menu
   const isMenuOpen = Boolean(anchorEl);
+
+  const [scrollToAbout, setScrollToAbout] = useState(false);
+  const [scrollToContact, setScrollToContact] = useState(false);
+
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -48,12 +56,61 @@ const NavBarPlus = () => {
     setIsOpen(!isOpen);
   };
 
+<
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
   const handleMenuClose = () => {
     setAnchorEl(null);
+
+  useEffect(() => {
+    if (scrollToAbout && location.pathname === '/') {
+      scroller.scrollTo('about', {
+        smooth: true,
+        offset: 50,
+        duration: 700,
+      });
+      setScrollToAbout(false);
+    }
+  }, [scrollToAbout, location.pathname]);
+
+  const handleAboutClick = () => {
+    if (location.pathname !== '/') {
+      setScrollToAbout(true);
+      navigate('/');
+    } else {
+      scroller.scrollTo('about', {
+        smooth: true,
+        offset: 50,
+        duration: 700,
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (scrollToContact && location.pathname === '/') {
+      scroller.scrollTo('contact', {
+        smooth: true,
+        offset: 70,
+        duration: 1200,
+      });
+      setScrollToContact(false);
+    }
+  }, [scrollToContact, location.pathname]);
+
+  const handleContactClick = () => {
+    if (location.pathname !== '/') {
+      setScrollToContact(true);
+      navigate('/');
+    } else {
+      scroller.scrollTo('contact', {
+        smooth: true,
+        offset: 70,
+        duration: 1200,
+      });
+    }
+
   };
 
   return (
@@ -61,8 +118,10 @@ const NavBarPlus = () => {
       <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex-shrink-0">
+
             <Link to="/" className="text-xl font-bold text-gray-900">
               {t('Bet Elmouneh')}
+
             </Link>
           </div>
 
@@ -92,15 +151,16 @@ const NavBarPlus = () => {
             <Link to="/workshops" className="text-gray-900 hover:text-gray-600">
               {t('Workshops')}
             </Link>
+
             {user ? (
               <Link to="/myWorkshops" className="text-gray-900 hover:text-gray-600">
                 {t('My Workshops')}
               </Link>
             ) : null}
-            <Link to="/about" className="text-gray-900 hover:text-gray-600">
+            <Link to="/about" onClick={handleAboutClick} className="text-gray-900 hover:text-gray-600">
               {t('About us')}
             </Link>
-            <Link to="/contact" className="text-gray-900 hover:text-gray-600">
+            <Link to="/contact" onClick={handleContactClick} className="text-gray-900 hover:text-gray-600">
               {t('Contact')}
             </Link>
             {user && user.isAdmin ? (

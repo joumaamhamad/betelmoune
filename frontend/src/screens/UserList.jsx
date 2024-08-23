@@ -1,67 +1,78 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { deleteUser, getUsers, updateUser } from '../store/usersSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const UserList = () => {
-  const initialUsers = [
-    {
-      id: 1,
-      firstname: 'John',
-      lastname: 'Doe',
-      email: 'john.doe@example.com',
-      isAdmin: true,
-    },
-    {
-      id: 2,
-      firstname: 'Jane',
-      lastname: 'Smith',
-      email: 'jane.smith@example.com',
-      isAdmin: false,
-    },
-  ];
-
-  const [users, setUsers] = useState(initialUsers);
+  const dispatch = useDispatch();
   const [editingUser, setEditingUser] = useState(null);
-  const [editFormData, setEditFormData] = useState({
-    firstname: '',
-    lastname: '',
+  const [formValues, setFormValues] = useState({
+    firstName: '',
+    lastName: '',
     email: '',
     isAdmin: false,
   });
 
-  const handleEditClick = (user) => {
-    setEditingUser(user.id);
-    setEditFormData({
-      firstname: user.firstname,
-      lastname: user.lastname,
-      email: user.email,
-      isAdmin: user.isAdmin,
-    });
-  };
+  const users = useSelector((state) => state.usersSlice.users || []);
+  const loading = useSelector((state) => state.usersSlice.loading);
+  const error = useSelector((state) => state.usersSlice.error);
 
-  const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setEditFormData({
-      ...editFormData,
-      [name]: type === 'checkbox' ? checked : value,
-    });
-  };
-
-  const handleSaveClick = () => {
-    setUsers(
-      users.map((user) =>
-        user.id === editingUser ? { ...user, ...editFormData } : user
-      )
-    );
-    setEditingUser(null);
-  };
+  useEffect(() => {
+    dispatch(getUsers());
+  }, [dispatch]);
 
   const handleDeleteClick = (userId) => {
     const confirmDelete = window.confirm(
       'Are you sure you want to delete this user?'
     );
     if (confirmDelete) {
-      setUsers(users.filter((user) => user.id !== userId));
+      dispatch(deleteUser(userId))
+        .then(() => {
+          dispatch(getUsers());
+        })
+        .catch((err) => {
+          console.error('Failed to delete user:', err);
+        });
     }
   };
+
+  const handleEditClick = (user) => {
+    setEditingUser(user._id);
+    setFormValues({
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      isAdmin: user.isAdmin,
+    });
+  };
+
+  const handleSaveClick = () => {
+    dispatch(updateUser({ id: editingUser, ...formValues }));
+    setEditingUser(null);
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormValues({
+      ...formValues,
+      [name]: type === 'checkbox' ? checked : value,
+    });
+  };
+
+  if (loading) {
+    return <div className="text-center">Loading...</div>;
+  }
+
+  if (error) {
+    return (
+      <div className="text-center text-red-500">
+        Failed to load users: {error}
+      </div>
+    );
+  }
+
+  if (users.length === 0) {
+    return <div className="text-center">No Users Found</div>;
+  }
 
   return (
     <div className="min-h-screen p-6">
@@ -83,54 +94,55 @@ const UserList = () => {
           </thead>
           <tbody>
             {users.map((user) => (
-              <tr key={user.id} className="border-t">
-                <td className="py-2 px-4">{user.id}</td>
+              <tr key={user._id} className="border-t">
+                <td className="py-2 px-4">{user._id}</td>
                 <td className="py-2 px-4">
-                  {editingUser === user.id ? (
+                  {editingUser === user._id ? (
                     <input
                       type="text"
-                      name="firstname"
-                      value={editFormData.firstname}
+                      name="firstName"
+                      value={formValues.firstName}
                       onChange={handleInputChange}
-                      className="border rounded px-2 py-1"
+                      className="border rounded p-1"
                     />
                   ) : (
-                    user.firstname
+                    user.firstName
                   )}
                 </td>
                 <td className="py-2 px-4">
-                  {editingUser === user.id ? (
+                  {editingUser === user._id ? (
                     <input
                       type="text"
-                      name="lastname"
-                      value={editFormData.lastname}
+                      name="lastName"
+                      value={formValues.lastName}
                       onChange={handleInputChange}
-                      className="border rounded px-2 py-1"
+                      className="border rounded p-1"
                     />
                   ) : (
-                    user.lastname
+                    user.lastName
                   )}
                 </td>
                 <td className="py-2 px-4">
-                  {editingUser === user.id ? (
+                  {editingUser === user._id ? (
                     <input
                       type="email"
                       name="email"
-                      value={editFormData.email}
+                      value={formValues.email}
                       onChange={handleInputChange}
-                      className="border rounded px-2 py-1"
+                      className="border rounded p-1"
                     />
                   ) : (
                     user.email
                   )}
                 </td>
-                <td className="py-2 px-4">
-                  {editingUser === user.id ? (
+                <td className="py-2 px-4 text-center">
+                  {editingUser === user._id ? (
                     <input
                       type="checkbox"
                       name="isAdmin"
-                      checked={editFormData.isAdmin}
+                      checked={formValues.isAdmin}
                       onChange={handleInputChange}
+                      className="border rounded"
                     />
                   ) : user.isAdmin ? (
                     'Yes'
@@ -139,7 +151,7 @@ const UserList = () => {
                   )}
                 </td>
                 <td className="py-2 px-4">
-                  {editingUser === user.id ? (
+                  {editingUser === user._id ? (
                     <button
                       onClick={handleSaveClick}
                       className="text-green-500 hover:underline"
@@ -147,19 +159,21 @@ const UserList = () => {
                       Save
                     </button>
                   ) : (
-                    <button
-                      onClick={() => handleEditClick(user)}
-                      className="text-blue-500 hover:underline"
-                    >
-                      Edit
-                    </button>
+                    <>
+                      <button
+                        onClick={() => handleEditClick(user)}
+                        className="text-blue-500 hover:underline"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDeleteClick(user._id)}
+                        className="text-red-500 hover:underline ml-2"
+                      >
+                        Delete
+                      </button>
+                    </>
                   )}
-                  <button
-                    onClick={() => handleDeleteClick(user.id)}
-                    className="ml-4 text-red-500 hover:underline"
-                  >
-                    Delete
-                  </button>
                 </td>
               </tr>
             ))}

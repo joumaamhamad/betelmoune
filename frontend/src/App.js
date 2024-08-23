@@ -6,6 +6,11 @@ import Profile from './screens/Profile';
 import { I18nextProvider, useTranslation } from 'react-i18next';
 import i18n from './i18n'; // Import i18n configuration
 import { ToastContainer } from 'react-toastify';
+
+
+// import Footer from './components/Footer'; // Uncomment if you want to use the Footer
+// import { ToastContainer } from 'react-toastify';
+
 import ProductsDetails from './screens/ProductDetails';
 import WorkshopDetails from './screens/WorkshopDetails';
 import AddProduct from './screens/AddProduct';
@@ -31,6 +36,7 @@ import { logIn } from './store/authSlice';
 
 // const stripePromise = loadStripe('pk_test_51PplmXP39Su2d6yxkGOZ9RBVTrJhS6l01P0KITPwOoS8xLPQMKquVvv21ODrDWAJ7ER44vnuyGwI0aNXM2O3ia2600jlhIoT3D');
 
+
 // Lazy load components
 const HomePage = lazy(() => import('./screens/HomePage'));
 const SignIn = lazy(() => import('./screens/Signin'));
@@ -51,6 +57,7 @@ function App() {
       if (userInfoString) {
         // Check if userInfoString is a valid JSON string
         const userInfo = JSON.parse(userInfoString);
+
 
         // Validate the structure of userInfo if necessary
         if (userInfo && userInfo.token) {
