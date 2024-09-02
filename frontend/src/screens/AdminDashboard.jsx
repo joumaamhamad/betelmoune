@@ -1,23 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import SalesChart from '../components/SalesChart';
 import UserCount from '../components/UserCount';
-import WorkshopRegistrationChart from '../components/WorkshopRegistrationChart';
 import RevenueChart from '../components/RevenueChart';
-import UserGrowthChart from '../components/UserGrowthChart';
 import ProductPerformanceChart from '../components/ProductPerformanceChart';
-import RefundsReturnsChart from '../components/RefundsReturnsChart';
 import UserDemographicsChart from '../components/UserDemographicsChart';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { getError } from '../utils';
-import RevenueByCategoryChart from '../components/RevenueByCategoryChart';
-import CustomerRetentionChart from '../components/CustomerRetentionChart';
+import WorkshopRegistrationsChart from '../components/WorkshopRegistrationsChart';
+import WorkshopCompletionsChart from '../components/WorkshopCompletionsChart';
+// import RevenueByCategoryChart from '../components/RevenueByCategoryChart';
 
-// import DailyRetentionRateChart from '../components/CustomerRetentionChart';
-// import OrderFulfillmentTimeChart from '../components/OrderFulfillmentTimeChart';
 
 const AdminDashboard = () => {
   const products = useSelector((state) => state.productsSlice.products);
+  console.log('prrrrr0' , products)
   const [workshops, setWorkshops] = useState([]);
 
   useEffect(() => {
@@ -66,9 +63,13 @@ const AdminDashboard = () => {
           <RevenueChart />
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow-md col-span-1 h-80">
+        {/* <div className="bg-white p-6 rounded-lg shadow-md col-span-1 h-80">
           <h2 className="text-lg font-medium text-gray-700 mb-4">User Growth</h2>
           <UserGrowthChart />
+        </div> */}
+        <div className="bg-white p-6 rounded-lg shadow-md col-span-1 h-80">
+          <h2 className="text-lg font-medium text-gray-700 mb-4">Workshop Registrations</h2>
+          <WorkshopRegistrationsChart />
         </div>
 
         <div className="bg-white p-6 rounded-lg shadow-md col-span-1 h-80">
@@ -76,48 +77,20 @@ const AdminDashboard = () => {
           <ProductPerformanceChart />
         </div>
 
-        {/* <div className="bg-white p-6 rounded-lg shadow-md col-span-1 h-80">
-          <h2 className="text-lg font-medium text-gray-700 mb-4">Workshop Registrations</h2>
-          <WorkshopRegistrationChart />
-        </div> */}
-        {/* <div className="bg-white p-6 rounded-lg shadow-md col-span-1 h-80">
-          <h2 className="text-lg font-medium text-gray-700 mb-4">Order Fulfillment Time</h2>
-          <OrderFulfillmentTimeChart />
-        </div> */}
-
         <div className="bg-white p-6 rounded-lg shadow-md col-span-1 h-80">
           <h2 className="text-lg font-medium text-gray-700 mb-4">Sales Data</h2>
           <SalesChart />
         </div>
 
-        {/* Revenue by Category Chart */}
-          {/* <div className="bg-white p-6 rounded-lg shadow-md">
-            <RevenueByCategoryChart />
-          </div> */}
-
-          {/* <div className="bg-white p-6 rounded-lg shadow-md">
-            <UserDemographicsChart />
-          </div> */}
-          <div className="bg-white p-6 rounded-lg shadow-md col-span-1 h-80">
-            <UserDemographicsChart />
-        </div>
         <div className="bg-white p-6 rounded-lg shadow-md col-span-1 h-80">
-          <h2 className="text-lg font-medium text-gray-700 mb-4">Customer Retention Rate</h2>
-          <CustomerRetentionChart />
+          <UserDemographicsChart />
+          {/* <RevenueByCategoryChart /> */}
         </div>
 
-        
-
-        {/* <div className="bg-white p-6 rounded-lg shadow-md col-span-1 h-80">
-          <h2 className="text-lg font-medium text-gray-700 mb-4">User Demographics</h2>
-          <UserDemographicsChart />
-        </div> */}
-
-        {/* Refunds and Returns Chart */}
-        {/* <div className="bg-white p-6 rounded-lg shadow-md col-span-1 h-80">
-          <h2 className="text-lg font-medium text-gray-700 mb-4">Refunds and Returns</h2>
-          <RefundsReturnsChart />
-        </div> */}
+        <div className="bg-white p-6 rounded-lg shadow-md col-span-1 h-80">
+          <h2 className="text-lg font-medium text-gray-700 mb-4">Workshop Completions</h2>
+          <WorkshopCompletionsChart />
+        </div>
       </div>
     </div>
   );

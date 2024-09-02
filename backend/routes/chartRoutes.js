@@ -218,6 +218,42 @@ chartRouter.get('/user-data', async (req, res) => {
       res.status(500).json({ message: error.message });
     }
   });
+
+  chartRouter.get('/workshopRegistrations', async (req, res) => {
+    try {
+      const workshops = await Workshop.find().populate('registeredUsers', 'name');
+  
+      const data = workshops.map((workshop) => ({
+        workshopName: workshop.name,
+        registrations: workshop.registeredUsers.length,
+      }));
+  
+      res.json({ data });
+    } catch (error) {
+      res.status(500).json({ message: 'Failed to fetch workshop registrations' });
+    }
+  });
+
+  chartRouter.get('/workshopCompletions', async (req, res) => {
+    try {
+      const workshops = await Workshop.find();
+      const workshopCompletionData = [];
+  
+      for (const workshop of workshops) {
+        const userCount = await User.countDocuments({
+          'workshops._id': workshop._id,
+        });
+        workshopCompletionData.push({
+          workshopName: workshop.name,
+          completions: userCount,
+        });
+      }
+  
+      res.json({ data: workshopCompletionData });
+    } catch (error) {
+      res.status(500).json({ message: 'Failed to fetch workshop completion data' });
+    }
+  });
   
 
   // chartRouter.get('/order-fulfillment-time', async (req, res) => {
@@ -253,35 +289,35 @@ chartRouter.get('/user-data', async (req, res) => {
   // });
 
   // Revenue by Product Category
-  // chartRouter.get('/revenue-by-category', async (req, res) => {
-  //   try {
-  //     const revenueByCategory = await Order.aggregate([
-  //       { $unwind: '$orderItems' },
-  //       {
-  //         $lookup: {
-  //           from: 'products',
-  //           localField: 'orderItems.product',
-  //           foreignField: '_id',
-  //           as: 'productDetails'
-  //         }
-  //       },
-  //       { $unwind: '$productDetails' },
-  //       {
-  //         $group: {
-  //           _id: '$productDetails.category',
-  //           totalRevenue: { $sum: { $multiply: ['$orderItems.price', '$orderItems.quantity'] } }
-  //         }
-  //       },
-  //       { $sort: { totalRevenue: -1 } }
-  //     ]);
+  chartRouter.get('/revenue-by-category', async (req, res) => {
+    try {
+      const revenueByCategory = await Order.aggregate([
+        { $unwind: '$orderItems' },
+        {
+          $lookup: {
+            from: 'products',
+            localField: 'orderItems.product',
+            foreignField: '_id',
+            as: 'productDetails'
+          }
+        },
+        { $unwind: '$productDetails' },
+        {
+          $group: {
+            _id: '$productDetails.category',
+            totalRevenue: { $sum: { $multiply: ['$orderItems.price', '$orderItems.quantity'] } }
+          }
+        },
+        { $sort: { totalRevenue: -1 } }
+      ]);
   
-  //     console.log('Revenue by Category:', revenueByCategory); // Log result for debugging
-  //     res.json(revenueByCategory);
-  //   } catch (error) {
-  //     console.error('Error fetching revenue by category:', error); // Log error
-  //     res.status(500).json({ message: error.message });
-  //   }
-  // });
+      console.log('Revenue by Category:', revenueByCategory); // Log result for debugging
+      res.json(revenueByCategory);
+    } catch (error) {
+      console.error('Error fetching revenue by category:', error); // Log error
+      res.status(500).json({ message: error.message });
+    }
+  });
   
   
 

@@ -187,6 +187,12 @@ const NavBarPlus = () => {
                     'aria-labelledby': 'basic-button',
                   }}
                 >
+                  <MenuItem component={Link} to="/adminDashboard" onClick={handleMenuClose}>
+                    {t('Admin Dashboard')}
+                  </MenuItem>
+                  <MenuItem component={Link} to="/requestProducts" onClick={handleMenuClose}>
+                    {t('Request Product')}
+                  </MenuItem>
                   <MenuItem component={Link} to="/userList" onClick={handleMenuClose}>
                     {t('User List')}
                   </MenuItem>
@@ -195,9 +201,6 @@ const NavBarPlus = () => {
                   </MenuItem>
                   <MenuItem component={Link} to="/workshopList" onClick={handleMenuClose}>
                     {t('Workshop List')}
-                  </MenuItem>
-                  <MenuItem component={Link} to="/adminDashboard" onClick={handleMenuClose}>
-                    {t('Admin Dashboard')}
                   </MenuItem>
                 </Menu>
               </div>

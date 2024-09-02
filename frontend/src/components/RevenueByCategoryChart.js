@@ -28,6 +28,7 @@ const RevenueByCategoryChart = () => {
     const fetchRevenueData = async () => {
       try {
         const { data } = await axios.get('/api/charts/revenue-by-category');
+        // console.log('dayyyysss' , data)
         setRevenueData(data);
       } catch (error) {
         console.error('Error fetching revenue by category data:', error);
