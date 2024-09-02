@@ -53,6 +53,7 @@ workshopRouter.put(
         workshop.date = req.body.date || workshop.date;
         workshop.duration = req.body.duration || workshop.duration;
         workshop.capacity = req.body.capacity || workshop.capacity;
+        workshop.price = req.body.price || workshop.price;
 
         const updatedWorkshop = await workshop.save();
 
@@ -64,6 +65,7 @@ workshopRouter.put(
           date: updatedWorkshop.date,
           duration: updatedWorkshop.duration,
           capacity: updatedWorkshop.capacity,
+          price: updatedWorkshop.price,
         });
       } else {
         res.status(404).send({ message: 'Workshop not found' });
@@ -98,14 +100,14 @@ workshopRouter.put('/:id/register', async (req, res) => {
 workshopRouter.get('/myworkshops/:userId', async (req, res) => {
   const { userId } = req.params;
   try {
-      const workshops = await Workshop.find({ registeredUsers: userId });
-      if (workshops.length > 0) {
-          res.json(workshops);
-      } else {
-          res.status(404).json({ message: 'No workshops found for this user' });
-      }
+    const workshops = await Workshop.find({ registeredUsers: userId });
+    if (workshops.length > 0) {
+      res.json(workshops);
+    } else {
+      res.status(404).json({ message: 'No workshops found for this user' });
+    }
   } catch (error) {
-      res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: 'Server error' });
   }
 });
 

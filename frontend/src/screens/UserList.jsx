@@ -84,12 +84,12 @@ const UserList = () => {
         <table className="min-w-full bg-white shadow-md rounded-lg">
           <thead className="bg-gray-200 text-gray-600">
             <tr>
-              <th className="py-2 px-4 text-center">ID</th>
-              <th className="py-2 px-4 text-center">First Name</th>
-              <th className="py-2 px-4 text-center">Last Name</th>
-              <th className="py-2 px-4 text-center">Email</th>
-              <th className="py-2 px-4 text-center">Is Admin</th>
-              <th className="py-2 px-4 text-center">Action</th>
+              <th className="py-2 px-4 text-start">ID</th>
+              <th className="py-2 px-4 text-start">First Name</th>
+              <th className="py-2 px-4 text-start">Last Name</th>
+              <th className="py-2 px-4 text-start">Email</th>
+              <th className="py-2 px-4 text-start">Is Admin</th>
+              <th className="py-2 px-4 text-start">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -135,7 +135,7 @@ const UserList = () => {
                     user.email
                   )}
                 </td>
-                <td className="py-2 px-4 text-center">
+                <td className="py-2 px-4">
                   {editingUser === user._id ? (
                     <input
                       type="checkbox"

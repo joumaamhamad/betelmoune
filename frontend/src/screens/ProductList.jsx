@@ -64,10 +64,12 @@ const ProductList = () => {
   };
 
   const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value, type } = e.target;
+    // Ensure that number inputs cannot be set to values less than 0
+    const newValue = type === 'number' && value < 0 ? 0 : value;
     setFormValues({
       ...formValues,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: type === 'checkbox' ? e.target.checked : newValue,
     });
   };
 
@@ -90,14 +92,14 @@ const ProductList = () => {
           <table className="min-w-full bg-white shadow-md rounded-lg">
             <thead className="bg-gray-200 text-gray-600">
               <tr>
-                <th className="py-2 px-4 text-center">ID</th>
-                <th className="py-2 px-4 text-center">Name</th>
-                <th className="py-2 px-4 text-center">Price</th>
-                <th className="py-2 px-4 text-center">Category</th>
-                <th className="py-2 px-4 text-center">Description</th>
-                <th className="py-2 px-4 text-center">Slug</th>
-                <th className="py-2 px-4 text-center">Quantity</th>
-                <th className="py-2 px-4 text-center">Action</th>
+                <th className="py-2 px-4 text-start">ID</th>
+                <th className="py-2 px-4 text-start">Name</th>
+                <th className="py-2 px-4 text-start">Price</th>
+                <th className="py-2 px-4 text-start">Category</th>
+                <th className="py-2 px-4 text-start">Description</th>
+                <th className="py-2 px-4 text-start">Slug</th>
+                <th className="py-2 px-4 text-start">Quantity</th>
+                <th className="py-2 px-4 text-start">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -127,7 +129,7 @@ const ProductList = () => {
                         className="border rounded p-1"
                       />
                     ) : (
-                      product.price
+                      `${product.price}$`
                     )}
                   </td>
                   <td className="py-2 px-4">
