@@ -5,6 +5,7 @@ import {
   updateWorkshop,
 } from '../store/workshopsSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 const WorkshopList = () => {
   const workshops = useSelector((state) => state.workshopsSlice.workshops);
@@ -20,6 +21,7 @@ const WorkshopList = () => {
     date: '',
     duration: '',
     capacity: '',
+    price: '',
   });
 
   useEffect(() => {
@@ -50,6 +52,7 @@ const WorkshopList = () => {
       date: workshop.date,
       duration: workshop.duration,
       capacity: workshop.capacity,
+      price: workshop.price,
     });
   };
 
@@ -59,10 +62,12 @@ const WorkshopList = () => {
   };
 
   const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value, type } = e.target;
+    // Ensure that number inputs cannot be set to values less than 0
+    const newValue = type === 'number' && value < 0 ? 0 : value;
     setFormValues({
       ...formValues,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: type === 'checkbox' ? e.target.checked : newValue,
     });
   };
 
@@ -73,7 +78,7 @@ const WorkshopList = () => {
   if (error) {
     return (
       <div className="text-center text-red-500">
-        Failed to load users: {error}
+        Failed to load workshops: {error}
       </div>
     );
   }
@@ -90,23 +95,26 @@ const WorkshopList = () => {
 
       <main className="p-6">
         <div className="mb-4">
-          <button className="flex bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
-            Create Workshop
-          </button>
+          <Link to={'/AddWorkshop'}>
+            <button className="flex bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+              Create Workshop
+            </button>
+          </Link>
         </div>
 
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white shadow-md rounded-lg">
             <thead className="bg-gray-200 text-gray-600">
               <tr>
-                <th className="py-2 px-4 text-center">ID</th>
-                <th className="py-2 px-4 text-center">Name</th>
-                <th className="py-2 px-4 text-center">Slug</th>
-                <th className="py-2 px-4 text-center">Description</th>
-                <th className="py-2 px-4 text-center">Date</th>
-                <th className="py-2 px-4 text-center">Duration</th>
-                <th className="py-2 px-4 text-center">Capacity</th>
-                <th className="py-2 px-4 text-center">Action</th>
+                <th className="py-2 px-4 text-start">ID</th>
+                <th className="py-2 px-4 text-start">Name</th>
+                <th className="py-2 px-4 text-start">Slug</th>
+                <th className="py-2 px-4 text-start">Description</th>
+                <th className="py-2 px-4 text-start">Date</th>
+                <th className="py-2 px-4 text-start">Duration</th>
+                <th className="py-2 px-4 text-start">Capacity</th>
+                <th className="py-2 px-4 text-start">Price</th>
+                <th className="py-2 px-4 text-start">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -175,7 +183,7 @@ const WorkshopList = () => {
                         className="border rounded p-1"
                       />
                     ) : (
-                      workshop.duration
+                      `${workshop.duration}h`
                     )}
                   </td>
                   <td className="py-2 px-4">
@@ -189,6 +197,19 @@ const WorkshopList = () => {
                       />
                     ) : (
                       workshop.capacity
+                    )}
+                  </td>
+                  <td className="py-2 px-4">
+                    {editingWorkshop === workshop._id ? (
+                      <input
+                        type="number"
+                        name="price"
+                        value={formValues.price}
+                        onChange={handleInputChange}
+                        className="border rounded p-1"
+                      />
+                    ) : (
+                      `${workshop.price}$`
                     )}
                   </td>
                   <td className="py-2 px-4">

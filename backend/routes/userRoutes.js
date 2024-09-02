@@ -13,7 +13,6 @@ import path from 'path';
 
 const userRouter = express.Router();
 
-
 userRouter.get('/', async (req, res) => {
   const users = await User.find();
   res.send(users);
@@ -71,7 +70,6 @@ userRouter.put(
     }
   })
 );
-
 
 userRouter.post('/signin', async (req, res) => {
   console.log(req.body.email);
@@ -240,14 +238,12 @@ userRouter.put('/user/products/:userId', uploadProducts, async (req, res) => {
       return res.status(404).json({ message: 'Product not found' });
     }
 
-    
     product.name = name;
     product.price = price;
     product.category = category;
     product.description = description;
     product.quantity = quantity;
 
-    
     if (images.length) {
       // Delete old images if new ones are provided
       product.images.forEach((oldImage) => {
@@ -257,10 +253,8 @@ userRouter.put('/user/products/:userId', uploadProducts, async (req, res) => {
         }
       });
 
-
       console.log('images::', images);
       product.images = images; // Update with new images
-
     }
 
     await user.save();
@@ -283,59 +277,59 @@ userRouter.get('/user/products/:userId', async (req, res) => {
   }
 });
 
-
-userRouter.put('/:userId/workshops' , async (req , res) => {
+userRouter.put('/:userId/workshops', async (req, res) => {
   const { userId } = req.params;
   const { workshopId, workshopData } = req.body;
 
   try {
-      const user = await User.findById(userId);
-      if (!user) {
-          return res.status(404).json({ message: 'User not found' });
-      }
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
 
-      const workshopIndex = user.workshops.findIndex(workshop => workshop._id.toString() === workshopId);
-      if (workshopIndex !== -1) {
-          user.workshops[workshopIndex] = workshopData;
-      } else {
-          user.workshops.push(workshopData);
-      }
+    const workshopIndex = user.workshops.findIndex(
+      (workshop) => workshop._id.toString() === workshopId
+    );
+    if (workshopIndex !== -1) {
+      user.workshops[workshopIndex] = workshopData;
+    } else {
+      user.workshops.push(workshopData);
+    }
 
-      await user.save();
+    await user.save();
 
-      const workshop = await Workshop.findById(workshopId);
-      if (workshop) {
-          // console.log('Registered Users before removal:', workshop.registeredUsers);
-          workshop.registeredUsers = workshop.registeredUsers.filter(id => id.toString() !== userId.toString());
-          // console.log('Registered Users after removal:', workshop.registeredUsers);
+    const workshop = await Workshop.findById(workshopId);
+    if (workshop) {
+      // console.log('Registered Users before removal:', workshop.registeredUsers);
+      workshop.registeredUsers = workshop.registeredUsers.filter(
+        (id) => id.toString() !== userId.toString()
+      );
+      // console.log('Registered Users after removal:', workshop.registeredUsers);
 
-          await workshop.save();
-      } else {
-          return res.status(404).json({ message: 'Workshop not found' });
-      }
+      await workshop.save();
+    } else {
+      return res.status(404).json({ message: 'Workshop not found' });
+    }
 
-      res.status(200).json({ message: 'Workshops updated successfully', user });
+    res.status(200).json({ message: 'Workshops updated successfully', user });
   } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Server error' });
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
   }
-})
+});
 
 userRouter.get('/myworkshops/:userId', async (req, res) => {
   const { userId } = req.params;
   try {
-      const user = await User.findById(userId).populate('workshops');
-      if (user) {
-          res.json(user.workshops);
-      } else {
-          res.status(404).json({ message: 'User not found' });
-      }
+    const user = await User.findById(userId).populate('workshops');
+    if (user) {
+      res.json(user.workshops);
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
   } catch (error) {
-      res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: 'Server error' });
   }
 });
-
-
-
 
 export default userRouter;

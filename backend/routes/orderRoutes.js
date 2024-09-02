@@ -22,7 +22,9 @@ orderRouter.post('/', async (req, res) => {
     const createdOrder = await newOrder.save();
     res.status(201).send({ message: 'New Order Created', order: createdOrder });
   } catch (err) {
-    res.status(500).send({ message: 'Error in Creating Order', error: err.message });
+    res
+      .status(500)
+      .send({ message: 'Error in Creating Order', error: err.message });
   }
 });
 
@@ -39,9 +41,30 @@ orderRouter.post('/create-payment-intent', async (req, res) => {
       clientSecret: paymentIntent.client_secret,
     });
   } catch (err) {
-    res.status(500).send({ message: 'Error creating payment intent', error: err.message });
+    res
+      .status(500)
+      .send({ message: 'Error creating payment intent', error: err.message });
   }
 });
 
+orderRouter.get('/', async (req, res) => {
+  const orders = await Order.find();
+  res.send(orders);
+});
+
+orderRouter.delete('/delete/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedOrder = await Order.findByIdAndDelete(id);
+
+    if (!deletedOrder) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
+
+    res.status(200).json({ message: 'Order deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error });
+  }
+});
 
 export default orderRouter;

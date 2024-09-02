@@ -7,9 +7,7 @@ import { I18nextProvider, useTranslation } from 'react-i18next';
 import i18n from './i18n'; // Import i18n configuration
 import { ToastContainer } from 'react-toastify';
 
-
 // import Footer from './components/Footer'; // Uncomment if you want to use the Footer
-// import { ToastContainer } from 'react-toastify';
 
 import ProductsDetails from './screens/ProductDetails';
 import WorkshopDetails from './screens/WorkshopDetails';
@@ -22,6 +20,7 @@ import WorkshopContent from './screens/WorkshopContent';
 import UserList from './screens/UserList';
 import ProductList from './screens/ProductList';
 import WorkshopList from './screens/WorkshopList';
+import OrderList from './screens/OrderList';
 import AdminDashboard from './screens/AdminDashboard';
 
 import ChatGroup from './screens/ChatGroup';
@@ -35,11 +34,11 @@ import ChatBotComponent from './components/chatbot/ChatBot';
 import 'react-chatbot-kit/build/main.css';
 import { useDispatch } from 'react-redux';
 import { logIn } from './store/authSlice';
+import AddWorkshop from './screens/AddWorkshop';
 // import { Elements } from '@stripe/react-stripe-js';
 // import { loadStripe } from '@stripe/stripe-js';
 
 // const stripePromise = loadStripe('pk_test_51PplmXP39Su2d6yxkGOZ9RBVTrJhS6l01P0KITPwOoS8xLPQMKquVvv21ODrDWAJ7ER44vnuyGwI0aNXM2O3ia2600jlhIoT3D');
-
 
 // Lazy load components
 const HomePage = lazy(() => import('./screens/HomePage'));
@@ -61,7 +60,6 @@ function App() {
       if (userInfoString) {
         // Check if userInfoString is a valid JSON string
         const userInfo = JSON.parse(userInfoString);
-
 
         // Validate the structure of userInfo if necessary
         if (userInfo && userInfo.token) {
@@ -89,7 +87,10 @@ function App() {
   return (
     <I18nextProvider i18n={i18n}>
       <BrowserRouter>
-        <div dir={i18n.language === 'ar' ? 'rtl' : 'ltr'} className="App flex flex-col min-h-screen">
+        <div
+          dir={i18n.language === 'ar' ? 'rtl' : 'ltr'}
+          className="App flex flex-col min-h-screen"
+        >
           <NavBarPlus />
 
           {/* Chatbot Icon and Toggle Button */}
@@ -102,12 +103,12 @@ function App() {
             </button>
             {chatBotOpen && <ChatBotComponent onClose={handleChatBotClose} />}
           </div>
-          
+
           {/* Language switcher */}
           <div className="fixed top-4 right-4 z-50 flex flex-col items-end mt-16">
             <div className="relative">
-              <button 
-                onClick={() => setDropdownOpen(!dropdownOpen)} 
+              <button
+                onClick={() => setDropdownOpen(!dropdownOpen)}
                 className="p-1 rounded bg-gray-200 text-gray-900 hover:bg-gray-300"
               >
                 <FaLanguage className="text-3xl" />
@@ -149,26 +150,33 @@ function App() {
                 <Route path="/workshops" element={<Workshops />} />
                 <Route path="/workshop/:slug" element={<WorkshopDetails />} />
                 <Route path="/addProduct" element={<AddProduct />} />
+                <Route path="/addWorkshop" element={<AddWorkshop />} />
                 <Route path="/editProduct" element={<EditProduct />} />
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/profile" element={<Profile />} />
-                <Route path='/shippingAddress' element={<ShippingAddressScreen />} />
-                <Route path='/workshopContent/:slug' element={<WorkshopContent />} />
+                <Route
+                  path="/shippingAddress"
+                  element={<ShippingAddressScreen />}
+                />
+                <Route
+                  path="/workshopContent/:slug"
+                  element={<WorkshopContent />}
+                />
                 <Route path="/userList" element={<UserList />} />
+                <Route path="/orderList" element={<OrderList />} />
                 <Route path="/productList" element={<ProductList />} />
                 <Route path="/workshopList" element={<WorkshopList />} />
                 <Route path="/adminDashboard" element={<AdminDashboard />} />
-                <Route path='/myWorkshops' element={<MyWorkshops />} />
+                <Route path="/myWorkshops" element={<MyWorkshops />} />
                 <Route path="/chatgroup" element={<ChatGroup />} />
               </Routes>
             </Suspense>
           </main>
-          
+
           <Footer />
         </div>
       </BrowserRouter>
     </I18nextProvider>
-
   );
 }
 
