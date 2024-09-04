@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Line } from 'react-chartjs-2';
+import { t } from 'i18next';
 
 const CustomerRetentionChart = () => {
   const [retentionData, setRetentionData] = useState([]);
@@ -21,7 +22,7 @@ const CustomerRetentionChart = () => {
     labels: retentionData?.map(item => `Month ${item.month}`),
     datasets: [
       {
-        label: 'Customer Retention Rate',
+        label: t('Customer Retention Rate'),
         data: retentionData.map(item => item.retentionRate * 100),
         borderColor: 'rgba(75, 192, 192, 1)',
         backgroundColor: 'rgba(75, 192, 192, 0.2)',

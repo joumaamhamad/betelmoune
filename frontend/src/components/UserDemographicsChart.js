@@ -12,6 +12,7 @@ import {
   Legend,
   ArcElement
 } from 'chart.js';
+import { t } from 'i18next';
 
 ChartJS.register(
   CategoryScale,
@@ -47,7 +48,7 @@ const UserDemographicsChart = () => {
     labels: demographics.ageGroups.map(group => `${group._id}`),
     datasets: [
       {
-        label: 'Users',
+        label: t('Users'),
         data: demographics.ageGroups.map(group => group.count),
         backgroundColor: 'rgba(75, 192, 192, 0.6)',
       }
@@ -58,7 +59,7 @@ const UserDemographicsChart = () => {
     labels: demographics.genderDistribution.map(group => group._id),
     datasets: [
       {
-        label: 'Users',
+        label: t('Users'),
         data: demographics.genderDistribution.map(group => group.count),
         backgroundColor: ['rgba(255, 99, 132, 0.6)', 'rgba(54, 162, 235, 0.6)'],
       }
@@ -69,7 +70,7 @@ const UserDemographicsChart = () => {
     labels: demographics.locationDistribution.map(group => group._id),
     datasets: [
       {
-        label: 'Users',
+        label: t('Users'),
         data: demographics.locationDistribution.map(group => group.count),
         backgroundColor: 'rgba(153, 102, 255, 0.6)',
       }
@@ -150,7 +151,7 @@ const UserDemographicsChart = () => {
 
 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
     <div className="flex flex-col items-center">
-          <h3 className="text-md font-medium text-gray-600 mb-2">Age Groups</h3>
+          <h3 className="text-md font-medium text-gray-600 mb-2">{t("Age Groups")}</h3>
           <div className="w-full h-64 max-w-md">
             <Bar data={ageGroupData} options={{
               responsive: true,
@@ -172,7 +173,7 @@ const UserDemographicsChart = () => {
         </div>
 
         <div className="flex flex-col items-center">
-          <h3 className="text-md font-medium text-gray-600 mb-2">Gender Distribution</h3>
+          <h3 className="text-md font-medium text-gray-600 mb-2">{t("Gender Distribution")}</h3>
           <div className="w-full h-64 max-w-md">
             <Pie data={genderData} options={{
               responsive: true,
@@ -194,7 +195,7 @@ const UserDemographicsChart = () => {
         </div>
 
         <div className="flex flex-col items-center">
-          <h3 className="text-md font-medium text-gray-600 mb-2">Location</h3>
+          <h3 className="text-md font-medium text-gray-600 mb-2">{t("Location")}</h3>
           <div className="w-full h-64 max-w-md">
             <Bar data={locationData} options={{
               responsive: true,

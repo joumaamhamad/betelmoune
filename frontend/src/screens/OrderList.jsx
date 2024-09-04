@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteOrder, getOrders } from '../store/ordersSlice';
+import { t } from 'i18next';
 
 const OrderList = () => {
   const dispatch = useDispatch();
@@ -38,38 +39,38 @@ const OrderList = () => {
   };
 
   if (loading) {
-    return <div className="text-center">Loading...</div>;
+    return <div className="text-center">{t("Loading...")}</div>;
   }
 
   if (error) {
     return (
       <div className="text-center text-red-500">
-        Failed to load orders: {error}
+      {t("Failed to load orders:")} {error}
       </div>
     );
   }
 
   if (orders.length === 0) {
-    return <div className="text-center">No Orders Found</div>;
+    return <div className="text-center">{t("No Orders Found")}</div>;
   }
 
   return (
     <div className="min-h-screen p-6">
       <header className="mb-6">
-        <h1 className="text-left text-4xl font-bold mb-6">Orders</h1>
+        <h1 className="text-left text-4xl font-bold mb-6">{t("Orders")}</h1>
       </header>
 
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white shadow-md rounded-lg">
           <thead className="bg-gray-200 text-gray-600">
             <tr>
-              <th className="py-2 px-4 text-start">ID</th>
-              <th className="py-2 px-4 text-start">Customer Name</th>
-              <th className="py-2 px-4 text-start">Payment Method</th>
-              <th className="py-2 px-4 text-start">Total Price</th>
-              <th className="py-2 px-4 text-start">Is Paid</th>
-              <th className="py-2 px-4 text-start">Date of Paid</th>
-              <th className="py-2 px-4 text-start">Action</th>
+              <th className="py-2 px-4 text-start">{t("ID")}</th>
+              <th className="py-2 px-4 text-start">{t("Customer Name")}</th>
+              <th className="py-2 px-4 text-start">{t("Payment Method")}</th>
+              <th className="py-2 px-4 text-start">{t("Total Price")}</th>
+              <th className="py-2 px-4 text-start">{t("Is Paid")}</th>
+              <th className="py-2 px-4 text-start">{t("Date of Paid")}</th>
+              <th className="py-2 px-4 text-start">{t("Action")}</th>
             </tr>
           </thead>
           <tbody>
@@ -92,13 +93,13 @@ const OrderList = () => {
                     className="text-green-500 hover:underline ml-2"
                     onClick={() => handleDetailClick(order)}
                   >
-                    Detail
+                    {t("Detail")}
                   </button>
                   <button
                     className="text-red-500 hover:underline ml-2"
                     onClick={() => handleDeleteClick(order._id)}
                   >
-                    Delete
+                    {t("Delete")}
                   </button>
                 </td>
               </tr>
@@ -110,13 +111,13 @@ const OrderList = () => {
       {selectedOrder && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center z-50">
           <div className="bg-white rounded-lg p-6 max-w-lg w-full">
-            <h2 className="text-2xl font-bold mb-4">Order Details</h2>
+            <h2 className="text-2xl font-bold mb-4">{t("Order Details")}</h2>
             <table className="min-w-full bg-gray-100 rounded-lg">
               <thead>
                 <tr className="bg-gray-200">
-                  <th className="py-2 px-4 text-start">Product Name</th>
-                  <th className="py-2 px-4 text-start">Quantity</th>
-                  <th className="py-2 px-4 text-start">Price</th>
+                  <th className="py-2 px-4 text-start">{t("Product Name")}</th>
+                  <th className="py-2 px-4 text-start">{t("Quantity")}</th>
+                  <th className="py-2 px-4 text-start">{t("Price")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -134,7 +135,7 @@ const OrderList = () => {
                 className="text-red-500 hover:underline"
                 onClick={handleCloseDetails}
               >
-                Close
+                {t("Close")}
               </button>
             </div>
           </div>
