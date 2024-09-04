@@ -61,7 +61,7 @@ const UserList = () => {
   };
 
   if (loading) {
-    return <div className="text-center">{t("Loading...")}</div>;
+    return <div className="text-center">{t('Loading...')}</div>;
   }
 
   if (error) {
@@ -73,7 +73,7 @@ const UserList = () => {
   }
 
   if (users.length === 0) {
-    return <div className="text-center">{t("No Users Found")}</div>;
+    return <div className="text-center">{t('No Users Found')}</div>;
   }
 
   return (
@@ -86,12 +86,12 @@ const UserList = () => {
         <table className="min-w-full bg-white shadow-md rounded-lg">
           <thead className="bg-gray-200 text-gray-600">
             <tr>
-              <th className="py-2 px-4 text-start">{t("ID")}</th>
-              <th className="py-2 px-4 text-start">{t("First Name")}</th>
-              <th className="py-2 px-4 text-start">{t("Last Name")}</th>
-              <th className="py-2 px-4 text-start">{t("Email")}</th>
-              <th className="py-2 px-4 text-start">{t("Is Admin")}</th>
-              <th className="py-2 px-4 text-start">{t("Action")}</th>
+              <th className="py-2 px-4 text-start">{t('ID')}</th>
+              <th className="py-2 px-4 text-start">{t('First Name')}</th>
+              <th className="py-2 px-4 text-start">{t('Last Name')}</th>
+              <th className="py-2 px-4 text-start">{t('Email')}</th>
+              <th className="py-2 px-4 text-start">{t('Is Admin')}</th>
+              <th className="py-2 px-4 text-start">{t('Action')}</th>
             </tr>
           </thead>
           <tbody>
@@ -158,7 +158,7 @@ const UserList = () => {
                       onClick={handleSaveClick}
                       className="text-green-500 hover:underline"
                     >
-                      {t("Save")}
+                      {t('Save')}
                     </button>
                   ) : (
                     <>
@@ -166,13 +166,13 @@ const UserList = () => {
                         onClick={() => handleEditClick(user)}
                         className="text-blue-500 hover:underline"
                       >
-                        {t("Edit")}
+                        {t('Edit')}
                       </button>
                       <button
                         onClick={() => handleDeleteClick(user._id)}
                         className="text-red-500 hover:underline ml-2"
                       >
-                        {t("Delete")}
+                        {t('Delete')}
                       </button>
                     </>
                   )}

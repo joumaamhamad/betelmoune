@@ -55,35 +55,41 @@ const AdminDashboard = () => {
 
         <div className="bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-lg font-medium text-gray-700 mb-4">
-            {t("Total Products")}
+            {t('Total Products')}
           </h2>
-          <h2>{t("Total Products")}: {products.length}</h2>
+          <h2>
+            {t('Total Products')}: {products.length}
+          </h2>
         </div>
 
         <div className="bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-lg font-medium text-gray-700 mb-4">
-            {t("Total Workshops")}
+            {t('Total Workshops')}
           </h2>
-          <h2>{t("Total Workshops")}: {workshops?.length}</h2>
+          <h2>
+            {t('Total Workshops')}: {workshops?.length}
+          </h2>
         </div>
 
         {/* Middle Row */}
 
         <div className="bg-white p-6 rounded-lg shadow-md col-span-1 h-80">
-          <h2 className="text-lg font-medium text-gray-700 mb-4">{t("Revenues")}</h2>
+          <h2 className="text-lg font-medium text-gray-700 mb-4">
+            {t('Revenues')}
+          </h2>
           <RevenueChart />
         </div>
 
         <div className="bg-white p-6 rounded-lg shadow-md col-span-1 h-80">
           <h2 className="text-lg font-medium text-gray-700 mb-4">
-            {t("Users Growth")}
+            {t('Users Growth')}
           </h2>
           <UserGrowthChart />
         </div>
 
         <div className="bg-white p-6 rounded-lg shadow-md col-span-1 h-80">
           <h2 className="text-lg font-medium text-gray-700 mb-4">
-            {t("Products Performance")}
+            {t('Products Performance')}
           </h2>
           <ProductPerformanceChart />
         </div>
@@ -98,7 +104,9 @@ const AdminDashboard = () => {
         </div> */}
 
         <div className="bg-white p-6 rounded-lg shadow-md col-span-1 h-80">
-          <h2 className="text-lg font-medium text-gray-700 mb-4">{t("Sales Data")}</h2>
+          <h2 className="text-lg font-medium text-gray-700 mb-4">
+            {t('Sales Data')}
+          </h2>
           <SalesChart />
         </div>
 
@@ -115,7 +123,7 @@ const AdminDashboard = () => {
         </div>
         <div className="bg-white p-6 rounded-lg shadow-md col-span-1 h-80">
           <h2 className="text-lg font-medium text-gray-700 mb-4">
-            {t("Customer Retention Rate")}
+            {t('Customer Retention Rate')}
           </h2>
           <CustomerRetentionChart />
         </div>
