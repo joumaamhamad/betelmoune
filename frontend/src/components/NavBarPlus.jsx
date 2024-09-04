@@ -66,6 +66,7 @@ const NavBarPlus = () => {
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
+  
   useEffect(() => {
     if (scrollToAbout && location.pathname === '/') {
       scroller.scrollTo('about', {

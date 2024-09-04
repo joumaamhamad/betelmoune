@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 import axios from 'axios';
+import { t } from 'i18next';
 
 const ProductPerformanceChart = () => {
   const [productPerformanceData, setProductPerformanceData] = useState([]);
@@ -17,7 +18,7 @@ const ProductPerformanceChart = () => {
     labels: productPerformanceData.map(data => data.productName),
     datasets: [
       {
-        label: 'Sales',
+        label: t('Sales'),
         data: productPerformanceData.map(data => data.sales),
         backgroundColor: 'rgba(54, 162, 235, 0.6)',
       },

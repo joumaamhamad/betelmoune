@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 import axios from 'axios';
+import { t } from 'i18next';
 
 const UserGrowthChart = () => {
   const [userGrowthData, setUserGrowthData] = useState([]);
@@ -17,7 +18,7 @@ const UserGrowthChart = () => {
     labels: userGrowthData.map(data => data.month),
     datasets: [
       {
-        label: 'User Growth',
+        label: t('Users Growth'),
         data: userGrowthData.map(data => data.users),
         backgroundColor: 'rgba(153, 102, 255, 0.6)',
       },
