@@ -80,7 +80,8 @@ i18n
           "Upload Image 4": "Upload Image 4",
           "Description": "Description",
           "Note: Your product will be reviewed before it's published. This may take up to 24 hours.": "Note: Your product will be reviewed before it's published. This may take up to 24 hours.",
-          "Submit for review": "Submit for review",
+          "Submit for Review": "Submit for Review",
+          "Submit": "Submit",
           "Error uploading the product": "Error uploading the product",
           "Edit product": "Edit product",
           "Product details": "Product details",
@@ -196,7 +197,15 @@ i18n
           "Gender Distribution": "Gender Distribution",
           "Location": "Location",
           "Sales": "Sales",
-          "Total Sales": "Total Sales"
+          "Total Sales": "Total Sales",
+          "Workshop Registrations": "Workshop Registrations",
+          "Registrations": "Registrations",
+          "Workshop Completions": "Workshop Completions",
+          "Completions": "Completions",
+          "Request Add Product": "Request Add Product",
+          "Product ID": "Product ID",
+          "Requested Products": "Requested Products",
+          "No request to add products found": "No request to add products found",
           // Add more English translations here
         }
       },
@@ -272,7 +281,8 @@ i18n
           "Upload Image 4": "رفع الصورة 4",
           "Description": "الوصف",
           "Note: Your product will be reviewed before it's published. This may take up to 24 hours.": "ملاحظة: سيتم مراجعة منتجك قبل نشره. قد يستغرق هذا ما يصل إلى 24 ساعة.",
-          "Submit for review": "تقديم للمراجعة",
+          "Submit for Review": "تقديم للمراجعة",
+          "Submit": "اضافة",
           "Error uploading the product": "خطأ في تحميل المنتج",
           "Edit product": "تعديل المنتج",
           "Product details": "تفاصيل المنتج",
@@ -388,7 +398,15 @@ i18n
           "Gender Distribution": "التوزيع بين الجنسين",
           "Location": "الموقع",
           "Sales": "مبيعات",
-          "Total Sales": "إجمالي المبيعات"
+          "Total Sales": "إجمالي المبيعات",
+          "Workshop Registrations": "تسجيلات الورشة",
+          "Registrations": "التسجيلات",
+          "Workshop Completions": "ورشة العمل المكتملة",
+          "Completions": "المكتملة",
+          "Request Add Product": "طلب إضافة منتج",
+          "Product ID": "معرف المنتج",
+          "Requested Products": "المنتجات المطلوبة",
+          "No request to add products found": "لم يتم العثور على طلب لإضافة منتجات"
           // Add more Arabic translations here
         }
       },
@@ -464,7 +482,8 @@ i18n
           "Upload Image 4": "Télécharger l'image 4",
           "Description": "Description",
           "Note: Your product will be reviewed before it's published. This may take up to 24 hours.": "Remarque : Votre produit sera examiné avant sa publication. Cela peut prendre jusqu'à 24 heures.",
-          "Submit for review": "Soumettre pour révision",
+          "Submit for Review": "Soumettre pour révision",
+          "Submit": "Soumettre",
           "Error uploading the product": "Erreur lors du téléchargement du produit",
           "Edit product": "Modifier le produit",
           "Product details": "Détails du produit",
@@ -579,7 +598,15 @@ i18n
           "Gender Distribution": "Répartition des sexes",
           "Location": "Emplacement",
           "Sales": "Ventes",
-          "Total Sales": "Ventes totales"
+          "Total Sales": "Ventes totales",
+          "Workshop Registrations": "Inscriptions aux ateliers",
+          "Registrations": "Inscriptions",
+          "Workshop Completions": "Achèvement des ateliers",
+          "Completions": "Complétions",
+          "Request Add Product": "Demande d'ajout de produit",
+          "Product ID": "ID du produit",
+          "Requested Products": "Produits demandés",
+          "No request to add products found": "Aucune demande d'ajout de produits trouvée",
         }
       }
     },

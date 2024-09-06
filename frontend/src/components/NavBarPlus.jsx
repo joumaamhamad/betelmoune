@@ -66,7 +66,7 @@ const NavBarPlus = () => {
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
-  
+
   useEffect(() => {
     if (scrollToAbout && location.pathname === '/') {
       scroller.scrollTo('about', {
@@ -209,6 +209,13 @@ const NavBarPlus = () => {
                     onClick={handleMenuClose}
                   >
                     {t('User List')}
+                  </MenuItem>
+                  <MenuItem
+                    component={Link}
+                    to="/requestProducts"
+                    onClick={handleMenuClose}
+                  >
+                    {t('Request Add Product')}
                   </MenuItem>
                   <MenuItem
                     component={Link}
@@ -370,6 +377,13 @@ const NavBarPlus = () => {
                     className="block text-gray-900 hover:text-gray-600"
                   >
                     {t('User List')}
+                  </Link>
+                  <Link
+                    to="/requestProducts"
+                    onClick={toggleMenu}
+                    className="block text-gray-900 hover:text-gray-600"
+                  >
+                    {t('Request Add Product')}
                   </Link>
                   <Link
                     to="/productList"
