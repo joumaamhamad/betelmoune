@@ -206,6 +206,12 @@ i18n
           "Product ID": "Product ID",
           "Requested Products": "Requested Products",
           "No request to add products found": "No request to add products found",
+          "Are you sure you want to delete this order?": "Are you sure you want to delete this order?",
+          "Are you sure you want to delete this product?": "Are you sure you want to delete this product?",
+          "Are you sure you want to delete this user?": "Are you sure you want to delete this user?",
+          "Are you sure you want to delete this workshop?": "Are you sure you want to delete this workshop?",
+          "Delivered": "Delivered",
+          "Mark as Delivered": "Mark as Delivered",
           // Add more English translations here
         }
       },
@@ -406,7 +412,13 @@ i18n
           "Request Add Product": "طلب إضافة منتج",
           "Product ID": "معرف المنتج",
           "Requested Products": "المنتجات المطلوبة",
-          "No request to add products found": "لم يتم العثور على طلب لإضافة منتجات"
+          "No request to add products found": "لم يتم العثور على طلب لإضافة منتجات",
+          "Are you sure you want to delete this order?": "هل أنت متأكد أنك تريد حذف هذا الطلب؟",
+          "Are you sure you want to delete this product?": "هل أنت متأكد أنك تريد حذف هذا المنتج؟",
+          "Are you sure you want to delete this user?": "هل أنت متأكد أنك تريد حذف هذا المستخدم؟",
+          "Are you sure you want to delete this workshop?": "هل أنت متأكد أنك تريد حذف هذه الورشة؟",
+          "Delivered": "تم التوصيل",
+          "Mark as Delivered": "وضع علامة على أنه تم التسليم",
           // Add more Arabic translations here
         }
       },
@@ -607,6 +619,12 @@ i18n
           "Product ID": "ID du produit",
           "Requested Products": "Produits demandés",
           "No request to add products found": "Aucune demande d'ajout de produits trouvée",
+          "Are you sure you want to delete this order?": "Etes-vous sûr de vouloir supprimer cette commande?",
+          "Are you sure you want to delete this product?": "Êtes-vous sûr de vouloir supprimer ce produit?",
+          "Are you sure you want to delete this user?": "Etes-vous sûr de vouloir supprimer cet utilisateur ?",
+          "Are you sure you want to delete this workshop?": "Etes-vous sûr de vouloir supprimer cet atelier ?",
+          "Delivered": "Livré",
+          "Mark as Delivered": "Marquer comme livré",
         }
       }
     },

@@ -31,7 +31,7 @@ const WorkshopList = () => {
 
   const handleDeleteClick = (workshopId) => {
     const confirmDelete = window.confirm(
-      'Are you sure you want to delete this workshop?'
+      t('Are you sure you want to delete this workshop?')
     );
     if (confirmDelete) {
       dispatch(deleteWorkshop(workshopId))

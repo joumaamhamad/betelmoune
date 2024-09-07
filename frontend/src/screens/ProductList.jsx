@@ -28,7 +28,7 @@ const ProductList = () => {
 
   const handleDeleteClick = (productId) => {
     const confirmDelete = window.confirm(
-      'Are you sure you want to delete this product?'
+      t('Are you sure you want to delete this product?')
     );
     if (confirmDelete) {
       dispatch(deleteProduct(productId))
