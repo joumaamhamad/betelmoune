@@ -135,7 +135,7 @@ userRouter.get('/:id', async (req, res) => {
   try {
     // Replace with your user identification logic
 
-    console.log(req.params.id);
+    console.log('user idd paramss',req.params.id);
 
     const updatedUser = await User.findById(req.params.id);
 
@@ -143,14 +143,16 @@ userRouter.get('/:id', async (req, res) => {
       return res.status(404).send('User not found');
     }
 
+    console.log(updatedUser)
+
     res.json({
       _id: updatedUser._id,
       firstName: updatedUser.firstName,
       lastName: updatedUser.lastName,
       email: updatedUser.email,
-      isAdmin: user.isAdmin,
-      products: user.products,
-      workshops: user.workshops,
+      isAdmin: updatedUser.isAdmin,
+      products: updatedUser.products,
+      workshops: updatedUser.workshops,
       // token: generateToken(user),
       bio: updatedUser.bio,
       profileImage: updatedUser.profileImage,

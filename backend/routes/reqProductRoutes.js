@@ -3,6 +3,7 @@ import upload from '../middleware/uploadProducts.js';
 import RequestProduct from '../models/requestProductModel.js';
 import User from '../models/userModel.js';
 import Product from '../models/productModel.js';
+import nodemailer from 'nodemailer';
 
 const reqProductRouter = express.Router();
 
@@ -96,6 +97,84 @@ reqProductRouter.put('/:productId/admit', async (req, res) => {
 });
   
 
+// reqProductRouter.delete('/:productId', async (req, res) => {
+//   try {
+//     const { productId } = req.params;
+
+//     // Find and delete the requested product from the collection
+//     const deletedProduct = await RequestProduct.findByIdAndDelete(productId);
+//     if (!deletedProduct) {
+//       return res.status(404).json({ message: 'Requested product not found' });
+//     }
+
+//     res.status(200).json({ message: 'Product rejected and deleted successfully' });
+//   } catch (error) {
+//     console.error('Error rejecting product:', error);
+//     res.status(500).json({ message: 'Failed to reject product', error });
+//   }
+// });
+
+const transporter = nodemailer.createTransport({
+  service: 'outlook', // Replace with your email service
+  auth: {
+    user: 'betelmoune@outlook.com', // Replace with your email
+    pass: 'what123what', // Replace with your email password or application-specific password
+  },
+});
+
+// Function to send email
+const sendEmail = async (to, subject, text) => {
+  const mailOptions = {
+    from: 'betelmoune@outlook.com', // Replace with your email
+    to,
+    subject,
+    text,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    console.log('Email sent successfully');
+  } catch (error) {
+    console.error('Error sending email:', error);
+  }
+};
+
+// // Route to handle product rejection and send email
+// reqProductRouter.delete('/:productId', async (req, res) => {
+//   try {
+//     const { productId } = req.params;
+
+//     // Find and delete the requested product from the collection
+//     const deletedProduct = await RequestProduct.findByIdAndDelete(productId);
+//     console.log('delll', deletedProduct)
+//     if (!deletedProduct) {
+//       return res.status(404).json({ message: 'Requested product not found' });
+//     }
+
+//     // Retrieve user email by user ID
+//     const userId = deletedProduct.user; // Assuming the user ID is stored in the product
+//     const user = await User.findById(userId);
+//     if (!user) {
+//       return res.status(404).json({ message: 'User not found' });
+//     }
+
+//     const userEmail = user.email; // Retrieve user email from the user document
+
+//     console.log('emailll' , userEmail)
+
+//     // Prepare and send email notification
+//     const emailSubject = 'Product Rejection Notification';
+//     const emailText = `Dear user,\n\nYour product request with ID ${productId} has been rejected and removed from our system.\n\nThank you.`;
+//     await sendEmail(userEmail, emailSubject, emailText);
+
+//     res.status(200).json({ message: 'Product rejected and email sent successfully' });
+//   } catch (error) {
+//     console.error('Error rejecting product:', error);
+//     res.status(500).json({ message: 'Failed to reject product', error });
+//   }
+// });
+
+// Route to handle product rejection (deletion only)
 reqProductRouter.delete('/:productId', async (req, res) => {
   try {
     const { productId } = req.params;
@@ -106,12 +185,38 @@ reqProductRouter.delete('/:productId', async (req, res) => {
       return res.status(404).json({ message: 'Requested product not found' });
     }
 
-    res.status(200).json({ message: 'Product rejected and deleted successfully' });
+    res.status(200).json({ message: 'Product rejected successfully' });
   } catch (error) {
     console.error('Error rejecting product:', error);
     res.status(500).json({ message: 'Failed to reject product', error });
   }
 });
+
+// Route to send rejection email
+reqProductRouter.post('/send-email/:userId/:productId', async (req, res) => {
+  try {
+    const { userId, productId } = req.params;
+
+    // Retrieve user email by user ID
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const userEmail = user.email; // Retrieve user email from the user document
+
+    // Prepare and send email notification
+    const emailSubject = 'Product Rejection Notification';
+    const emailText = `Dear user,\n\nYour product request with ID ${productId} has been rejected and removed from our system.\n\nThank you.`;
+    await sendEmail(userEmail, emailSubject, emailText);
+
+    res.status(200).json({ message: 'Email sent successfully' });
+  } catch (error) {
+    console.error('Error sending email:', error);
+    res.status(500).json({ message: 'Failed to send email', error });
+  }
+});
+
 
 
 
