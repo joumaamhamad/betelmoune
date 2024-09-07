@@ -67,6 +67,7 @@ const AddProduct = () => {
         },
       });
 
+
       // Open success popup
       setPopup({
         isOpen: true,
@@ -90,6 +91,7 @@ const AddProduct = () => {
         },
       });
       console.error('Error submitting the product', error);
+
     }
   };
 
@@ -100,7 +102,9 @@ const AddProduct = () => {
   return (
     <div className="flex items-start justify-start min-h-screen bg-white-100 p-8 pl-32 ml-32">
       <div className="bg-white p-6 rounded-lg w-full max-w-4xl">
-        <h2 className="text-2xl font-bold mb-6 text-left">{t('Add a new product')}</h2>
+        <h2 className="text-2xl font-bold mb-6 text-left">
+          {t('Add a new product')}
+        </h2>
         <form onSubmit={handleSubmit}>
           <div className="flex flex-wrap mb-4">
             <div className="w-full lg:w-1/2 pr-2 mb-4">
@@ -199,8 +203,14 @@ const AddProduct = () => {
               value={formData.description}
               onChange={handleChange}
               rows="4"
-            />
+
+            ></textarea>
           </div>
+          <p className="text-gray-500 text-sm mb-4 text-left">
+            {t(
+              "Note: Your product will be reviewed before it's published. This may take up to 24 hours."
+            )}
+          </p>
           <button
             type="submit"
             className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-all duration-300"
@@ -218,11 +228,6 @@ const AddProduct = () => {
 };
 
 export default AddProduct;
-
-
-
-
-
 
 
 // import React, { useState } from 'react';
@@ -276,7 +281,7 @@ export default AddProduct;
 //           'Content-Type': 'multipart/form-data',
 //         },
 //       });
-      
+
 //       // Handle success - maybe a redirect or notification
 //     } catch (error) {
 //       console.error(t('Error uploading the product'), error);

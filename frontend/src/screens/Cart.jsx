@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import {
   changeQuantity,
   deleteFromCart,
+  fetchCart,
   ReturnQuantity,
 } from '../store/cartSlice';
 import {
@@ -21,6 +22,12 @@ const Cart = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  // Fetch Cart
+
+  useEffect(() => {
+    dispatch(fetchCart(user._id));
+  }, [dispatch, user]);
 
   // Change Quantity of Product
   const isAvailable = useSelector((state) => state.productsSlice.isAvailable);
@@ -68,7 +75,6 @@ const Cart = () => {
 
   // Delete Item from Cart
 
-
   const deleteHandler = (itemId, type, quantity) => {
     const itemData =
       type === 'product'
@@ -88,9 +94,6 @@ const Cart = () => {
     dispatch(ReturnQuantity(itemData));
   };
 
-
-
-
   // Update quantity data if necessary
   // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
@@ -108,14 +111,15 @@ const Cart = () => {
     console.log('cart::', cart);
   }, [cart]);
 
-
   const checkOutHandler = () => {
     navigate('/shippingAddress');
   };
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-lg">
-      <h2 className="text-2xl font-bold text-gray-800 mb-6">{t('Your Cart')}</h2>
+      <h2 className="text-2xl font-bold text-gray-800 mb-6">
+        {t('Your Cart')}
+      </h2>
       <div className="space-y-6">
         {cart?.map((item, index) => (
           <div
@@ -194,11 +198,14 @@ const Cart = () => {
             <span>${totalPrice.toFixed(2)}</span>
           </div>
 
-
-          <button onClick={checkOutHandler} className="w-1/4 bg-red-500 text-white py-3 rounded-lg text-center hover:bg-red-600 transition">
-            {t('Checkout')}
-
-          </button>
+          <div className="w-full flex justify-center">
+            <button
+              onClick={checkOutHandler}
+              className="w-1/4 bg-red-500 text-white py-3 rounded-lg text-center hover:bg-red-600 transition"
+            >
+              {t('Checkout')}
+            </button>
+          </div>
         </div>
       ) : (
         <p>{t("You Don't have any Items in Cart")}</p>

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { t } from 'i18next';
+
 import { AiOutlineClose } from 'react-icons/ai';
 
 const ImageModal = ({ images, isOpen, onClose }) => {
@@ -30,18 +32,26 @@ const ImageModal = ({ images, isOpen, onClose }) => {
   );
 };
 
+
+
+
 const RequestProducts = () => {
   const [requestProducts, setRequestProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
   const [userNames, setUserNames] = useState({});
 
+
   useEffect(() => {
     const fetchRequestProducts = async () => {
       try {
+
+        console.log('llllllllllllllll');
         const response = await axios.get('/api/requestProducts');
+        console.log('ressss', response.data);
         setRequestProducts(response.data);
         setLoading(false);
       } catch (err) {
@@ -52,6 +62,7 @@ const RequestProducts = () => {
 
     fetchRequestProducts();
   }, []);
+
 
   useEffect(() => {
     const fetchUserNames = async () => {
@@ -78,6 +89,7 @@ const RequestProducts = () => {
     }
   }, [requestProducts]);
 
+
   const handleAdmitClick = async (productId, userId) => {
     try {
       await axios.put(`/api/requestProducts/${productId}/admit`, { userId });
@@ -89,13 +101,16 @@ const RequestProducts = () => {
     }
   };
 
+
   const handleRejectClick = async (productId, userId) => {
     try {
       // Delete the product first
+
       await axios.delete(`/api/requestProducts/${productId}`);
       setRequestProducts((prevProducts) =>
         prevProducts.filter((product) => product._id !== productId)
       );
+
   
       // Send email notification after deletion
       await axios.post(`/api/requestProducts/send-email/${userId}/${productId}`);
@@ -127,24 +142,31 @@ const RequestProducts = () => {
 
   if (requestProducts.length === 0) {
     return <div className="text-center">No Requested Products Found</div>;
+
   }
 
   return (
     <div className="min-h-screen p-6">
       <header className="mb-6">
-        <h1 className="text-left text-4xl font-bold mb-6">Requested Products</h1>
+
+        <h1 className="text-left text-4xl font-bold mb-6">
+          {t('Requested Products')}
+        </h1>
+
       </header>
 
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white shadow-md rounded-lg">
           <thead className="bg-gray-200 text-gray-600">
             <tr>
+
               <th className="py-3 px-6 text-center">Product Name</th>
               <th className="py-3 px-6 text-center">Price</th>
               <th className="py-3 px-6 text-center">Category</th>
               <th className="py-3 px-6 text-center">Quantity</th>
               <th className="py-3 px-6 text-center">User</th>
               <th className="py-3 px-6 text-center">Action</th>
+
             </tr>
           </thead>
           <tbody>
@@ -158,10 +180,12 @@ const RequestProducts = () => {
                   {userNames[product.user] ? userNames[product.user] : 'Loading...'}
                 </td>
                 <td className="py-3 px-6 text-center">
+
                   <button
                     onClick={() => handleAdmitClick(product._id, product.user)}
                     className="text-green-500 hover:underline"
                   >
+
                     Admit
                   </button>
                   <button
@@ -175,6 +199,7 @@ const RequestProducts = () => {
                     className="text-blue-500 hover:underline ml-4"
                   >
                     Show Images
+
                   </button>
                 </td>
               </tr>
@@ -183,12 +208,14 @@ const RequestProducts = () => {
         </table>
       </div>
 
+
       {/* Image Modal */}
       <ImageModal
         images={selectedImages}
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
       />
+
     </div>
   );
 };

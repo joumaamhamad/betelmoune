@@ -3,6 +3,7 @@ import User from '../models/userModel.js';
 import Product from '../models/productModel.js';
 import upload from '../middleware/uploadProducts.js';
 import slugify from 'slugify';
+import { isAuth } from '../utils.js';
 
 const productsRouter = express.Router();
 
@@ -22,7 +23,7 @@ productsRouter.get('/', async (req, res) => {
 });
 
 // DELETE Product
-productsRouter.delete('/delete/:productId', async (req, res) => {
+productsRouter.delete('/delete/:productId', isAuth, async (req, res) => {
   try {
     const { productId } = req.params;
 
@@ -43,7 +44,7 @@ productsRouter.delete('/delete/:productId', async (req, res) => {
 });
 
 // UPDATE Product
-productsRouter.put('/update/:productId', async (req, res) => {
+productsRouter.put('/update/:productId', isAuth, async (req, res) => {
   try {
     const { productId } = req.params;
 
@@ -76,7 +77,7 @@ productsRouter.put('/update/:productId', async (req, res) => {
 
 // Add Product
 
-productsRouter.post('/addProduct/:id', upload, async (req, res) => {
+productsRouter.post('/addProduct/:id', isAuth, upload, async (req, res) => {
   try {
     const { productName, price, category, quantity, description } = req.body;
     const imagePaths = req.files.map((file) => file.path);
@@ -132,7 +133,7 @@ productsRouter.get('/:slug', async (req, res) => {
 
 // Decrement Available Quantity of Product
 
-productsRouter.put('/decrementavailablequantity', async (req, res) => {
+productsRouter.put('/decrementavailablequantity', isAuth, async (req, res) => {
   const filter = {
     'products.productId': req.body.productId,
   };
@@ -166,7 +167,5 @@ productsRouter.put('/decrementavailablequantity', async (req, res) => {
     res.status(500).json({ message: 'Failed Operation' });
   }
 });
-
-
 
 export default productsRouter;

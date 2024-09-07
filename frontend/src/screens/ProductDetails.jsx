@@ -77,7 +77,6 @@ const ProductsDetails = () => {
       };
       dispatch(decrementAvailableQuantity(productData));
       setProductExist(productData);
-
     } else if (user) {
       // Increament Quantity if Item Exist :
 
@@ -96,7 +95,6 @@ const ProductsDetails = () => {
       dispatch(decrementAvailableQuantity(productDataForAvailable));
       setChangeQuantityData(productDataForChangeQuantity);
     }
-    console.log('Welcome ya Guest');
   };
 
   const [popUp, setPopUp] = useState(false);
@@ -119,34 +117,6 @@ const ProductsDetails = () => {
       setPopUp(true);
     }
   }, [dispatch, isAvailable, changeQuantityData]);
-
-  const saveToLocalStorage = (key, value, expirationInMinutes) => {
-    const now = new Date();
-    const item = {
-      value: value,
-      expiry: now.getTime() + expirationInMinutes * 60 * 1000,
-    };
-    localStorage.setItem(key, JSON.stringify(item));
-  };
-
-  const loadFromLocalStorage = (key) => {
-    const itemStr = localStorage.getItem(key);
-    if (!itemStr) {
-      return null;
-    }
-    const item = JSON.parse(itemStr);
-    const now = new Date();
-    if (now.getTime() > item.expiry) {
-      localStorage.removeItem(key);
-      return null;
-    }
-    return item.value;
-  };
-
-  useEffect(() => {
-    loadFromLocalStorage();
-    window.scrollTo(0, 0);
-  }, []);
 
   if (!selectedProduct) {
     return <div>{t('Loading...')}</div>;
@@ -229,7 +199,9 @@ const ProductsDetails = () => {
               {t('Item Not Available')}
             </h2>
             <p className="mt-4 text-gray-700">
-              {t("We're sorry, but this item Quantity is currently not available.")}
+              {t(
+                "We're sorry, but this item Quantity is currently not available."
+              )}
             </p>
             <button
               onClick={() => {

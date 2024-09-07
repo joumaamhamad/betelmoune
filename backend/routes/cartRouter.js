@@ -1,11 +1,30 @@
 import express from 'express';
 import User from '../models/userModel.js';
+import { isAuth } from '../utils.js';
 
 const cartRouter = express.Router();
 
+// Fetch Cart
+
+cartRouter.get('/:userId', async (req, res) => {
+  try {
+    const filter = { _id: req.params.userId };
+
+    const user = await User.find(filter);
+
+    if (user) {
+      const cart = user[0].cart;
+
+      res.status(200).json(cart);
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to get Cart' });
+  }
+});
+
 // Add Product To Cart
 
-cartRouter.post('/product', async (req, res) => {
+cartRouter.post('/product', isAuth, async (req, res) => {
   const filter = { _id: req.body.userId };
   const query = {
     $push: {
@@ -38,7 +57,7 @@ cartRouter.post('/product', async (req, res) => {
 
 // Add Workshop To Cart
 
-cartRouter.post('/workshop', async (req, res) => {
+cartRouter.post('/workshop', isAuth, async (req, res) => {
   const filter = { _id: req.body.userId };
   const query = {
     $push: {
@@ -71,7 +90,7 @@ cartRouter.post('/workshop', async (req, res) => {
 
 // Change Quantity of Product
 
-cartRouter.put('/quantity', async (req, res) => {
+cartRouter.put('/quantity', isAuth, async (req, res) => {
   const filter = { _id: req.body.userId, 'cart.productId': req.body.productId };
   const update = {
     'cart.$.quantity': req.body.quantity,
@@ -95,7 +114,7 @@ cartRouter.put('/quantity', async (req, res) => {
 
 // Delete Item from Cart
 
-cartRouter.put('/deleteFromCart', async (req, res) => {
+cartRouter.put('/deleteFromCart', isAuth, async (req, res) => {
   const filter = { _id: req.body.userId };
 
   const update =
@@ -118,7 +137,7 @@ cartRouter.put('/deleteFromCart', async (req, res) => {
 });
 
 // Clear Cart
-cartRouter.put('/clearCart', async (req, res) => {
+cartRouter.put('/clearCart', isAuth, async (req, res) => {
   try {
     const userId = req.body.userId;
 
@@ -152,10 +171,9 @@ cartRouter.put('/clearCart', async (req, res) => {
   }
 });
 
-
 // Return Quantity of Product When Delete From Cart
 
-cartRouter.put('/returnquantity', async (req, res) => {
+cartRouter.put('/returnquantity', isAuth, async (req, res) => {
   const filter = {
     'products.productId': req.body.itemId,
   };

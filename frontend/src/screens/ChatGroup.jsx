@@ -5,7 +5,6 @@ import {
   addMessage,
   selectGroup,
   removeMessage,
-  addUserToGroup,
 } from '../store/chatsSlice';
 import io from 'socket.io-client';
 import { IoIosHeart } from 'react-icons/io';
@@ -73,10 +72,13 @@ const ChatGroup = () => {
       message: inputValue,
       senderId: user._id,
       senderName: `${user.firstName} ${user.lastName}`,
+      profileImg: user.profileImage,
       times: timeStamp,
     };
 
-    socketRef.current.emit('sendmessage', sendData);
+    if (inputValue.length) {
+      socketRef.current.emit('sendmessage', sendData);
+    }
     input.current.value = '';
   };
 
@@ -90,16 +92,6 @@ const ChatGroup = () => {
     socketRef.current.emit('deletemessage', data);
   };
 
-  // const userData = {
-  //   groupId: '66c0d1f67fc1f3dcdad51d22',
-  //   UserId: '57254681936',
-  //   firstName: 'test',
-  //   lastName: 'test',
-  //   email: 'test@gmail.com',
-  //   password: 'ttt12345',
-  //   isAdmin: false,
-  // };
-
   return (
     <div className="flex h-43rem bg-white">
       <div className="w-1/4 bg-white p-4 border-r border-gray-200">
@@ -111,7 +103,7 @@ const ChatGroup = () => {
           <li className="mb-4">
             <a
               href="#group"
-              className="text-blue-500 font-medium px-2 py-1 rounded-lg block"
+              className="text-blue-500 font-medium px-2 py-1 ml-24 rounded-lg block"
             >
               No groups in favorite
             </a>
@@ -126,7 +118,7 @@ const ChatGroup = () => {
             <li key={group._id} className="mb-4">
               <a
                 href="#group"
-                className="text-blue-500 hover:text-white hover:bg-blue-500 transition-colors duration-200 font-medium px-2 py-1 rounded-lg block"
+                className="text-blue-500 hover:text-white hover:bg-blue-500 w-full flex justify-center transition-colors duration-200 font-medium px-2 py-1 rounded-lg"
                 onClick={() => dispatch(selectGroup(group))}
               >
                 #{group.groupName}
@@ -143,7 +135,11 @@ const ChatGroup = () => {
             <li key={member._id} className="mb-4">
               <div className="flex items-center space-x-3 ml-20">
                 <img
-                  src="https://via.placeholder.com/40"
+                  src={
+                    member.profileImg
+                      ? `/backend${member.profileImg.replace(/\\/g, '/')}`
+                      : 'https://via.placeholder.com/40'
+                  }
                   alt="Avatar"
                   className="w-10 h-10 rounded-full shadow-md"
                 />
@@ -157,17 +153,12 @@ const ChatGroup = () => {
       </div>
       <div className="flex-1 flex flex-col bg-customGreen">
         <div className="p-4 border-b border-gray-200 bg-white flex justify-between items-center shadow-sm">
-          <h2 className="text-gray-900 font-semibold">#general</h2>
-          <button className="text-blue-500 hover:text-blue-600">Search</button>
+          <h2 className="text-gray-900 font-semibold">
+            {groupSelected.groupName}
+          </h2>
         </div>
 
         {/* Messages */}
-        {/* <button
-          className="bg-orange-400 rounded w-20 ml-80"
-          onClick={() => dispatch(addUserToGroup(userData))}
-        >
-          Accept a Member
-        </button> */}
         <div className="flex-1 p-6 overflow-y-auto space-y-4">
           {groupSelected.length === 0 ? (
             <div className="flex-1 flex flex-col justify-center items-center mono">
@@ -189,7 +180,11 @@ const ChatGroup = () => {
                 className="flex items-center space-x-3 relative group"
               >
                 <img
-                  src="https://via.placeholder.com/40"
+                  src={
+                    message.profileImg
+                      ? `/backend${message.profileImg.replace(/\\/g, '/')}`
+                      : 'https://via.placeholder.com/40'
+                  }
                   alt="Avatar"
                   className="w-10 h-10 rounded-full shadow-md"
                 />
@@ -209,7 +204,9 @@ const ChatGroup = () => {
                       message.senderId === user._id ? 'bg-white' : 'bg-blue-100'
                     } p-4 rounded-lg shadow-md`}
                   >
-                    <p className="text-gray-800 text-left">{message.text}</p>
+                    <p className="w-fit text-gray-800 text-left">
+                      {message.text}
+                    </p>
                   </div>
 
                   {/* Delete Icon Positioned in Background */}

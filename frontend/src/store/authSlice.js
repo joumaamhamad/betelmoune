@@ -30,8 +30,20 @@ export const updateProfile = createAsyncThunk(
   'auth/updateProfile',
   async (profile, thunkAPI) => {
     const { rejectWithValue } = thunkAPI;
+    const userInfo = localStorage.getItem('userInfo');
+    let token = null;
+
+    if (userInfo) {
+      const user = JSON.parse(userInfo);
+      token = user.token;
+    }
     try {
-      const response = await axios.put('/api/users/profile', profile);
+      const response = await axios.put('/api/users/profile', profile, {
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          Authorization: `${token}`,
+        },
+      });
       const updatedUserData = response.data;
       console.log('data when I update::', updatedUserData);
       localStorage.setItem('userInfo', JSON.stringify(updatedUserData));
@@ -42,32 +54,33 @@ export const updateProfile = createAsyncThunk(
   }
 );
 
-export const signUp = createAsyncThunk('auth/signUp', async (data, thunkAPI) => {
-  const { rejectWithValue } = thunkAPI;
-  try {
-    const response = await axios.post(
-      'http://localhost:5000/api/users/signup',
-      data,
-      {
-        headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
+export const signUp = createAsyncThunk(
+  'auth/signUp',
+  async (data, thunkAPI) => {
+    const { rejectWithValue } = thunkAPI;
+    try {
+      const response = await axios.post(
+        'http://localhost:5000/api/users/signup',
+        data,
+        {
+          headers: {
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+        }
+      );
+      const userData = response.data;
+
+      if (userData.message) {
+        return false;
+      } else {
+        localStorage.setItem('userInfo', JSON.stringify(userData));
+        return userData;
       }
-    );
-    const userData = response.data;
-
-    if (userData.message) {
-      return false;
-    } else {
-      localStorage.setItem('userInfo', JSON.stringify(userData));
-      return userData;
+    } catch (error) {
+      return rejectWithValue(error.message);
     }
-  } catch (error) {
-    return rejectWithValue(error.message);
   }
-});
-
-
+);
 
 //----------------------------------------------------------------------------------
 
@@ -97,7 +110,7 @@ const initialState = {
   })(),
   error: null,
   isLoading: false,
-  cart: JSON.parse(localStorage.getItem('cart')) || [],
+  cart: [],
 };
 
 // const initialState = {
@@ -108,7 +121,6 @@ const initialState = {
 //   cart: [],
 // };
 
-
 const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -117,15 +129,14 @@ const authSlice = createSlice({
     logOut: (state) => {
       state.user = null;
       state.token = null;
+      state.cart = [];
       state.isLoading = false;
       state.error = null;
       localStorage.removeItem('userInfo');
-      localStorage.removeItem('cart');
     },
     // Get Cart Data
     getCart: (state, action) => {
       state.cart = action.payload; // Assuming the response structure
-      localStorage.setItem('cart', JSON.stringify(action.payload));
     },
   },
   extraReducers: (builder) => {
@@ -179,8 +190,6 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.error = action.payload;
       });
-
-      
   },
 });
 

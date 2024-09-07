@@ -7,9 +7,21 @@ export const getMyGroups = createAsyncThunk(
   'chats/getMyGroups',
   async (userId, thunkAPI) => {
     const { rejectedWithValue } = thunkAPI;
+    const userInfo = localStorage.getItem('userInfo');
+    let token = null;
+
+    if (userInfo) {
+      const user = JSON.parse(userInfo);
+      token = user.token;
+    }
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/chats/mygroup/${userId}`
+        `http://localhost:5000/api/chats/mygroup/${userId}`,
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
       );
 
       const groups = await response.data;
@@ -30,6 +42,13 @@ export const addUserToGroup = createAsyncThunk(
   'chats/addUserToGroup',
   async (userData, thunkAPI) => {
     const { rejectedWithValue } = thunkAPI;
+    const userInfo = localStorage.getItem('userInfo');
+    let token = null;
+
+    if (userInfo) {
+      const user = JSON.parse(userInfo);
+      token = user.token;
+    }
     try {
       const response = await axios.post(
         `http://localhost:5000/api/chats/addUserToGroup`,
@@ -37,6 +56,7 @@ export const addUserToGroup = createAsyncThunk(
         {
           headers: {
             'Content-Type': 'application/json; charset=UTF-8',
+            Authorization: `${token}`,
           },
         }
       );

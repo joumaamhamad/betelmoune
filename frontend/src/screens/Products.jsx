@@ -61,7 +61,7 @@ const Products = () => {
     >
       <div className="max-w-screen-xl mx-auto">
         <h1 className="text-left text-4xl font-bold mb-6">
-          All Products
+          {t('All Products')}
           <span className="text-xl">
             {user?.products?.length > 0 ? (
               <Link to={'/editproduct'}>
@@ -109,7 +109,10 @@ const Products = () => {
                 >
                   <Link to={`/products/${product.slug}`}>
                     <img
-                      src={`/backend/${product?.images[0]?.replace(/\\/g, '/')}`}
+                      src={`/backend/${product?.images[0]?.replace(
+                        /\\/g,
+                        '/'
+                      )}`}
                       alt={product.name}
                       className="w-full h-48 object-cover rounded-lg"
                     />

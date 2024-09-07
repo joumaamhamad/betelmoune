@@ -27,7 +27,8 @@ export const setupSocketIO = (server) => {
 
     // Handle sending a message
     socket.on('sendmessage', async (data) => {
-      const { groupId, message, senderId, senderName, times } = data;
+      const { groupId, message, senderId, senderName, profileImg, times } =
+        data;
 
       try {
         const filter = { _id: groupId };
@@ -38,6 +39,7 @@ export const setupSocketIO = (server) => {
               text: message,
               senderId,
               senderName,
+              profileImg,
               timestamp: times,
             },
           },

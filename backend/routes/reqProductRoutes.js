@@ -5,16 +5,18 @@ import User from '../models/userModel.js';
 import Product from '../models/productModel.js';
 import nodemailer from 'nodemailer';
 
+
 const reqProductRouter = express.Router();
 
 reqProductRouter.get('/', async (req, res) => {
   try {
-    console.log('allllll')
+
     const requestProducts = await RequestProduct.find();
 
     res.status(200).json(requestProducts);
   } catch (error) {
     console.error('Error fetching request products:', error);
+
     res.status(500).json({ message: 'Failed to fetch request products', error });
   }
 });
@@ -49,12 +51,13 @@ reqProductRouter.post('/addProduct/:userId', upload , async (req, res) => {
     } catch (error) {
       res.status(500).json({ message: 'Error submitting the product', error: error.message });
     }
+
 });
 
 reqProductRouter.put('/:productId/admit', async (req, res) => {
   try {
     const { productId } = req.params;
-    
+
 
     // Find the requested product
     const requestProduct = await RequestProduct.findById(productId);
@@ -89,12 +92,15 @@ reqProductRouter.put('/:productId/admit', async (req, res) => {
     // Remove the product from the RequestProducts collection
     await RequestProduct.findByIdAndDelete(productId);
 
+
     res.status(200).json({ message: 'Product admitted successfully and moved to user products', product: newProduct });
+
   } catch (error) {
     console.error('Error admitting product:', error);
     res.status(500).json({ message: 'Failed to admit product', error });
   }
 });
+
   
 
 // reqProductRouter.delete('/:productId', async (req, res) => {
@@ -175,6 +181,7 @@ const sendEmail = async (to, subject, text) => {
 // });
 
 // Route to handle product rejection (deletion only)
+
 reqProductRouter.delete('/:productId', async (req, res) => {
   try {
     const { productId } = req.params;
@@ -185,12 +192,15 @@ reqProductRouter.delete('/:productId', async (req, res) => {
       return res.status(404).json({ message: 'Requested product not found' });
     }
 
+
     res.status(200).json({ message: 'Product rejected successfully' });
+
   } catch (error) {
     console.error('Error rejecting product:', error);
     res.status(500).json({ message: 'Failed to reject product', error });
   }
 });
+
 
 // Route to send rejection email
 reqProductRouter.post('/send-email/:userId/:productId', async (req, res) => {
@@ -223,3 +233,4 @@ reqProductRouter.post('/send-email/:userId/:productId', async (req, res) => {
 
 export default reqProductRouter;
 // module.exports = reqProductRouter;
+
