@@ -1,6 +1,7 @@
 import express from 'express';
 import Order from '../models/orderModel.js';
 import Stripe from 'stripe';
+import asyncHandler from 'express-async-handler';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
@@ -22,7 +23,9 @@ orderRouter.post('/', async (req, res) => {
     const createdOrder = await newOrder.save();
     res.status(201).send({ message: 'New Order Created', order: createdOrder });
   } catch (err) {
-    res.status(500).send({ message: 'Error in Creating Order', error: err.message });
+    res
+      .status(500)
+      .send({ message: 'Error in Creating Order', error: err.message });
   }
 });
 
@@ -39,9 +42,50 @@ orderRouter.post('/create-payment-intent', async (req, res) => {
       clientSecret: paymentIntent.client_secret,
     });
   } catch (err) {
-    res.status(500).send({ message: 'Error creating payment intent', error: err.message });
+    res
+      .status(500)
+      .send({ message: 'Error creating payment intent', error: err.message });
   }
 });
 
+orderRouter.get('/', async (req, res) => {
+  const orders = await Order.find();
+  res.send(orders);
+});
+
+orderRouter.delete('/delete/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedOrder = await Order.findByIdAndDelete(id);
+
+    if (!deletedOrder) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
+
+    res.status(200).json({ message: 'Order deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error });
+  }
+});
+
+// update the delivery status
+orderRouter.put(
+  '/:id/deliver',
+  asyncHandler(async (req, res) => {
+    const order = await Order.findById(req.params.id);
+
+    if (order) {
+      order.isDelivered = !order.isDelivered;
+      order.deliveredAt = order.isDelivered ? Date.now() : null;
+      const updatedOrder = await order.save();
+      res.status(200).send({
+        message: 'Order delivery status updated',
+        order: updatedOrder,
+      });
+    } else {
+      res.status(404).send({ message: 'Order not found' });
+    }
+  })
+);
 
 export default orderRouter;

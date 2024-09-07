@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { deleteUser, getUsers, updateUser } from '../store/usersSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 const UserList = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const [editingUser, setEditingUser] = useState(null);
   const [formValues, setFormValues] = useState({
@@ -22,7 +24,7 @@ const UserList = () => {
 
   const handleDeleteClick = (userId) => {
     const confirmDelete = window.confirm(
-      'Are you sure you want to delete this user?'
+      t('Are you sure you want to delete this user?')
     );
     if (confirmDelete) {
       dispatch(deleteUser(userId))
@@ -59,37 +61,37 @@ const UserList = () => {
   };
 
   if (loading) {
-    return <div className="text-center">Loading...</div>;
+    return <div className="text-center">{t('Loading...')}</div>;
   }
 
   if (error) {
     return (
       <div className="text-center text-red-500">
-        Failed to load users: {error}
+        {t('Failed to load users:')} {error}
       </div>
     );
   }
 
   if (users.length === 0) {
-    return <div className="text-center">No Users Found</div>;
+    return <div className="text-center">{t('No Users Found')}</div>;
   }
 
   return (
     <div className="min-h-screen p-6">
       <header className="mb-6">
-        <h1 className="text-left text-4xl font-bold mb-6">Users</h1>
+        <h1 className="text-left text-4xl font-bold mb-6">{t('Users')}</h1>
       </header>
 
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white shadow-md rounded-lg">
           <thead className="bg-gray-200 text-gray-600">
             <tr>
-              <th className="py-2 px-4 text-center">ID</th>
-              <th className="py-2 px-4 text-center">First Name</th>
-              <th className="py-2 px-4 text-center">Last Name</th>
-              <th className="py-2 px-4 text-center">Email</th>
-              <th className="py-2 px-4 text-center">Is Admin</th>
-              <th className="py-2 px-4 text-center">Action</th>
+              <th className="py-2 px-4 text-start">{t('ID')}</th>
+              <th className="py-2 px-4 text-start">{t('First Name')}</th>
+              <th className="py-2 px-4 text-start">{t('Last Name')}</th>
+              <th className="py-2 px-4 text-start">{t('Email')}</th>
+              <th className="py-2 px-4 text-start">{t('Is Admin')}</th>
+              <th className="py-2 px-4 text-start">{t('Action')}</th>
             </tr>
           </thead>
           <tbody>
@@ -135,7 +137,7 @@ const UserList = () => {
                     user.email
                   )}
                 </td>
-                <td className="py-2 px-4 text-center">
+                <td className="py-2 px-4">
                   {editingUser === user._id ? (
                     <input
                       type="checkbox"
@@ -156,7 +158,7 @@ const UserList = () => {
                       onClick={handleSaveClick}
                       className="text-green-500 hover:underline"
                     >
-                      Save
+                      {t('Save')}
                     </button>
                   ) : (
                     <>
@@ -164,13 +166,13 @@ const UserList = () => {
                         onClick={() => handleEditClick(user)}
                         className="text-blue-500 hover:underline"
                       >
-                        Edit
+                        {t('Edit')}
                       </button>
                       <button
                         onClick={() => handleDeleteClick(user._id)}
                         className="text-red-500 hover:underline ml-2"
                       >
-                        Delete
+                        {t('Delete')}
                       </button>
                     </>
                   )}

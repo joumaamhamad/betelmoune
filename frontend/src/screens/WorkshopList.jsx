@@ -5,6 +5,8 @@ import {
   updateWorkshop,
 } from '../store/workshopsSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { t } from 'i18next';
 
 const WorkshopList = () => {
   const workshops = useSelector((state) => state.workshopsSlice.workshops);
@@ -20,6 +22,7 @@ const WorkshopList = () => {
     date: '',
     duration: '',
     capacity: '',
+    price: '',
   });
 
   useEffect(() => {
@@ -28,7 +31,7 @@ const WorkshopList = () => {
 
   const handleDeleteClick = (workshopId) => {
     const confirmDelete = window.confirm(
-      'Are you sure you want to delete this workshop?'
+      t('Are you sure you want to delete this workshop?')
     );
     if (confirmDelete) {
       dispatch(deleteWorkshop(workshopId))
@@ -50,6 +53,7 @@ const WorkshopList = () => {
       date: workshop.date,
       duration: workshop.duration,
       capacity: workshop.capacity,
+      price: workshop.price,
     });
   };
 
@@ -59,54 +63,59 @@ const WorkshopList = () => {
   };
 
   const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value, type } = e.target;
+    // Ensure that number inputs cannot be set to values less than 0
+    const newValue = type === 'number' && value < 0 ? 0 : value;
     setFormValues({
       ...formValues,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: type === 'checkbox' ? e.target.checked : newValue,
     });
   };
 
   if (loading) {
-    return <div className="text-center">Loading...</div>;
+    return <div className="text-center">{t('Loading...')}</div>;
   }
 
   if (error) {
     return (
       <div className="text-center text-red-500">
-        Failed to load users: {error}
+        {t('Failed to load workshops:')} {error}
       </div>
     );
   }
 
   if (workshops.length === 0) {
-    return <div className="text-center">No Workshops Found</div>;
+    return <div className="text-center">{t('No Workshops Found')}</div>;
   }
 
   return (
     <div className="min-h-screen p-6">
       <header className="mb-6">
-        <h1 className="text-left text-4xl font-bold mb-6">Workshops</h1>
+        <h1 className="text-left text-4xl font-bold mb-6">{t('Workshops')}</h1>
       </header>
 
       <main className="p-6">
         <div className="mb-4">
-          <button className="flex bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
-            Create Workshop
-          </button>
+          <Link to={'/AddWorkshop'}>
+            <button className="flex bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+              {t('Create Workshop')}
+            </button>
+          </Link>
         </div>
 
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white shadow-md rounded-lg">
             <thead className="bg-gray-200 text-gray-600">
               <tr>
-                <th className="py-2 px-4 text-center">ID</th>
-                <th className="py-2 px-4 text-center">Name</th>
-                <th className="py-2 px-4 text-center">Slug</th>
-                <th className="py-2 px-4 text-center">Description</th>
-                <th className="py-2 px-4 text-center">Date</th>
-                <th className="py-2 px-4 text-center">Duration</th>
-                <th className="py-2 px-4 text-center">Capacity</th>
-                <th className="py-2 px-4 text-center">Action</th>
+                <th className="py-2 px-4 text-start">{t('ID')}</th>
+                <th className="py-2 px-4 text-start">{t('Name')}</th>
+                <th className="py-2 px-4 text-start">{t('Slug')}</th>
+                <th className="py-2 px-4 text-start">{t('Description')}</th>
+                <th className="py-2 px-4 text-start">{t('Date')}</th>
+                <th className="py-2 px-4 text-start">{t('Duration')}</th>
+                <th className="py-2 px-4 text-start">{t('Capacity')}</th>
+                <th className="py-2 px-4 text-start">{t('Price')}</th>
+                <th className="py-2 px-4 text-start">{t('Action')}</th>
               </tr>
             </thead>
             <tbody>
@@ -175,7 +184,7 @@ const WorkshopList = () => {
                         className="border rounded p-1"
                       />
                     ) : (
-                      workshop.duration
+                      `${workshop.duration}h`
                     )}
                   </td>
                   <td className="py-2 px-4">
@@ -193,11 +202,24 @@ const WorkshopList = () => {
                   </td>
                   <td className="py-2 px-4">
                     {editingWorkshop === workshop._id ? (
+                      <input
+                        type="number"
+                        name="price"
+                        value={formValues.price}
+                        onChange={handleInputChange}
+                        className="border rounded p-1"
+                      />
+                    ) : (
+                      `${workshop.price}$`
+                    )}
+                  </td>
+                  <td className="py-2 px-4">
+                    {editingWorkshop === workshop._id ? (
                       <button
                         onClick={handleSaveClick}
                         className="text-green-500 hover:underline"
                       >
-                        Save
+                        {t('Save')}
                       </button>
                     ) : (
                       <>
@@ -205,13 +227,13 @@ const WorkshopList = () => {
                           onClick={() => handleEditClick(workshop)}
                           className="text-blue-500 hover:underline"
                         >
-                          Edit
+                          {t('Edit')}
                         </button>
                         <button
                           onClick={() => handleDeleteClick(workshop._id)}
                           className="text-red-500 hover:underline"
                         >
-                          Delete
+                          {t('Delete')}
                         </button>
                       </>
                     )}

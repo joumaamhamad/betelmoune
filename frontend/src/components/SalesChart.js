@@ -13,6 +13,7 @@ import {
   Legend,
 } from 'chart.js';
 import axios from 'axios';
+import { t } from 'i18next';
 
 ChartJS.register(
   CategoryScale,
@@ -43,7 +44,7 @@ const SalesChart = () => {
     labels: salesData?.map((item) => item._id), // Use date as label
     datasets: [
       {
-        label: 'Total Sales',
+        label: t('Total Sales'),
         data: salesData?.map((item) => item.totalSales),
         fill: false,
         borderColor: 'rgb(75, 192, 192)',

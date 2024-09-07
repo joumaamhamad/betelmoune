@@ -66,6 +66,7 @@ const NavBarPlus = () => {
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
+
   useEffect(() => {
     if (scrollToAbout && location.pathname === '/') {
       scroller.scrollTo('about', {
@@ -123,6 +124,7 @@ const NavBarPlus = () => {
               to="/"
               className="text-xl font-bold text-gray-900 animated-gradient-text"
             >
+
               {t('Bet Elmouneh')}
             </Link>
           </div>
@@ -144,18 +146,20 @@ const NavBarPlus = () => {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex md:space-x-8 md:items-center rtl:space-x-reverse">
-            <Link to="/" className="text-gray-900 hover:text-gray-600 text-m">
+            <Link to="/" className="text-gray-900 hover:text-gray-600 text-sm">
               {t('Home')}
             </Link>
             <Link
               to="/products"
-              className="text-gray-900 hover:text-gray-600 text-m"
+              className="text-gray-900 hover:text-gray-600 text-sm"
+
             >
               {t('Products')}
             </Link>
             <Link
               to="/workshops"
-              className="text-gray-900 hover:text-gray-600 text-m"
+              className="text-gray-900 hover:text-gray-600 text-sm"
+
             >
               {t('Workshops')}
             </Link>
@@ -163,20 +167,23 @@ const NavBarPlus = () => {
             {user ? (
               <Link
                 to="/myWorkshops"
-                className="text-gray-900 hover:text-gray-600 text-m"
+                className="text-gray-900 hover:text-gray-600 text-sm"
+
               >
                 {t('My Workshops')}
               </Link>
             ) : null}
             <span
               onClick={handleAboutClick}
-              className="text-gray-900 hover:text-gray-600 text-m cursor-pointer"
+              className="text-gray-900 hover:text-gray-600 text-sm cursor-pointer"
+
             >
               {t('About us')}
             </span>
             <span
               onClick={handleContactClick}
-              className="text-gray-900 hover:text-gray-600 text-m cursor-pointer"
+              className="text-gray-900 hover:text-gray-600 text-sm cursor-pointer"
+
             >
               {t('Contact')}
             </span>
@@ -200,10 +207,24 @@ const NavBarPlus = () => {
                 >
                   <MenuItem
                     component={Link}
+                    to="/adminDashboard"
+                    onClick={handleMenuClose}
+                  >
+                    {t('Admin Dashboard')}
+                  </MenuItem>
+                  <MenuItem
+                    component={Link}
                     to="/userList"
                     onClick={handleMenuClose}
                   >
                     {t('User List')}
+                  </MenuItem>
+                  <MenuItem
+                    component={Link}
+                    to="/requestProducts"
+                    onClick={handleMenuClose}
+                  >
+                    {t('Request Add Product')}
                   </MenuItem>
                   <MenuItem
                     component={Link}
@@ -221,10 +242,11 @@ const NavBarPlus = () => {
                   </MenuItem>
                   <MenuItem
                     component={Link}
-                    to="/adminDashboard"
+                    to="/orderList"
                     onClick={handleMenuClose}
                   >
-                    {t('Admin Dashboard')}
+                    {t('Order List')}
+
                   </MenuItem>
                 </Menu>
               </div>
@@ -353,11 +375,25 @@ const NavBarPlus = () => {
               {user && user.isAdmin ? (
                 <>
                   <Link
+                    to="/adminDashboard"
+                    onClick={toggleMenu}
+                    className="block text-gray-900 hover:text-gray-600"
+                  >
+                    {t('Admin Dashboard')}
+                  </Link>
+                  <Link
                     to="/userList"
                     onClick={toggleMenu}
                     className="block text-gray-900 hover:text-gray-600"
                   >
                     {t('User List')}
+                  </Link>
+                  <Link
+                    to="/requestProducts"
+                    onClick={toggleMenu}
+                    className="block text-gray-900 hover:text-gray-600"
+                  >
+                    {t('Request Add Product')}
                   </Link>
                   <Link
                     to="/productList"
@@ -374,11 +410,11 @@ const NavBarPlus = () => {
                     {t('Workshop List')}
                   </Link>
                   <Link
-                    to="/adminDashboard"
+                    to="/orderList"
                     onClick={toggleMenu}
                     className="block text-gray-900 hover:text-gray-600"
                   >
-                    {t('Admin Dashboard')}
+                    {t('Order List')}
                   </Link>
                 </>
               ) : null}

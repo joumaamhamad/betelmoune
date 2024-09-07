@@ -8,8 +8,8 @@ import i18n from './i18n'; // Import i18n configuration
 import { ToastContainer } from 'react-toastify';
 import {} from './App.css';
 
+
 // import Footer from './components/Footer'; // Uncomment if you want to use the Footer
-// import { ToastContainer } from 'react-toastify';
 
 import ProductsDetails from './screens/ProductDetails';
 import WorkshopDetails from './screens/WorkshopDetails';
@@ -22,6 +22,7 @@ import WorkshopContent from './screens/WorkshopContent';
 import UserList from './screens/UserList';
 import ProductList from './screens/ProductList';
 import WorkshopList from './screens/WorkshopList';
+import OrderList from './screens/OrderList';
 import AdminDashboard from './screens/AdminDashboard';
 
 import ChatGroup from './screens/ChatGroup';
@@ -35,6 +36,8 @@ import ChatBotComponent from './components/chatbot/ChatBot';
 import 'react-chatbot-kit/build/main.css';
 import { useDispatch } from 'react-redux';
 import { logIn } from './store/authSlice';
+import RequestProducts from './screens/RequestProducts';
+import AddWorkshop from './screens/AddWorkshop';
 // import { Elements } from '@stripe/react-stripe-js';
 // import { loadStripe } from '@stripe/stripe-js';
 
@@ -150,6 +153,7 @@ function App() {
                 <Route path="/workshops" element={<Workshops />} />
                 <Route path="/workshop/:slug" element={<WorkshopDetails />} />
                 <Route path="/addProduct" element={<AddProduct />} />
+                <Route path="/addWorkshop" element={<AddWorkshop />} />
                 <Route path="/editProduct" element={<EditProduct />} />
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/profile" element={<Profile />} />
@@ -162,11 +166,13 @@ function App() {
                   element={<WorkshopContent />}
                 />
                 <Route path="/userList" element={<UserList />} />
+                <Route path="/orderList" element={<OrderList />} />
                 <Route path="/productList" element={<ProductList />} />
                 <Route path="/workshopList" element={<WorkshopList />} />
                 <Route path="/adminDashboard" element={<AdminDashboard />} />
                 <Route path="/myWorkshops" element={<MyWorkshops />} />
                 <Route path="/chatgroup" element={<ChatGroup />} />
+                <Route path="/requestProducts" element={<RequestProducts />} />
               </Routes>
             </Suspense>
           </main>

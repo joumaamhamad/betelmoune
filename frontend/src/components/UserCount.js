@@ -12,6 +12,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
+import { t } from 'i18next';
 
 ChartJS.register(
   CategoryScale,
@@ -39,7 +40,7 @@ const UserCount = () => {
 
   return (
     <div>
-      <h2>Total Users: {userCount}</h2>
+      <h2>{t("Total Users")}: {userCount}</h2>
     </div>
   );
 };
