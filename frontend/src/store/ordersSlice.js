@@ -14,7 +14,7 @@ export const getOrders = createAsyncThunk(
   }
 );
 
-// Delete a order
+// Delete an order
 export const deleteOrder = createAsyncThunk(
   'orders/deleteOrder',
   async (orderId, { rejectWithValue }) => {
@@ -27,21 +27,29 @@ export const deleteOrder = createAsyncThunk(
   }
 );
 
-// Creating the orders slice
+// Update delivery status
+export const updateDeliveryStatus = createAsyncThunk(
+  'orders/updateDeliveryStatus',
+  async (orderId, { rejectWithValue }) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:5000/api/orders/${orderId}/deliver`
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || error.message);
+    }
+  }
+);
+
 const ordersSlice = createSlice({
   name: 'orders',
   initialState: {
     orders: [],
-    selectedOrder: null,
     loading: false,
     error: null,
   },
-  reducers: {
-    // Reducer to select a order
-    selectOrder: (state, action) => {
-      state.selectedOrder = action.payload;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(getOrders.pending, (state) => {
@@ -56,18 +64,34 @@ const ordersSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-      // Handling deleteOrder
+      .addCase(deleteOrder.pending, (state) => {
+        state.loading = true;
+      })
       .addCase(deleteOrder.fulfilled, (state, action) => {
+        state.loading = false;
         state.orders = state.orders.filter(
-          (order) => order.id !== action.payload
+          (order) => order._id !== action.payload
         );
       })
       .addCase(deleteOrder.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(updateDeliveryStatus.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateDeliveryStatus.fulfilled, (state, action) => {
+        state.loading = false;
+        const updatedOrder = action.payload.order;
+        state.orders = state.orders.map((order) =>
+          order._id === updatedOrder._id ? updatedOrder : order
+        );
+      })
+      .addCase(updateDeliveryStatus.rejected, (state, action) => {
+        state.loading = false;
         state.error = action.payload;
       });
   },
 });
 
-// Exporting actions and reducer
-export const { selectOrder } = ordersSlice.actions;
 export default ordersSlice.reducer;

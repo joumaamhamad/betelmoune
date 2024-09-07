@@ -1,6 +1,7 @@
 import express from 'express';
 import Order from '../models/orderModel.js';
 import Stripe from 'stripe';
+import asyncHandler from 'express-async-handler';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
@@ -66,5 +67,25 @@ orderRouter.delete('/delete/:id', async (req, res) => {
     res.status(500).json({ message: 'Server error', error });
   }
 });
+
+// update the delivery status
+orderRouter.put(
+  '/:id/deliver',
+  asyncHandler(async (req, res) => {
+    const order = await Order.findById(req.params.id);
+
+    if (order) {
+      order.isDelivered = !order.isDelivered;
+      order.deliveredAt = order.isDelivered ? Date.now() : null;
+      const updatedOrder = await order.save();
+      res.status(200).send({
+        message: 'Order delivery status updated',
+        order: updatedOrder,
+      });
+    } else {
+      res.status(404).send({ message: 'Order not found' });
+    }
+  })
+);
 
 export default orderRouter;

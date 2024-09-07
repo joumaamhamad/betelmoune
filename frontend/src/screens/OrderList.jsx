@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteOrder, getOrders } from '../store/ordersSlice';
+import {
+  deleteOrder,
+  getOrders,
+  updateDeliveryStatus,
+} from '../store/ordersSlice';
 import { t } from 'i18next';
 
 const OrderList = () => {
@@ -17,7 +21,7 @@ const OrderList = () => {
 
   const handleDeleteClick = (orderId) => {
     const confirmDelete = window.confirm(
-      'Are you sure you want to delete this order?'
+      t('Are you sure you want to delete this order?')
     );
     if (confirmDelete) {
       dispatch(deleteOrder(orderId))
@@ -28,6 +32,16 @@ const OrderList = () => {
           console.error('Failed to delete order:', err);
         });
     }
+  };
+
+  const handleDeliverClick = (orderId) => {
+    dispatch(updateDeliveryStatus(orderId))
+      .then(() => {
+        dispatch(getOrders());
+      })
+      .catch((err) => {
+        console.error('Failed to update delivery status:', err);
+      });
   };
 
   const handleDetailClick = (order) => {
@@ -101,13 +115,25 @@ const OrderList = () => {
                   >
                     {t('Delete')}
                   </button>
+                  <button
+                    className={`text-blue-500 ml-2 ${
+                      order.isDelivered
+                        ? 'cursor-not-allowed text-gray-400'
+                        : 'hover:underline'
+                    }`}
+                    onClick={() => handleDeliverClick(order._id)}
+                    disabled={order.isDelivered}
+                  >
+                    {order.isDelivered
+                      ? t('Delivered')
+                      : t('Mark as Delivered')}
+                  </button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-
       {selectedOrder && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center z-50">
           <div className="bg-white rounded-lg p-6 max-w-lg w-full">
