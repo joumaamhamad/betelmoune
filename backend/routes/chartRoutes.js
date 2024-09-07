@@ -282,6 +282,44 @@ chartRouter.get('/user-demographics', async (req, res) => {
   //     res.status(500).json({ message: error.message });
   //   }
   // });
+
+  
+  chartRouter.get('/workshopRegistrations', async (req, res) => {
+    try {
+      const workshops = await Workshop.find().populate('registeredUsers', 'name');
+
+      const data = workshops.map((workshop) => ({
+        workshopName: workshop.name,
+        registrations: workshop.registeredUsers.length,
+      }));
+
+      res.json({ data });
+    } catch (error) {
+      res.status(500).json({ message: 'Failed to fetch workshop registrations' });
+    }
+  });
+
+  
+  chartRouter.get('/workshopCompletions', async (req, res) => {
+    try {
+      const workshops = await Workshop.find();
+      const workshopCompletionData = [];
+
+      for (const workshop of workshops) {
+        const userCount = await User.countDocuments({
+          'workshops._id': workshop._id,
+        });
+        workshopCompletionData.push({
+          workshopName: workshop.name,
+          completions: userCount,
+        });
+      }
+
+      res.json({ data: workshopCompletionData });
+    } catch (error) {
+      res.status(500).json({ message: 'Failed to fetch workshop completion data' });
+    }
+  });
   
   
 
