@@ -37,7 +37,9 @@ import 'react-chatbot-kit/build/main.css';
 import { useDispatch } from 'react-redux';
 import { logIn } from './store/authSlice';
 import RequestProducts from './screens/RequestProducts';
+
 import AddWorkshop from './screens/AddWorkshop';
+
 // import { Elements } from '@stripe/react-stripe-js';
 // import { loadStripe } from '@stripe/stripe-js';
 
@@ -172,7 +174,8 @@ function App() {
                 <Route path="/adminDashboard" element={<AdminDashboard />} />
                 <Route path="/myWorkshops" element={<MyWorkshops />} />
                 <Route path="/chatgroup" element={<ChatGroup />} />
-                <Route path="/requestProducts" element={<RequestProducts />} />
+                <Route path='/requestProducts' element={<RequestProducts />} />
+
               </Routes>
             </Suspense>
           </main>

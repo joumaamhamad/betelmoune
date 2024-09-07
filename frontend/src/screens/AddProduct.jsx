@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import PopupMessage from '../components/PopupMessage'; // Import the PopupMessage component
 
 const AddProduct = () => {
   const { t } = useTranslation();
@@ -16,6 +17,11 @@ const AddProduct = () => {
     images: [],
   });
 
+  const [popup, setPopup] = useState({
+    isOpen: false,
+    message: { title: '', body: '', buttonText: '' },
+  });
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -27,6 +33,17 @@ const AddProduct = () => {
     setFormData({
       ...formData,
       images: [...formData.images, ...e.target.files],
+    });
+  };
+
+  const resetForm = () => {
+    setFormData({
+      productName: '',
+      price: '',
+      category: '',
+      quantity: '',
+      description: '',
+      images: [],
     });
   };
 
@@ -50,11 +67,36 @@ const AddProduct = () => {
         },
       });
 
-      // Handle success - maybe a redirect or notification
-      console.log(t('Product submitted for review successfully'));
+
+      // Open success popup
+      setPopup({
+        isOpen: true,
+        message: {
+          title: t('Success'),
+          body: t('Product submitted for review successfully'),
+          buttonText: t('Close'),
+        },
+      });
+
+      // Reset form fields
+      resetForm();
     } catch (error) {
-      console.error(t('Error submitting the product'), error);
+      // Open error popup
+      setPopup({
+        isOpen: true,
+        message: {
+          title: t('Error'),
+          body: t('Error submitting the product'),
+          buttonText: t('Close'),
+        },
+      });
+      console.error('Error submitting the product', error);
+
     }
+  };
+
+  const closePopup = () => {
+    setPopup({ isOpen: false, message: { title: '', body: '', buttonText: '' } });
   };
 
   return (
@@ -129,66 +171,24 @@ const AddProduct = () => {
             </div>
           </div>
           <div className="flex flex-wrap mb-4">
-            <div className="w-full lg:w-1/2 pr-2 mb-4">
-              <label
-                htmlFor="uploadImage1"
-                className="block text-gray-700 font-bold mb-2 text-left"
-              >
-                {t('Upload Image 1')}
-              </label>
-              <input
-                type="file"
-                id="uploadImage1"
-                className="w-full text-gray-700"
-                onChange={handleFileChange}
-                multiple
-              />
-            </div>
-            <div className="w-full lg:w-1/2 pl-2 mb-4">
-              <label
-                htmlFor="uploadImage2"
-                className="block text-gray-700 font-bold mb-2 text-left"
-              >
-                {t('Upload Image 2')}
-              </label>
-              <input
-                type="file"
-                id="uploadImage2"
-                className="w-full text-gray-700"
-                onChange={handleFileChange}
-                multiple
-              />
-            </div>
-            <div className="w-full lg:w-1/2 pl-2 mb-4">
-              <label
-                htmlFor="uploadImage3"
-                className="block text-gray-700 font-bold mb-2 text-left"
-              >
-                {t('Upload Image 3')}
-              </label>
-              <input
-                type="file"
-                id="uploadImage3"
-                className="w-full text-gray-700"
-                onChange={handleFileChange}
-                multiple
-              />
-            </div>
-            <div className="w-full lg:w-1/2 pl-2 mb-4">
-              <label
-                htmlFor="uploadImage4"
-                className="block text-gray-700 font-bold mb-2 text-left"
-              >
-                {t('Upload Image 4')}
-              </label>
-              <input
-                type="file"
-                id="uploadImage4"
-                className="w-full text-gray-700"
-                onChange={handleFileChange}
-                multiple
-              />
-            </div>
+            {/* Upload Image Fields */}
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="w-full lg:w-1/2 pr-2 mb-4">
+                <label
+                  htmlFor={`uploadImage${i}`}
+                  className="block text-gray-700 font-bold mb-2 text-left"
+                >
+                  {t(`Upload Image ${i}`)}
+                </label>
+                <input
+                  type="file"
+                  id={`uploadImage${i}`}
+                  className="w-full text-gray-700"
+                  onChange={handleFileChange}
+                  multiple
+                />
+              </div>
+            ))}
           </div>
           <div className="mb-6">
             <label
@@ -203,6 +203,7 @@ const AddProduct = () => {
               value={formData.description}
               onChange={handleChange}
               rows="4"
+
             ></textarea>
           </div>
           <p className="text-gray-500 text-sm mb-4 text-left">
@@ -217,12 +218,17 @@ const AddProduct = () => {
             {t('Submit for Review')}
           </button>
         </form>
+
+        {popup.isOpen && (
+          <PopupMessage message={popup.message} onClose={closePopup} />
+        )}
       </div>
     </div>
   );
 };
 
 export default AddProduct;
+
 
 // import React, { useState } from 'react';
 // import axios from 'axios';

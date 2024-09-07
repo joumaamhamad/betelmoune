@@ -157,105 +157,68 @@ chartRouter.get('/user-demographics', async (req, res) => {
   }
 });
 
-chartRouter.get('/customer-retention', async (req, res) => {
-  try {
-    const retentionData = await Order.aggregate([
-      {
-        $group: {
-          _id: { $month: '$createdAt' },
-          totalCustomers: { $addToSet: '$user' }, // Collect unique customer IDs
+  chartRouter.get('/customer-retention', async (req, res) => {
+    try {
+      const retentionData = await Order.aggregate([
+        {
+          $group: {
+            _id: { $month: '$createdAt' },
+            totalCustomers: { $addToSet: '$user' }, // Collect unique customer IDs
+          },
         },
-      },
-      {
-        $project: {
-          _id: 1,
-          totalCustomers: { $size: '$totalCustomers' }, // Count unique customers
+        {
+          $project: {
+            _id: 1,
+            totalCustomers: { $size: '$totalCustomers' }, // Count unique customers
+          },
         },
-      },
-      {
-        $sort: { _id: 1 }, // Sort by month
-      },
-    ]);
-
-    const returningCustomers = await Order.aggregate([
-      {
-        $group: {
-          _id: { $month: '$createdAt' },
-          returningCustomers: {
-            $addToSet: {
-              $cond: [
-                { $gt: [{ $size: '$orderItems' }, 1] }, // Condition to check if customer is returning
-                '$user',
-                null,
-              ],
+        {
+          $sort: { _id: 1 }, // Sort by month
+        },
+      ]);
+  
+      const returningCustomers = await Order.aggregate([
+        {
+          $group: {
+            _id: { $month: '$createdAt' },
+            returningCustomers: {
+              $addToSet: {
+                $cond: [
+                  { $gt: [{ $size: '$orderItems' }, 1] }, // Condition to check if customer is returning
+                  '$user',
+                  null,
+                ],
+              },
             },
           },
         },
-      },
-      {
-        $project: {
-          _id: 1,
-          returningCustomers: { $size: '$returningCustomers' }, // Count returning customers
+        {
+          $project: {
+            _id: 1,
+            returningCustomers: { $size: '$returningCustomers' }, // Count returning customers
+          },
         },
-      },
-      {
-        $sort: { _id: 1 },
-      },
-    ]);
-
-    const retentionRate = retentionData.map((month, index) => ({
-      month: month._id,
-      totalCustomers: month.totalCustomers,
-      returningCustomers: returningCustomers[index]?.returningCustomers || 0,
-      retentionRate: (
-        (returningCustomers[index]?.returningCustomers || 0) /
-        month.totalCustomers
-      ).toFixed(2),
-    }));
-
-    res.json(retentionRate);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
-chartRouter.get('/workshopRegistrations', async (req, res) => {
-  try {
-    const workshops = await Workshop.find().populate('registeredUsers', 'name');
-
-    const data = workshops.map((workshop) => ({
-      workshopName: workshop.name,
-      registrations: workshop.registeredUsers.length,
-    }));
-
-    res.json({ data });
-  } catch (error) {
-    res.status(500).json({ message: 'Failed to fetch workshop registrations' });
-  }
-});
-
-chartRouter.get('/workshopCompletions', async (req, res) => {
-  try {
-    const workshops = await Workshop.find();
-    const workshopCompletionData = [];
-
-    for (const workshop of workshops) {
-      const userCount = await User.countDocuments({
-        'workshops._id': workshop._id,
-      });
-      workshopCompletionData.push({
-        workshopName: workshop.name,
-        completions: userCount,
-      });
+        {
+          $sort: { _id: 1 },
+        },
+      ]);
+  
+      const retentionRate = retentionData.map((month, index) => ({
+        month: month._id,
+        totalCustomers: month.totalCustomers,
+        returningCustomers: returningCustomers[index]?.returningCustomers || 0,
+        retentionRate: (
+          (returningCustomers[index]?.returningCustomers || 0) /
+          month.totalCustomers
+        ).toFixed(2),
+      }));
+  
+      res.json(retentionRate);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
     }
-
-    res.json({ data: workshopCompletionData });
-  } catch (error) {
-    res
-      .status(500)
-      .json({ message: 'Failed to fetch workshop completion data' });
-  }
-});
+  });
+  
 
 // chartRouter.get('/order-fulfillment-time', async (req, res) => {
 //   try {
@@ -289,37 +252,41 @@ chartRouter.get('/workshopCompletions', async (req, res) => {
 //   }
 // });
 
-// Revenue by Product Category
-chartRouter.get('/revenue-by-category', async (req, res) => {
-  try {
-    const revenueByCategory = await Order.aggregate([
-      { $unwind: '$orderItems' },
-      {
-        $lookup: {
-          from: 'products',
-          localField: 'orderItems.product',
-          foreignField: '_id',
-          as: 'productDetails',
-        },
-      },
-      { $unwind: '$productDetails' },
-      {
-        $group: {
-          _id: '$productDetails.category',
-          totalRevenue: {
-            $sum: { $multiply: ['$orderItems.price', '$orderItems.quantity'] },
-          },
-        },
-      },
-      { $sort: { totalRevenue: -1 } },
-    ]);
+  // Revenue by Product Category
+  // chartRouter.get('/revenue-by-category', async (req, res) => {
+  //   try {
+  //     const revenueByCategory = await Order.aggregate([
+  //       { $unwind: '$orderItems' },
+  //       {
+  //         $lookup: {
+  //           from: 'products',
+  //           localField: 'orderItems.product',
+  //           foreignField: '_id',
+  //           as: 'productDetails'
+  //         }
+  //       },
+  //       { $unwind: '$productDetails' },
+  //       {
+  //         $group: {
+  //           _id: '$productDetails.category',
+  //           totalRevenue: { $sum: { $multiply: ['$orderItems.price', '$orderItems.quantity'] } }
+  //         }
+  //       },
+  //       { $sort: { totalRevenue: -1 } }
+  //     ]);
+  
+  //     console.log('Revenue by Category:', revenueByCategory); // Log result for debugging
+  //     res.json(revenueByCategory);
+  //   } catch (error) {
+  //     console.error('Error fetching revenue by category:', error); // Log error
+  //     res.status(500).json({ message: error.message });
+  //   }
+  // });
+  
+  
 
-    console.log('Revenue by Category:', revenueByCategory); // Log result for debugging
-    res.json(revenueByCategory);
-  } catch (error) {
-    console.error('Error fetching revenue by category:', error); // Log error
-    res.status(500).json({ message: error.message });
-  }
-});
+  
+  
+  
 
-export default chartRouter;
+  export default chartRouter;

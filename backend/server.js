@@ -18,6 +18,7 @@ import chartRouter from './routes/chartRoutes.js';
 import chatsRouter from './routes/chatRoutes.js';
 import reqProductRouter from './routes/reqProductRoutes.js';
 
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -55,9 +56,11 @@ app.use('/api/messages', messagesRouter);
 app.use('/backend/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/api/cart', cartRouter);
 app.use('/api/orders', orderRouter);
-app.use('/api/charts', chartRouter);
+app.use('/api/charts' , chartRouter);
 app.use('/api/chats', chatsRouter);
 app.use('/api/requestProducts', reqProductRouter);
+
+
 
 app.use((err, req, res, next) => {
   res.status(500).send({ message: err.message });

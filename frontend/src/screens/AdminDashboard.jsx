@@ -9,6 +9,7 @@ import axios from 'axios';
 import { getError } from '../utils';
 import WorkshopRegistrationsChart from '../components/WorkshopRegistrationsChart';
 import WorkshopCompletionsChart from '../components/WorkshopCompletionsChart';
+
 import { t } from 'i18next';
 // import RevenueByCategoryChart from '../components/RevenueByCategoryChart';
 
@@ -76,9 +77,11 @@ const AdminDashboard = () => {
           <UserGrowthChart />
         </div> */}
         <div className="bg-white p-6 rounded-lg shadow-md col-span-1 h-80">
+
           <h2 className="text-lg font-medium text-gray-700 mb-4">
             {t('Workshop Registrations')}
           </h2>
+
           <WorkshopRegistrationsChart />
         </div>
 
@@ -102,9 +105,11 @@ const AdminDashboard = () => {
         </div>
 
         <div className="bg-white p-6 rounded-lg shadow-md col-span-1 h-80">
+
           <h2 className="text-lg font-medium text-gray-700 mb-4">
             {t('Workshop Completions')}
           </h2>
+
           <WorkshopCompletionsChart />
         </div>
       </div>
