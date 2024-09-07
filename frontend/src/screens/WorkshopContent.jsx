@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getError } from '../utils';
 import axios from 'axios';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import PopupMessage from '../components/PopupMessage';
+import { addUserToGroup } from '../store/chatsSlice';
 
 export default function WorkshopContent() {
   const { t } = useTranslation();
@@ -15,6 +16,11 @@ export default function WorkshopContent() {
   const [currentStep, setCurrentStep] = useState(0);
   const [finished, setFinished] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
+  const selectedWorkshop = useSelector(
+    (state) => state.workshopsSlice.selectedWorkshop
+  );
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -53,6 +59,18 @@ export default function WorkshopContent() {
     } catch (error) {
       console.log(getError(error));
     }
+
+    // Join to Workshop Group
+    const userData = {
+      groupSlug: selectedWorkshop.slug,
+      userId: user._id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      profileImg: user.profileImage,
+      isAdmin: user.isAdmin,
+    };
+    dispatch(addUserToGroup(userData));
   };
 
   const handlePopupClose = () => {
@@ -68,16 +86,21 @@ export default function WorkshopContent() {
         </h1>
         <div className="flex flex-col md:flex-row md:space-x-8 mb-8">
           <div className="flex-1 mt-32 space-y-2">
-            <h3 className="text-2xl font-semibold mb-4 text-gray-700">{t('Overview')}</h3>
+            <h3 className="text-2xl font-semibold mb-4 text-gray-700">
+              {t('Overview')}
+            </h3>
             <p className="text-gray-600">{workshop?.description}</p>
             <p className="mt-4 text-gray-600">
-              <strong>{t('Date')}:</strong> {new Date(workshop?.date).toLocaleDateString()}
+              <strong>{t('Date')}:</strong>{' '}
+              {new Date(workshop?.date).toLocaleDateString()}
             </p>
             <p className="text-gray-600">
-              <strong>{t('Duration')}:</strong> {workshop?.duration} {t('hours')}
+              <strong>{t('Duration')}:</strong> {workshop?.duration}{' '}
+              {t('hours')}
             </p>
             <p className="text-gray-600">
-              <strong>{t('Capacity')}:</strong> {workshop?.capacity} {t('participants')}
+              <strong>{t('Capacity')}:</strong> {workshop?.capacity}{' '}
+              {t('participants')}
             </p>
             <p className="text-gray-600">
               <strong>{t('Price')}:</strong> ${workshop?.price}
@@ -95,7 +118,9 @@ export default function WorkshopContent() {
           </div>
         </div>
 
-        <h3 className="text-3xl font-semibold mb-6 text-blue-600">{t('Workshop Steps')}</h3>
+        <h3 className="text-3xl font-semibold mb-6 text-blue-600">
+          {t('Workshop Steps')}
+        </h3>
         <div className="space-y-8">
           {workshop?.content[currentStep] && (
             <div className="bg-blue-50 p-6 rounded-lg shadow-lg transition transform hover:scale-105">

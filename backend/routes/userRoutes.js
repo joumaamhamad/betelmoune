@@ -160,6 +160,7 @@ userRouter.get('/:id', async (req, res) => {
 
 userRouter.put(
   '/profile',
+  isAuth,
   asyncHandler(async (req, res) => {
     const user = await User.findById(req.body.id);
 

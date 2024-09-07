@@ -120,7 +120,11 @@ const NavBarPlus = () => {
       <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex-shrink-0">
-            <Link to="/" className="text-xl font-bold text-gray-900">
+            <Link
+              to="/"
+              className="text-xl font-bold text-gray-900 animated-gradient-text"
+            >
+
               {t('Bet Elmouneh')}
             </Link>
           </div>
@@ -148,12 +152,14 @@ const NavBarPlus = () => {
             <Link
               to="/products"
               className="text-gray-900 hover:text-gray-600 text-sm"
+
             >
               {t('Products')}
             </Link>
             <Link
               to="/workshops"
               className="text-gray-900 hover:text-gray-600 text-sm"
+
             >
               {t('Workshops')}
             </Link>
@@ -162,6 +168,7 @@ const NavBarPlus = () => {
               <Link
                 to="/myWorkshops"
                 className="text-gray-900 hover:text-gray-600 text-sm"
+
               >
                 {t('My Workshops')}
               </Link>
@@ -169,12 +176,14 @@ const NavBarPlus = () => {
             <span
               onClick={handleAboutClick}
               className="text-gray-900 hover:text-gray-600 text-sm cursor-pointer"
+
             >
               {t('About us')}
             </span>
             <span
               onClick={handleContactClick}
               className="text-gray-900 hover:text-gray-600 text-sm cursor-pointer"
+
             >
               {t('Contact')}
             </span>
@@ -237,6 +246,7 @@ const NavBarPlus = () => {
                     onClick={handleMenuClose}
                   >
                     {t('Order List')}
+
                   </MenuItem>
                 </Menu>
               </div>
@@ -249,12 +259,12 @@ const NavBarPlus = () => {
               <>
                 <Link to="/cart">
                   <Button size="medium" title={t('cart')}>
-                    <CiShoppingCart className="text-2xl" />
+                    <CiShoppingCart className="text-3xl" />
                   </Button>
                 </Link>
                 <Link to="/addProduct">
                   <Button size="medium" title={t('add product')}>
-                    <FcAddDatabase className="text-2xl" />
+                    <FcAddDatabase className="text-3xl" />
                   </Button>
                 </Link>
                 <Link to="/chatgroup">

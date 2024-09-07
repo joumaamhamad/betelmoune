@@ -1,12 +1,13 @@
 import express from 'express';
 import Group from '../models/groupModel.js';
 import mongoose from 'mongoose';
+import { isAuth } from '../utils.js';
 
 const chatsRouter = express.Router();
 
 // Get Groups which User added to them
 
-chatsRouter.get('/mygroup/:userId', async (req, res) => {
+chatsRouter.get('/mygroup/:userId', isAuth, async (req, res) => {
   const filter = {
     'members._id': new mongoose.Types.ObjectId(req.params.userId),
   };
@@ -22,10 +23,9 @@ chatsRouter.get('/mygroup/:userId', async (req, res) => {
 
 // Accept a User to join Workshop Group
 
-chatsRouter.post('/addUserToGroup', async (req, res) => {
-  console.log(req.body);
+chatsRouter.post('/addUserToGroup', isAuth, async (req, res) => {
   const filter = {
-    _id: req.body.groupId,
+    slug: req.body.groupSlug,
   };
 
   const query = {
@@ -34,7 +34,7 @@ chatsRouter.post('/addUserToGroup', async (req, res) => {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         email: req.body.email,
-        password: req.body.password,
+        profileImg: req.body.profileImg,
         isAdmin: req.body.isAdmin,
         _id: new mongoose.Types.ObjectId(req.body.userId),
       },

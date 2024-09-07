@@ -6,6 +6,8 @@ import Profile from './screens/Profile';
 import { I18nextProvider, useTranslation } from 'react-i18next';
 import i18n from './i18n'; // Import i18n configuration
 import { ToastContainer } from 'react-toastify';
+import {} from './App.css';
+
 
 // import Footer from './components/Footer'; // Uncomment if you want to use the Footer
 
