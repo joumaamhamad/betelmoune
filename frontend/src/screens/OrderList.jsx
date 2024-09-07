@@ -82,8 +82,9 @@ const OrderList = () => {
               <th className="py-2 px-4 text-start">{t('Customer Name')}</th>
               <th className="py-2 px-4 text-start">{t('Payment Method')}</th>
               <th className="py-2 px-4 text-start">{t('Total Price')}</th>
-              <th className="py-2 px-4 text-start">{t('Is Paid')}</th>
-              <th className="py-2 px-4 text-start">{t('Date of Paid')}</th>
+              <th className="py-2 px-4 text-start">{t('Shipping Price')}</th>
+              {/* <th className="py-2 px-4 text-start">{t('Is Paid')}</th>
+              <th className="py-2 px-4 text-start">{t('Date of Paid')}</th> */}
               <th className="py-2 px-4 text-start">{t('Action')}</th>
             </tr>
           </thead>
@@ -96,12 +97,13 @@ const OrderList = () => {
                 </td>
                 <td className="py-2 px-4">{order.paymentMethod}</td>
                 <td className="py-2 px-4">${order.totalPrice}</td>
-                <td className="py-2 px-4">{order.isPaid ? 'Yes' : 'No'}</td>
+                <td className="py-2 px-4">${order.shippingPrice}</td>
+                {/* <td className="py-2 px-4">{order.isPaid ? 'Yes' : 'No'}</td>
                 <td className="py-2 px-4">
                   {order.paidAt
                     ? new Date(order.paidAt).toLocaleDateString()
                     : '------------'}
-                </td>
+                </td> */}
                 <td className="py-2 px-4">
                   <button
                     className="text-green-500 hover:underline ml-2"
