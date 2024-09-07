@@ -2,11 +2,42 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { getCart } from './authSlice';
 
+// Fetch Cart
+
+export const fetchCart = createAsyncThunk(
+  'cart/fetchCart',
+  async (userId, thunkAPI) => {
+    const { rejectWithValue, dispatch } = thunkAPI;
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/api/cart/${userId}`
+      );
+      const cart = await response.data;
+
+      if (cart.message) {
+        return cart.message;
+      } else {
+        dispatch(getCart(cart));
+        return cart;
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 // Add Product To Cart
 export const addProductToCart = createAsyncThunk(
   'cart/addProductToCart',
   async (products, thunkAPI) => {
     const { rejectWithValue, dispatch } = thunkAPI;
+    const userInfo = localStorage.getItem('userInfo');
+    let token = null;
+
+    if (userInfo) {
+      const user = JSON.parse(userInfo);
+      token = user.token;
+    }
     try {
       const response = await axios.post(
         'http://localhost:5000/api/cart/product',
@@ -14,6 +45,7 @@ export const addProductToCart = createAsyncThunk(
         {
           headers: {
             'Content-Type': 'application/json; charset=UTF-8',
+            Authorization: `${token}`,
           },
         }
       );
@@ -23,7 +55,6 @@ export const addProductToCart = createAsyncThunk(
         return productsData.message;
       } else {
         dispatch(getCart(productsData));
-        localStorage.setItem('cart', JSON.stringify(productsData)); 
         return productsData;
       }
     } catch (error) {
@@ -37,6 +68,13 @@ export const addWorkshopToCart = createAsyncThunk(
   'cart/addWorkshopToCart',
   async (workshops, thunkAPI) => {
     const { rejectWithValue, dispatch } = thunkAPI;
+    const userInfo = localStorage.getItem('userInfo');
+    let token = null;
+
+    if (userInfo) {
+      const user = JSON.parse(userInfo);
+      token = user.token;
+    }
     try {
       const response = await axios.post(
         'http://localhost:5000/api/cart/workshop',
@@ -44,6 +82,7 @@ export const addWorkshopToCart = createAsyncThunk(
         {
           headers: {
             'Content-Type': 'application/json; charset=UTF-8',
+            Authorization: `${token}`,
           },
         }
       );
@@ -66,6 +105,13 @@ export const changeQuantity = createAsyncThunk(
   'cart/changeQuantity',
   async (product, thunkAPI) => {
     const { rejectWithValue, dispatch } = thunkAPI;
+    const userInfo = localStorage.getItem('userInfo');
+    let token = null;
+
+    if (userInfo) {
+      const user = JSON.parse(userInfo);
+      token = user.token;
+    }
     try {
       const response = await axios.put(
         'http://localhost:5000/api/cart/quantity',
@@ -73,6 +119,7 @@ export const changeQuantity = createAsyncThunk(
         {
           headers: {
             'Content-Type': 'application/json; charset=UTF-8',
+            Authorization: `${token}`,
           },
         }
       );
@@ -95,6 +142,13 @@ export const deleteFromCart = createAsyncThunk(
   'cart/deleteFromCart',
   async (item, thunkAPI) => {
     const { rejectWithValue, dispatch } = thunkAPI;
+    const userInfo = localStorage.getItem('userInfo');
+    let token = null;
+
+    if (userInfo) {
+      const user = JSON.parse(userInfo);
+      token = user.token;
+    }
     try {
       const response = await axios.put(
         'http://localhost:5000/api/cart/deleteFromCart',
@@ -102,6 +156,7 @@ export const deleteFromCart = createAsyncThunk(
         {
           headers: {
             'Content-Type': 'application/json; charset=UTF-8',
+            Authorization: `${token}`,
           },
         }
       );
@@ -123,7 +178,14 @@ export const deleteFromCart = createAsyncThunk(
 export const clearCart = createAsyncThunk(
   'cart/clearCart',
   async (userId, thunkAPI) => {
-    const { rejectWithValue, dispatch } = thunkAPI;
+    const { rejectWithValue } = thunkAPI;
+    const userInfo = localStorage.getItem('userInfo');
+    let token = null;
+
+    if (userInfo) {
+      const user = JSON.parse(userInfo);
+      token = user.token;
+    }
     try {
       const response = await axios.put(
         'http://localhost:5000/api/cart/clearCart',
@@ -131,18 +193,18 @@ export const clearCart = createAsyncThunk(
         {
           headers: {
             'Content-Type': 'application/json; charset=UTF-8',
+            Authorization: `${token}`,
           },
         }
       );
       const result = response.data;
-      console.log('resss',result)
+      console.log('resss', result);
 
       if (result.message) {
         return result.message;
       } else {
         // Clear localStorage and update state
         localStorage.removeItem('cart');
-        console.log('tttttt')
         return result;
       }
     } catch (error) {
@@ -151,15 +213,19 @@ export const clearCart = createAsyncThunk(
   }
 );
 
-
 // Return Quantity of Product When Minus qunatity Or Delete From Cart
-
-
 
 export const ReturnQuantity = createAsyncThunk(
   'cart/ReturnQuantity',
   async (product, thunkAPI) => {
     const { rejectWithValue } = thunkAPI;
+    const userInfo = localStorage.getItem('userInfo');
+    let token = null;
+
+    if (userInfo) {
+      const user = JSON.parse(userInfo);
+      token = user.token;
+    }
     try {
       const response = await axios.put(
         'http://localhost:5000/api/cart/returnquantity',
@@ -167,6 +233,7 @@ export const ReturnQuantity = createAsyncThunk(
         {
           headers: {
             'Content-Type': 'application/json; charset=UTF-8',
+            Authorization: `${token}`,
           },
         }
       );
@@ -182,7 +249,7 @@ export const ReturnQuantity = createAsyncThunk(
 const cartSlice = createSlice({
   name: 'cart',
   initialState: {
-    products: JSON.parse(localStorage.getItem('cart')) || [],
+    products: [],
     productsFilter: [],
     categories: [],
     selectedProduct: [],

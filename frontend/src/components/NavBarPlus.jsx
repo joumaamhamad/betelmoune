@@ -22,8 +22,6 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { scroller } from 'react-scroll';
 
-
-
 const NavBarPlus = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -40,7 +38,6 @@ const NavBarPlus = () => {
 
   const [scrollToAbout, setScrollToAbout] = useState(false);
   const [scrollToContact, setScrollToContact] = useState(false);
-
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -62,72 +59,71 @@ const NavBarPlus = () => {
     setIsOpen(!isOpen);
   };
 
-
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
   const handleMenuClose = () => {
     setAnchorEl(null);
-  }
-    useEffect(() => {
-      if (scrollToAbout && location.pathname === '/') {
-        scroller.scrollTo('about', {
-          smooth: true,
-          offset: 50,
-          duration: 700,
-        });
-        setScrollToAbout(false);
-      }
-    }, [scrollToAbout, location.pathname]);
-  
-    const handleAboutClick = () => {
-      if (location.pathname !== '/') {
-        setScrollToAbout(true);
-        navigate('/');
-      } else {
-        scroller.scrollTo('about', {
-          smooth: true,
-          offset: 50,
-          duration: 700,
-        });
-      }
-    };
-  
-    useEffect(() => {
-      if (scrollToContact && location.pathname === '/') {
-        scroller.scrollTo('contact', {
-          smooth: true,
-          offset: 70,
-          duration: 1200,
-        });
-        setScrollToContact(false);
-      }
-    }, [scrollToContact, location.pathname]);
-  
-    const handleContactClick = () => {
-      if (location.pathname !== '/') {
-        setScrollToContact(true);
-        navigate('/');
-      } else {
-        scroller.scrollTo('contact', {
-          smooth: true,
-          offset: 70,
-          duration: 1200,
-        });
-      }
-    };
-  
+  };
+  useEffect(() => {
+    if (scrollToAbout && location.pathname === '/') {
+      scroller.scrollTo('about', {
+        smooth: true,
+        offset: 50,
+        duration: 700,
+      });
+      setScrollToAbout(false);
+    }
+  }, [scrollToAbout, location.pathname]);
+
+  const handleAboutClick = () => {
+    if (location.pathname !== '/') {
+      setScrollToAbout(true);
+      navigate('/');
+    } else {
+      scroller.scrollTo('about', {
+        smooth: true,
+        offset: 50,
+        duration: 700,
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (scrollToContact && location.pathname === '/') {
+      scroller.scrollTo('contact', {
+        smooth: true,
+        offset: 70,
+        duration: 1200,
+      });
+      setScrollToContact(false);
+    }
+  }, [scrollToContact, location.pathname]);
+
+  const handleContactClick = () => {
+    if (location.pathname !== '/') {
+      setScrollToContact(true);
+      navigate('/');
+    } else {
+      scroller.scrollTo('contact', {
+        smooth: true,
+        offset: 70,
+        duration: 1200,
+      });
+    }
+  };
 
   return (
     <nav className="bg-white border-b border-gray-200">
       <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex-shrink-0">
-
-            <Link to="/" className="text-xl font-bold text-gray-900">
+            <Link
+              to="/"
+              className="text-xl font-bold text-gray-900 animated-gradient-text"
+            >
               {t('Bet Elmouneh')}
-
             </Link>
           </div>
 
@@ -148,37 +144,52 @@ const NavBarPlus = () => {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex md:space-x-8 md:items-center rtl:space-x-reverse">
-            <Link to="/" className="text-gray-900 hover:text-gray-600 text-sm">
+            <Link to="/" className="text-gray-900 hover:text-gray-600 text-m">
               {t('Home')}
             </Link>
-            <Link to="/products" className="text-gray-900 hover:text-gray-600 text-sm">
+            <Link
+              to="/products"
+              className="text-gray-900 hover:text-gray-600 text-m"
+            >
               {t('Products')}
             </Link>
-            <Link to="/workshops" className="text-gray-900 hover:text-gray-600 text-sm">
+            <Link
+              to="/workshops"
+              className="text-gray-900 hover:text-gray-600 text-m"
+            >
               {t('Workshops')}
             </Link>
 
             {user ? (
-              <Link to="/myWorkshops" className="text-gray-900 hover:text-gray-600 text-sm">
+              <Link
+                to="/myWorkshops"
+                className="text-gray-900 hover:text-gray-600 text-m"
+              >
                 {t('My Workshops')}
               </Link>
             ) : null}
-            <span onClick={handleAboutClick} className="text-gray-900 hover:text-gray-600 text-sm cursor-pointer">
+            <span
+              onClick={handleAboutClick}
+              className="text-gray-900 hover:text-gray-600 text-m cursor-pointer"
+            >
               {t('About us')}
             </span>
-            <span onClick={handleContactClick} className="text-gray-900 hover:text-gray-600 text-sm cursor-pointer">
+            <span
+              onClick={handleContactClick}
+              className="text-gray-900 hover:text-gray-600 text-m cursor-pointer"
+            >
               {t('Contact')}
             </span>
             {user && user.isAdmin ? (
               <div className="relative">
-<Button
-  onClick={handleMenuClick}
-  variant="outlined"
-  color="primary"
-  style={{ fontSize: '0.75rem', padding: '3px 6px' }} // Custom size
->
-  {t('Admin')}
-</Button>
+                <Button
+                  onClick={handleMenuClick}
+                  variant="outlined"
+                  color="primary"
+                  style={{ fontSize: '0.75rem', padding: '3px 6px' }} // Custom size
+                >
+                  {t('Admin')}
+                </Button>
                 <Menu
                   anchorEl={anchorEl}
                   open={isMenuOpen}
@@ -187,16 +198,32 @@ const NavBarPlus = () => {
                     'aria-labelledby': 'basic-button',
                   }}
                 >
-                  <MenuItem component={Link} to="/userList" onClick={handleMenuClose}>
+                  <MenuItem
+                    component={Link}
+                    to="/userList"
+                    onClick={handleMenuClose}
+                  >
                     {t('User List')}
                   </MenuItem>
-                  <MenuItem component={Link} to="/productList" onClick={handleMenuClose}>
+                  <MenuItem
+                    component={Link}
+                    to="/productList"
+                    onClick={handleMenuClose}
+                  >
                     {t('Product List')}
                   </MenuItem>
-                  <MenuItem component={Link} to="/workshopList" onClick={handleMenuClose}>
+                  <MenuItem
+                    component={Link}
+                    to="/workshopList"
+                    onClick={handleMenuClose}
+                  >
                     {t('Workshop List')}
                   </MenuItem>
-                  <MenuItem component={Link} to="/adminDashboard" onClick={handleMenuClose}>
+                  <MenuItem
+                    component={Link}
+                    to="/adminDashboard"
+                    onClick={handleMenuClose}
+                  >
                     {t('Admin Dashboard')}
                   </MenuItem>
                 </Menu>
@@ -210,12 +237,12 @@ const NavBarPlus = () => {
               <>
                 <Link to="/cart">
                   <Button size="medium" title={t('cart')}>
-                    <CiShoppingCart className="text-2xl" />
+                    <CiShoppingCart className="text-3xl" />
                   </Button>
                 </Link>
                 <Link to="/addProduct">
                   <Button size="medium" title={t('add product')}>
-                    <FcAddDatabase className="text-2xl" />
+                    <FcAddDatabase className="text-3xl" />
                   </Button>
                 </Link>
                 <Link to="/chatgroup">
@@ -228,7 +255,10 @@ const NavBarPlus = () => {
                   </Button>
                 </Link>
                 <Link to="/profile">
-                  <Button variant="outlined" style={{ fontSize: '0.75rem', padding: '3px 6px' }}>
+                  <Button
+                    variant="outlined"
+                    style={{ fontSize: '0.75rem', padding: '3px 6px' }}
+                  >
                     {t('Profile')}
                   </Button>
                 </Link>

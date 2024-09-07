@@ -28,11 +28,23 @@ export const getProducts = createAsyncThunk(
 export const deleteProduct = createAsyncThunk(
   'products/deleteProduct',
   async (productData, { rejectWithValue }) => {
+    const userInfo = localStorage.getItem('userInfo');
+    let token = null;
+
+    if (userInfo) {
+      const user = JSON.parse(userInfo);
+      token = user.token;
+    }
     try {
       const { id, ...productDetails } = productData;
       const response = await axios.put(
         `/api/products/update/${id}`,
-        productDetails
+        productDetails,
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
       );
       return response.data;
     } catch (error) {
@@ -45,10 +57,22 @@ export const deleteProduct = createAsyncThunk(
 export const updateProduct = createAsyncThunk(
   'products/updateProduct',
   async (productData) => {
+    const userInfo = localStorage.getItem('userInfo');
+    let token = null;
+
+    if (userInfo) {
+      const user = JSON.parse(userInfo);
+      token = user.token;
+    }
     const { id, ...productDetails } = productData;
     const response = await axios.put(
       `/api/products/update/${id}`,
-      productDetails
+      productDetails,
+      {
+        headers: {
+          Authorization: `${token}`,
+        },
+      }
     );
     return response.data;
   }
@@ -83,6 +107,13 @@ export const decrementAvailableQuantity = createAsyncThunk(
   'products/decrementAvailableQuantity',
   async (productData, thunkAPI) => {
     const { rejectWithValue } = thunkAPI;
+    const userInfo = localStorage.getItem('userInfo');
+    let token = null;
+
+    if (userInfo) {
+      const user = JSON.parse(userInfo);
+      token = user.token;
+    }
     try {
       const response = await axios.put(
         'http://localhost:5000/api/products/decrementavailablequantity',
@@ -90,6 +121,7 @@ export const decrementAvailableQuantity = createAsyncThunk(
         {
           headers: {
             'Content-Type': 'application/json; charset=UTF-8',
+            Authorization: `${token}`,
           },
         }
       );
