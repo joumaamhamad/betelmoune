@@ -166,6 +166,7 @@ userRouter.post(
   asyncHandler(async (req, res) => {
     const user = await User.findById(req.body.id);
 
+    console.log('body',req.body)
     if (user) {
       user.firstName = req.body.firstName || user.firstName;
       user.lastName = req.body.lastName || user.lastName;
@@ -176,6 +177,7 @@ userRouter.post(
       }
 
       const updatedUser = await user.save();
+      console.log('upppp' , updatedUser)
 
       res.json({
         _id: updatedUser._id,

@@ -1,6 +1,6 @@
 // src/components/chatbotConfig.js
 const config = {
-    botName: 'Imad-313',
+    botName: 'ESA-Project',
     initialMessages: [
       { text: 'Hello! How can I help you today?', type: 'text' }
     ],

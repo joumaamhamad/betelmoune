@@ -31,6 +31,7 @@ export const updateProfile = createAsyncThunk(
   async (profile, thunkAPI) => {
     const { rejectWithValue } = thunkAPI;
     const userInfo = localStorage.getItem('userInfo');
+    // console.log('hhhhhhhhhhhhhh')
     let token = null;
 
     if (userInfo) {
