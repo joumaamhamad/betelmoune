@@ -91,20 +91,20 @@ const OrderList = () => {
           <tbody>
             {orders.map((order) => (
               <tr key={order._id}>
-                <td className="py-2 px-4">{order._id}</td>
-                <td className="py-2 px-4">
+                <td className="py-2 px-4 text-start">{order._id}</td>
+                <td className="py-2 px-4 text-start">
                   {order.shippingAddress?.fullName || 'N/A'}
                 </td>
-                <td className="py-2 px-4">{order.paymentMethod}</td>
-                <td className="py-2 px-4">${order.totalPrice}</td>
-                <td className="py-2 px-4">${order.shippingPrice}</td>
+                <td className="py-2 px-4 text-start">{order.paymentMethod}</td>
+                <td className="py-2 px-4 text-start">{order.totalPrice}$</td>
+                <td className="py-2 px-4 text-start">{order.shippingPrice}$</td>
                 {/* <td className="py-2 px-4">{order.isPaid ? 'Yes' : 'No'}</td>
                 <td className="py-2 px-4">
                   {order.paidAt
                     ? new Date(order.paidAt).toLocaleDateString()
                     : '------------'}
                 </td> */}
-                <td className="py-2 px-4">
+                <td className="py-2 px-4 text-start">
                   <button
                     className="text-green-500 hover:underline ml-2"
                     onClick={() => handleDetailClick(order)}
@@ -139,7 +139,9 @@ const OrderList = () => {
       {selectedOrder && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center z-50">
           <div className="bg-white rounded-lg p-6 max-w-lg w-full">
-            <h2 className="text-2xl font-bold mb-4">{t('Order Details')}</h2>
+            <h2 className="text-2xl font-bold mb-4 text-start">
+              {t('Order Details')}
+            </h2>
             <table className="min-w-full bg-gray-100 rounded-lg">
               <thead>
                 <tr className="bg-gray-200">
@@ -151,9 +153,9 @@ const OrderList = () => {
               <tbody>
                 {selectedOrder.orderItems.map((item, index) => (
                   <tr key={index} className="border-b">
-                    <td className="py-2 px-4">{item.name}</td>
-                    <td className="py-2 px-4">{item.quantity}</td>
-                    <td className="py-2 px-4">${item.price}</td>
+                    <td className="py-2 px-4 text-start">{item.name}</td>
+                    <td className="py-2 px-4 text-start">{item.quantity}</td>
+                    <td className="py-2 px-4 text-start">{item.price}$</td>
                   </tr>
                 ))}
               </tbody>

@@ -97,8 +97,8 @@ const UserList = () => {
           <tbody>
             {users.map((user) => (
               <tr key={user._id} className="border-t">
-                <td className="py-2 px-4">{user._id}</td>
-                <td className="py-2 px-4">
+                <td className="py-2 px-4 text-start">{user._id}</td>
+                <td className="py-2 px-4 text-start">
                   {editingUser === user._id ? (
                     <input
                       type="text"
@@ -111,7 +111,7 @@ const UserList = () => {
                     user.firstName
                   )}
                 </td>
-                <td className="py-2 px-4">
+                <td className="py-2 px-4 text-start">
                   {editingUser === user._id ? (
                     <input
                       type="text"
@@ -124,7 +124,7 @@ const UserList = () => {
                     user.lastName
                   )}
                 </td>
-                <td className="py-2 px-4">
+                <td className="py-2 px-4 text-start">
                   {editingUser === user._id ? (
                     <input
                       type="email"
@@ -137,7 +137,7 @@ const UserList = () => {
                     user.email
                   )}
                 </td>
-                <td className="py-2 px-4">
+                <td className="py-2 px-4 text-start">
                   {editingUser === user._id ? (
                     <input
                       type="checkbox"
@@ -152,7 +152,7 @@ const UserList = () => {
                     'No'
                   )}
                 </td>
-                <td className="py-2 px-4">
+                <td className="py-2 px-4 text-start">
                   {editingUser === user._id ? (
                     <button
                       onClick={handleSaveClick}
@@ -164,13 +164,13 @@ const UserList = () => {
                     <>
                       <button
                         onClick={() => handleEditClick(user)}
-                        className="text-blue-500 hover:underline"
+                        className="text-blue-500 hover:underline text-start"
                       >
                         {t('Edit')}
                       </button>
                       <button
                         onClick={() => handleDeleteClick(user._id)}
-                        className="text-red-500 hover:underline ml-2"
+                        className="text-red-500 hover:underline ml-2 text-start"
                       >
                         {t('Delete')}
                       </button>

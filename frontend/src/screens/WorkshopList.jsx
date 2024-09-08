@@ -5,7 +5,7 @@ import {
   updateWorkshop,
 } from '../store/workshopsSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import { t } from 'i18next';
 
 const WorkshopList = () => {
@@ -95,13 +95,13 @@ const WorkshopList = () => {
       </header>
 
       <main className="p-6">
-        <div className="mb-4">
+        {/* <div className="mb-4">
           <Link to={'/AddWorkshop'}>
             <button className="flex bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
               {t('Create Workshop')}
             </button>
           </Link>
-        </div>
+        </div> */}
 
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white shadow-md rounded-lg">
@@ -121,8 +121,8 @@ const WorkshopList = () => {
             <tbody>
               {workshops.map((workshop) => (
                 <tr key={workshop._id} className="border-t">
-                  <td className="py-2 px-4">{workshop._id}</td>
-                  <td className="py-2 px-4">
+                  <td className="py-2 px-4 text-start">{workshop._id}</td>
+                  <td className="py-2 px-4 text-start">
                     {editingWorkshop === workshop._id ? (
                       <input
                         type="text"
@@ -135,7 +135,7 @@ const WorkshopList = () => {
                       workshop.name
                     )}
                   </td>
-                  <td className="py-2 px-4">
+                  <td className="py-2 px-4 text-start">
                     {editingWorkshop === workshop._id ? (
                       <input
                         type="text"
@@ -148,7 +148,7 @@ const WorkshopList = () => {
                       workshop.slug
                     )}
                   </td>
-                  <td className="py-2 px-4">
+                  <td className="py-2 px-4 text-start">
                     {editingWorkshop === workshop._id ? (
                       <input
                         type="text"
@@ -161,7 +161,7 @@ const WorkshopList = () => {
                       workshop.description
                     )}
                   </td>
-                  <td className="py-2 px-4">
+                  <td className="py-2 px-4 text-start">
                     {editingWorkshop === workshop._id ? (
                       <input
                         type="datetime-local"
@@ -174,7 +174,7 @@ const WorkshopList = () => {
                       workshop.date
                     )}
                   </td>
-                  <td className="py-2 px-4">
+                  <td className="py-2 px-4 text-start">
                     {editingWorkshop === workshop._id ? (
                       <input
                         type="number"
@@ -187,7 +187,7 @@ const WorkshopList = () => {
                       `${workshop.duration}h`
                     )}
                   </td>
-                  <td className="py-2 px-4">
+                  <td className="py-2 px-4 text-start">
                     {editingWorkshop === workshop._id ? (
                       <input
                         type="number"
@@ -200,7 +200,7 @@ const WorkshopList = () => {
                       workshop.capacity
                     )}
                   </td>
-                  <td className="py-2 px-4">
+                  <td className="py-2 px-4 text-start">
                     {editingWorkshop === workshop._id ? (
                       <input
                         type="number"
@@ -213,7 +213,7 @@ const WorkshopList = () => {
                       `${workshop.price}$`
                     )}
                   </td>
-                  <td className="py-2 px-4">
+                  <td className="py-2 px-4 text-start">
                     {editingWorkshop === workshop._id ? (
                       <button
                         onClick={handleSaveClick}
