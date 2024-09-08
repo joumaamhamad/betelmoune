@@ -39,7 +39,7 @@ export const updateProfile = createAsyncThunk(
       token = user.token;
     }
     try {
-      const response = await axios.put('/api/users/profile', profile, {
+      const response = await axios.post('/api/users/profile', profile, {
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
           Authorization: `${token}`,

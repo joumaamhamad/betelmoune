@@ -96,11 +96,6 @@ const Cart = () => {
 
   // Update quantity data if necessary
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  useEffect(() => {
-    if (changedQuantityData && isAvailable !== 1) {
-      dispatch(changeQuantity(changedQuantityData));
-    }
-  }, [dispatch, isAvailable, changedQuantityData]);
 
   const totalPrice = cart?.reduce((acc, item) => {
     return acc + item.price * item.quantity;

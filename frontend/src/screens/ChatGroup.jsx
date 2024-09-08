@@ -103,7 +103,7 @@ const ChatGroup = () => {
           <li className="mb-4">
             <a
               href="#group"
-              className="text-blue-500 font-medium px-2 py-1 ml-24 rounded-lg block"
+              className="text-blue-500 font-medium px-2 py-1 rounded-lg block"
             >
               No groups in favorite
             </a>
@@ -202,7 +202,7 @@ const ChatGroup = () => {
                   <div
                     className={`${
                       message.senderId === user._id ? 'bg-white' : 'bg-blue-100'
-                    } p-4 rounded-lg shadow-md`}
+                    } w-fit p-4 rounded-lg shadow-md`}
                   >
                     <p className="w-fit text-gray-800 text-left">
                       {message.text}

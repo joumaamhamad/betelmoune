@@ -8,7 +8,6 @@ import i18n from './i18n'; // Import i18n configuration
 import { ToastContainer } from 'react-toastify';
 import {} from './App.css';
 
-
 // import Footer from './components/Footer'; // Uncomment if you want to use the Footer
 
 import ProductsDetails from './screens/ProductDetails';
@@ -101,7 +100,7 @@ function App() {
           <NavBarPlus />
 
           {/* Chatbot Icon and Toggle Button */}
-          <div className="fixed bottom-4 right-4 z-50 mb-1.5">
+          <div className="fixed bottom-4 right-4 z-40 mb-1.5">
             <button
               onClick={() => setChatBotOpen(!chatBotOpen)}
               className="p-3 bg-blue-500 rounded-full text-white shadow-lg hover:bg-blue-600 focus:outline-none"
@@ -112,7 +111,7 @@ function App() {
           </div>
 
           {/* Language switcher */}
-          <div className="fixed top-4 right-4 z-50 flex flex-col items-end mt-16">
+          <div className="fixed top-4 right-4 z-40 flex flex-col items-end mt-16">
             <div className="relative">
               <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
@@ -178,6 +177,7 @@ function App() {
                 <Route path="/chatgroup" element={<ChatGroup />} />
                 <Route path='/requestProducts' element={<AdminRoute><RequestProducts /></AdminRoute>} />
                 <Route path="/payment/:slug" element={<PaymentPage />} />
+
 
               </Routes>
             </Suspense>
