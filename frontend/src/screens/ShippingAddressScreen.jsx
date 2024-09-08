@@ -47,13 +47,16 @@ export default function ShippingAddressScreen() {
   };
   const handleOrderSubmission = async (details) => {
     const paymentInfo = details || paymentDetails;
-  
-    if (!paymentInfo && (paymentMethod === 'OMT' || paymentMethod === 'Wish Money')) {
+
+    if (
+      !paymentInfo &&
+      (paymentMethod === 'OMT' || paymentMethod === 'Wish Money')
+    ) {
       console.error('Payment details are missing');
       setIsLoading(false);
       return;
     }
-  
+
     const orderData = {
       orderItems: cart.map((item) => ({
         slug: item.slug,
@@ -71,20 +74,26 @@ export default function ShippingAddressScreen() {
       },
       paymentMethod,
       shippingPrice: 20,
-      totalPrice: cart.reduce((acc, item) => acc + item.price * item.quantity, 0),
+      totalPrice: cart.reduce(
+        (acc, item) => acc + item.price * item.quantity,
+        0
+      ),
       user: user._id,
       paymentDetails: paymentInfo,
     };
-  
+
     try {
       // Save the order first
-      const { data: orderResponse } = await axios.post('/api/orders/save-order', orderData);
-  
+      const { data: orderResponse } = await axios.post(
+        '/api/orders/save-order',
+        orderData
+      );
+
       // Dispatch actions and show popup
       dispatch(clearCart(user._id));
       dispatch(getCart([]));
       setShowPopup(true);
-  
+
       // Send the email in the background
       await axios.post('/api/orders/send-email', {
         orderId: orderResponse.order._id,
@@ -97,7 +106,6 @@ export default function ShippingAddressScreen() {
       setIsPaymentLoading(false); // Ensure loading is reset
     }
   };
-  
 
   const closePopup = () => {
     setShowPopup(false);
@@ -151,7 +159,7 @@ export default function ShippingAddressScreen() {
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           >
             <option value="OMT">OMT</option>
-            <option value="Wish Money">Wish Money</option>
+            <option value="Wish Money">Whish Money</option>
           </select>
           <div className="mb-3">
             <button
@@ -184,7 +192,8 @@ export default function ShippingAddressScreen() {
           onSubmit={handlePaymentSubmit}
           onClose={() => setShowPaymentPopup(false)}
         >
-          {isPaymentLoading && <LoadingSpinner />} {/* Show spinner during payment */}
+          {isPaymentLoading && <LoadingSpinner />}{' '}
+          {/* Show spinner during payment */}
         </PaymentPopup>
       )}
     </div>

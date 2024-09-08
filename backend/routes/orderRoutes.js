@@ -7,7 +7,6 @@ import User from '../models/userModel.js';
 
 import asyncHandler from 'express-async-handler';
 
-
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 const orderRouter = express.Router();
@@ -33,7 +32,6 @@ const orderRouter = express.Router();
 //     res.status(500).send({ message: 'Error in Creating Order', error: err.message });
 //   }
 // });
-
 
 // Set up Nodemailer transporter
 const transporter = nodemailer.createTransport({
@@ -63,7 +61,15 @@ const sendEmail = async (to, subject, text) => {
 
 orderRouter.post('/save-order', async (req, res) => {
   try {
-    const { orderItems, shippingAddress, paymentMethod, shippingPrice, totalPrice, user, paymentDetails } = req.body;
+    const {
+      orderItems,
+      shippingAddress,
+      paymentMethod,
+      shippingPrice,
+      totalPrice,
+      user,
+      paymentDetails,
+    } = req.body;
 
     const newOrder = new Order({
       orderItems,
@@ -72,17 +78,22 @@ orderRouter.post('/save-order', async (req, res) => {
       shippingPrice,
       totalPrice,
       user,
-      paymentDetails: paymentMethod === 'OMT' || paymentMethod === 'Wish Money' ? paymentDetails : null,
+      paymentDetails:
+        paymentMethod === 'OMT' || paymentMethod === 'Wish Money'
+          ? paymentDetails
+          : null,
       paidAt: paymentMethod === 'Stripe' ? Date.now() : null, // Only for Stripe
     });
 
     const createdOrder = await newOrder.save();
 
-    res.status(201).send({ message: 'Order saved successfully', order: createdOrder });
+    res
+      .status(201)
+      .send({ message: 'Order saved successfully', order: createdOrder });
   } catch (err) {
-
-    res.status(500).send({ message: 'Error in saving order', error: err.message });
-
+    res
+      .status(500)
+      .send({ message: 'Error in saving order', error: err.message });
   }
 });
 
@@ -111,10 +122,11 @@ orderRouter.post('/send-email', async (req, res) => {
     await sendEmail(userEmail, emailSubject, emailText);
     res.status(200).json({ message: 'Email sent successfully' });
   } catch (error) {
-    res.status(500).json({ message: 'Error sending email', error: error.message });
+    res
+      .status(500)
+      .json({ message: 'Error sending email', error: error.message });
   }
 });
-
 
 // // Route to save an order and send email
 // orderRouter.post('/', async (req, res) => {
@@ -152,7 +164,6 @@ orderRouter.post('/send-email', async (req, res) => {
 //     res.status(500).send({ message: 'Error in Creating Order', error: err.message });
 //   }
 // });
-
 
 orderRouter.post('/create-payment-intent', async (req, res) => {
   const { totalPrice } = req.body;

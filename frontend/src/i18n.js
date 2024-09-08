@@ -375,7 +375,7 @@ i18n
           "No Users Found": "لم يتم العثور على مستخدمين",
           "Users": "المستخدمين",
           "ID": "بطاقة تعريف",
-          "Is Admin": "هو المشرف",
+          "Is Admin": "مشرف",
           "Action": "فعل",
           "Delete": "مسح",
           "Create Product": "إنشاء منتج",
@@ -419,6 +419,11 @@ i18n
           "Are you sure you want to delete this workshop?": "هل أنت متأكد أنك تريد حذف هذه الورشة؟",
           "Delivered": "تم التوصيل",
           "Mark as Delivered": "وضع علامة على أنه تم التسليم",
+          "User Name": "اسم المستخدم",
+          "Admit": "قبول",
+          "Reject": "رفض",
+          "Show Images": "إظهار الصور",
+          "Shipping Price": "سعر الشحن",
           // Add more Arabic translations here
         }
       },
@@ -625,6 +630,11 @@ i18n
           "Are you sure you want to delete this workshop?": "Etes-vous sûr de vouloir supprimer cet atelier ?",
           "Delivered": "Livré",
           "Mark as Delivered": "Marquer comme livré",
+          "User Name": "Nom d'utilisateur",
+          "Admit": "Admettre",
+          "Reject": "Rejeter",
+          "Show Images": "Afficher les images",
+          "Shipping Price": "Prix ​​d'expédition",
         }
       }
     },

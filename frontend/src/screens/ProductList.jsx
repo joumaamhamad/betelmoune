@@ -106,8 +106,8 @@ const ProductList = () => {
             <tbody>
               {products.map((product) => (
                 <tr key={product._id} className="border-t">
-                  <td className="py-2 px-4">{product._id}</td>
-                  <td className="py-2 px-4">
+                  <td className="py-2 px-4 text-start">{product._id}</td>
+                  <td className="py-2 px-4 text-start">
                     {editingProduct === product._id ? (
                       <input
                         type="text"
@@ -120,7 +120,7 @@ const ProductList = () => {
                       product.name
                     )}
                   </td>
-                  <td className="py-2 px-4">
+                  <td className="py-2 px-4 text-start">
                     {editingProduct === product._id ? (
                       <input
                         type="number"
@@ -133,7 +133,7 @@ const ProductList = () => {
                       `${product.price}$`
                     )}
                   </td>
-                  <td className="py-2 px-4">
+                  <td className="py-2 px-4 text-start">
                     {editingProduct === product._id ? (
                       <input
                         type="text"
@@ -146,7 +146,7 @@ const ProductList = () => {
                       product.category
                     )}
                   </td>
-                  <td className="py-2 px-4">
+                  <td className="py-2 px-4 text-start">
                     {editingProduct === product._id ? (
                       <input
                         type="text"
@@ -159,7 +159,7 @@ const ProductList = () => {
                       product.description
                     )}
                   </td>
-                  <td className="py-2 px-4">
+                  <td className="py-2 px-4 text-start">
                     {editingProduct === product._id ? (
                       <input
                         type="text"
@@ -172,7 +172,7 @@ const ProductList = () => {
                       product.slug
                     )}
                   </td>
-                  <td className="py-2 px-4">
+                  <td className="py-2 px-4 text-start">
                     {editingProduct === product._id ? (
                       <input
                         type="number"
@@ -185,7 +185,7 @@ const ProductList = () => {
                       product.quantity
                     )}
                   </td>
-                  <td className="py-2 px-4">
+                  <td className="py-2 px-4 text-start">
                     {editingProduct === product._id ? (
                       <button
                         onClick={handleSaveClick}

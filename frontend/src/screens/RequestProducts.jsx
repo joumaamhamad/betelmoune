@@ -32,9 +32,6 @@ const ImageModal = ({ images, isOpen, onClose }) => {
   );
 };
 
-
-
-
 const RequestProducts = () => {
   const [requestProducts, setRequestProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -44,11 +41,9 @@ const RequestProducts = () => {
   const [selectedImages, setSelectedImages] = useState([]);
   const [userNames, setUserNames] = useState({});
 
-
   useEffect(() => {
     const fetchRequestProducts = async () => {
       try {
-
         console.log('llllllllllllllll');
         const response = await axios.get('/api/requestProducts');
         console.log('ressss', response.data);
@@ -63,7 +58,6 @@ const RequestProducts = () => {
     fetchRequestProducts();
   }, []);
 
-
   useEffect(() => {
     const fetchUserNames = async () => {
       const userIds = requestProducts.map((product) => product.user);
@@ -74,7 +68,8 @@ const RequestProducts = () => {
         userIds.map(async (userId) => {
           try {
             const response = await axios.get(`/api/users/${userId}`);
-            userDetails[userId] = response.data.firstName + ' ' + response.data.lastName;
+            userDetails[userId] =
+              response.data.firstName + ' ' + response.data.lastName;
           } catch (err) {
             console.error('Failed to fetch user details:', err);
           }
@@ -89,7 +84,6 @@ const RequestProducts = () => {
     }
   }, [requestProducts]);
 
-
   const handleAdmitClick = async (productId, userId) => {
     try {
       await axios.put(`/api/requestProducts/${productId}/admit`, { userId });
@@ -101,7 +95,6 @@ const RequestProducts = () => {
     }
   };
 
-
   const handleRejectClick = async (productId, userId) => {
     try {
       // Delete the product first
@@ -111,17 +104,14 @@ const RequestProducts = () => {
         prevProducts.filter((product) => product._id !== productId)
       );
 
-  
       // Send email notification after deletion
-      await axios.post(`/api/requestProducts/send-email/${userId}/${productId}`);
-  
+      await axios.post(
+        `/api/requestProducts/send-email/${userId}/${productId}`
+      );
     } catch (err) {
       console.error('Failed to reject product or send email:', err);
     }
   };
-  
-  
-  
 
   const handleShowImagesClick = (images) => {
     setSelectedImages(images);
@@ -129,77 +119,69 @@ const RequestProducts = () => {
   };
 
   if (loading) {
-    return <div className="text-center">Loading...</div>;
+    return <div className="text-center">{t('Loading')}...</div>;
   }
 
   if (error) {
-    return (
-      <div className="text-center text-red-500">
-        {error}
-      </div>
-    );
+    return <div className="text-center text-red-500">{error}</div>;
   }
 
   if (requestProducts.length === 0) {
-    return <div className="text-center">No Requested Products Found</div>;
-
+    return (
+      <div className="text-center">{t('No request to add products found')}</div>
+    );
   }
 
   return (
     <div className="min-h-screen p-6">
       <header className="mb-6">
-
         <h1 className="text-left text-4xl font-bold mb-6">
           {t('Requested Products')}
         </h1>
-
       </header>
 
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white shadow-md rounded-lg">
           <thead className="bg-gray-200 text-gray-600">
             <tr>
-
-              <th className="py-3 px-6 text-center">Product Name</th>
-              <th className="py-3 px-6 text-center">Price</th>
-              <th className="py-3 px-6 text-center">Category</th>
-              <th className="py-3 px-6 text-center">Quantity</th>
-              <th className="py-3 px-6 text-center">User</th>
-              <th className="py-3 px-6 text-center">Action</th>
-
+              <th className="py-3 px-6 text-start">{t('Product Name')}</th>
+              <th className="py-3 px-6 text-start">{t('Price')}</th>
+              <th className="py-3 px-6 text-start">{t('Category')}</th>
+              <th className="py-3 px-6 text-start">{t('Quantity')}</th>
+              <th className="py-3 px-6 text-start">{t('User Name')}</th>
+              <th className="py-3 px-6 text-start">{t('Action')}</th>
             </tr>
           </thead>
           <tbody>
             {requestProducts.map((product) => (
               <tr key={product._id} className="border-t">
-                <td className="py-3 px-6 text-center">{product.name}</td>
-                <td className="py-3 px-6 text-center">{product.price}</td>
-                <td className="py-3 px-6 text-center">{product.category}</td>
-                <td className="py-3 px-6 text-center">{product.quantity}</td>
-                <td className="py-3 px-6 text-center">
-                  {userNames[product.user] ? userNames[product.user] : 'Loading...'}
+                <td className="py-3 px-6 text-start">{product.name}</td>
+                <td className="py-3 px-6 text-start">{product.price}$</td>
+                <td className="py-3 px-6 text-start">{product.category}</td>
+                <td className="py-3 px-6 text-start">{product.quantity}</td>
+                <td className="py-3 px-6 text-start">
+                  {userNames[product.user]
+                    ? userNames[product.user]
+                    : 'Loading...'}
                 </td>
-                <td className="py-3 px-6 text-center">
-
+                <td className="py-3 px-6 text-start">
                   <button
                     onClick={() => handleAdmitClick(product._id, product.user)}
                     className="text-green-500 hover:underline"
                   >
-
-                    Admit
+                    {t('Admit')}
                   </button>
                   <button
                     onClick={() => handleRejectClick(product._id, product.user)}
                     className="text-red-500 hover:underline ml-4"
                   >
-                    Reject
+                    {t('Reject')}
                   </button>
                   <button
                     onClick={() => handleShowImagesClick(product.images)}
                     className="text-blue-500 hover:underline ml-4"
                   >
-                    Show Images
-
+                    {t('Show Images')}
                   </button>
                 </td>
               </tr>
@@ -208,14 +190,12 @@ const RequestProducts = () => {
         </table>
       </div>
 
-
       {/* Image Modal */}
       <ImageModal
         images={selectedImages}
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
       />
-
     </div>
   );
 };
