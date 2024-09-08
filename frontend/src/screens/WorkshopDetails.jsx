@@ -103,15 +103,17 @@ export default function WorkshopDetails() {
   const handleConfirm = async () => {
     setShowPopup(false);
     try {
+      // Register the user for the workshop
       await axios.put(`/api/workshops/${workshop._id}/register`, {
         userId: user._id,
       });
-      navigate(`/workshopContent/${workshop.slug}`);
+      // Navigate to the payment page
+      navigate(`/payment/${workshop.slug}`);
     } catch (error) {
       console.log(getError(error));
     }
   };
-
+  
   const handleCancel = () => {
     setShowPopup(false);
   };

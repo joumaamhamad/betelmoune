@@ -39,6 +39,8 @@ import { logIn } from './store/authSlice';
 import RequestProducts from './screens/RequestProducts';
 
 import AddWorkshop from './screens/AddWorkshop';
+import AdminRoute from './components/AdminRoute';
+import PaymentPage from './components/PaymentPage';
 
 // import { Elements } from '@stripe/react-stripe-js';
 // import { loadStripe } from '@stripe/stripe-js';
@@ -167,14 +169,15 @@ function App() {
                   path="/workshopContent/:slug"
                   element={<WorkshopContent />}
                 />
-                <Route path="/userList" element={<UserList />} />
-                <Route path="/orderList" element={<OrderList />} />
-                <Route path="/productList" element={<ProductList />} />
-                <Route path="/workshopList" element={<WorkshopList />} />
-                <Route path="/adminDashboard" element={<AdminDashboard />} />
+                <Route path="/userList" element={<AdminRoute><UserList /></AdminRoute>} />
+                <Route path="/orderList" element={<AdminRoute><OrderList /></AdminRoute>} />
+                <Route path="/productList" element={<AdminRoute><ProductList /></AdminRoute>} />
+                <Route path="/workshopList" element={<AdminRoute><WorkshopList /></AdminRoute>} />
+                <Route path="/adminDashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
                 <Route path="/myWorkshops" element={<MyWorkshops />} />
                 <Route path="/chatgroup" element={<ChatGroup />} />
-                <Route path='/requestProducts' element={<RequestProducts />} />
+                <Route path='/requestProducts' element={<AdminRoute><RequestProducts /></AdminRoute>} />
+                <Route path="/payment/:slug" element={<PaymentPage />} />
 
               </Routes>
             </Suspense>

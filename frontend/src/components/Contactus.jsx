@@ -4,6 +4,7 @@ import { getError } from '../utils';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import PopupMessage from './PopupMessage'; // Import the PopupMessage component
 
 export default function Contactus() {
   const { t } = useTranslation();
@@ -13,8 +14,12 @@ export default function Contactus() {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
+  const [showPopup, setShowPopup] = useState(false); // State to manage popup visibility
+  const [popupMessage, setPopupMessage] = useState({}); // State to manage popup message content
 
-  const sendMessage = async () => {
+  const sendMessage = async (e) => {
+    e.preventDefault();
+    
     const body = {
       firstName,
       lastName,
@@ -25,20 +30,32 @@ export default function Contactus() {
     try {
       const { data } = await axios.post('/api/messages', body);
 
-      console.log('datasss', data);
-
-      toast.success(t('Message sent successfully!'));
+      console.log('responsee',data)
+      // Reset form fields
       setFirstName('');
       setLastName('');
       setEmail('');
       setMessage('');
 
-      navigate('/');
+      // Set popup message and show it
+      setPopupMessage({
+        title: t('Message sent successfully!'),
+        body: t('Thank you for reaching out. We will get back to you soon.'),
+        buttonText: t('Close'),
+      });
+      setShowPopup(true);
 
     } catch (error) {
       toast.error(t('Error sending message.'));
       console.log(getError(error));
     }
+  };
+
+  // Handler to close the popup
+  const closePopup = () => {
+    setShowPopup(false);
+    // Optionally, navigate to another page after closing the popup
+    // navigate('/');
   };
 
   return (
@@ -50,26 +67,15 @@ export default function Contactus() {
               {t('Get in touch with us')}
             </h2>
             <div className="flex items-center mb-4">
-              <svg
-                className="w-6 h-6 text-blue-600 mr-3"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-              >
+              <svg className="w-6 h-6 text-blue-600 mr-3" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M20 4H4C2.9 4 2 4.9 2 6v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zM20 18H4V8h16v10zM6 10h8v2H6v-2zm0 4h8v2H6v-2zm0 4h8v2H6v-2zm10 0h4v2h-4v-2z"></path>
               </svg>
-              <a
-                href="mailto:mhamad_jomaa@outlook.com"
-                className="text-gray-700"
-              >
+              <a href="mailto:mhamad_jomaa@outlook.com" className="text-gray-700">
                 {t('Contact Email')}: mhamad_jomaa@outlook.com
               </a>
             </div>
             <div className="flex items-center mb-4">
-              <svg
-                className="w-6 h-6 text-blue-600 mr-3"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-              >
+              <svg className="w-6 h-6 text-blue-600 mr-3" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M6.62 10.79a15.72 15.72 0 006.59 6.59l2.2-2.2a1 1 0 011.17-.24c1.26.5 2.6.78 3.99.78a1 1 0 011 1V19a1 1 0 01-1 1C7.91 20 4 16.09 4 11a1 1 0 011-1h2.01a1 1 0 011 .79z"></path>
               </svg>
               <a href="tel:(916) 70583380" className="text-gray-700">
@@ -77,11 +83,7 @@ export default function Contactus() {
               </a>
             </div>
             <div className="flex items-center">
-              <svg
-                className="w-6 h-6 text-blue-600 mr-3"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-              >
+              <svg className="w-6 h-6 text-blue-600 mr-3" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M12 2C8.1 2 5 5.1 5 9c0 6.1 7 13 7 13s7-6.9 7-13c0-3.9-3.1-7-7-7zm0 9.5c-1.4 0-2.5-1.1-2.5-2.5S10.6 6.5 12 6.5s2.5 1.1 2.5 2.5S13.4 11.5 12 11.5z"></path>
               </svg>
               <p className="text-gray-700 mr-20 mt-4">
@@ -90,13 +92,10 @@ export default function Contactus() {
             </div>
           </div>
           <div className="w-full md:w-1/2 p-8 bg-gray-50">
-            <form className="space-y-6">
+            <form className="space-y-6" onSubmit={sendMessage}>
               <div className="flex space-x-4">
                 <div className="flex-1">
-                  <label
-                    htmlFor="firstName"
-                    className="block text-sm font-medium text-gray-700"
-                  >
+                  <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
                     {t('First Name')}
                   </label>
                   <input
@@ -109,10 +108,7 @@ export default function Contactus() {
                   />
                 </div>
                 <div className="flex-1">
-                  <label
-                    htmlFor="lastName"
-                    className="block text-sm font-medium text-gray-700"
-                  >
+                  <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">
                     {t('Last Name')}
                   </label>
                   <input
@@ -126,10 +122,7 @@ export default function Contactus() {
                 </div>
               </div>
               <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-gray-700"
-                >
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                   {t('Email (privacy policy)')}<span className="text-red-500">*</span>
                 </label>
                 <input
@@ -143,10 +136,7 @@ export default function Contactus() {
                 />
               </div>
               <div>
-                <label
-                  htmlFor="message"
-                  className="block text-sm font-medium text-gray-700"
-                >
+                <label htmlFor="message" className="block text-sm font-medium text-gray-700">
                   {t('Message')}
                 </label>
                 <textarea
@@ -160,7 +150,6 @@ export default function Contactus() {
               </div>
               <div>
                 <button
-                  onClick={sendMessage}
                   type="submit"
                   className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                 >
@@ -171,6 +160,14 @@ export default function Contactus() {
           </div>
         </div>
       </div>
+      
+      {/* Show the popup message when needed */}
+      {showPopup && (
+      <>
+        {console.log('Popup is being shown!')}
+        <PopupMessage message={popupMessage} onClose={closePopup} />
+      </>
+    )}
     </section>
   );
 }

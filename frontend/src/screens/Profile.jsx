@@ -55,6 +55,7 @@ const Profile = () => {
     }
 
     try {
+      console.log(profile)
       await dispatch(updateProfile(profile)).unwrap();
       setShowPopup(true); // Show popup after successful update
     } catch (error) {

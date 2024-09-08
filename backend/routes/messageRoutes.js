@@ -8,8 +8,10 @@ messagesRouter.post('/', async (req, res) => {
   try {
     const newMessage = new Message(req.body);
 
+    console.log('newwewe', newMessage)
     await newMessage.save();
-    res.status(201).json(newComment);
+    console.log('tttttttt');
+    res.status(201).json(newMessage);
   } catch (error) {
     res.status(500).json({ message: 'Error while sending message!!' });
   }

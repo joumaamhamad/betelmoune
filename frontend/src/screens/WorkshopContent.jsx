@@ -21,6 +21,7 @@ export default function WorkshopContent() {
   );
 
   const dispatch = useDispatch();
+  console.log('parasmmsmsm',params.slug)
 
   useEffect(() => {
     const fetchData = async () => {

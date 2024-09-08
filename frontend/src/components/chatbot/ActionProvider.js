@@ -15,7 +15,7 @@ class ActionProvider {
 
     handleNameQuery = () => {
         const message = this.createChatBotMessage(
-            "I'm Mhamad Jomaa, your virtual assistant. I'm here to help with any inquiries or issues you might have. What can I do for you today?"
+            "I'm ESA-Project, your virtual assistant. I'm here to help with any inquiries or issues you might have. What can I do for you today?"
         );
         this.addMessageToState(message);
     };
