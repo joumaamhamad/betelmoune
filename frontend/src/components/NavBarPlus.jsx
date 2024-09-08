@@ -116,7 +116,7 @@ const NavBarPlus = () => {
   };
 
   return (
-    <nav className="bg-white border-b border-gray-200">
+    <nav className="bg-white border-b border-gray-200 z-50">
       <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex-shrink-0">
@@ -124,7 +124,6 @@ const NavBarPlus = () => {
               to="/"
               className="text-xl font-bold text-gray-900 animated-gradient-text"
             >
-
               {t('Bet Elmouneh')}
             </Link>
           </div>
@@ -152,14 +151,12 @@ const NavBarPlus = () => {
             <Link
               to="/products"
               className="text-gray-900 hover:text-gray-600 text-sm"
-
             >
               {t('Products')}
             </Link>
             <Link
               to="/workshops"
               className="text-gray-900 hover:text-gray-600 text-sm"
-
             >
               {t('Workshops')}
             </Link>
@@ -168,7 +165,6 @@ const NavBarPlus = () => {
               <Link
                 to="/myWorkshops"
                 className="text-gray-900 hover:text-gray-600 text-sm"
-
               >
                 {t('My Workshops')}
               </Link>
@@ -176,14 +172,12 @@ const NavBarPlus = () => {
             <span
               onClick={handleAboutClick}
               className="text-gray-900 hover:text-gray-600 text-sm cursor-pointer"
-
             >
               {t('About us')}
             </span>
             <span
               onClick={handleContactClick}
               className="text-gray-900 hover:text-gray-600 text-sm cursor-pointer"
-
             >
               {t('Contact')}
             </span>
@@ -205,7 +199,6 @@ const NavBarPlus = () => {
                     'aria-labelledby': 'basic-button',
                   }}
                 >
-
                   <MenuItem
                     component={Link}
                     to="/adminDashboard"
@@ -218,7 +211,6 @@ const NavBarPlus = () => {
                     to="/userList"
                     onClick={handleMenuClose}
                   >
-
                     {t('User List')}
                   </MenuItem>
                   <MenuItem
@@ -249,9 +241,7 @@ const NavBarPlus = () => {
                     onClick={handleMenuClose}
                   >
                     {t('Order List')}
-
                   </MenuItem>
-
                 </Menu>
               </div>
             ) : null}
@@ -333,7 +323,10 @@ const NavBarPlus = () => {
         leaveFrom="transform translate-x-0"
         leaveTo="transform translate-x-full"
       >
-        <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-end">
+        <div
+          className="fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-end"
+          onClick={toggleMenu}
+        >
           <div className="w-64 bg-white p-6">
             <div className="flex justify-end mb-4">
               <button onClick={toggleMenu}>
@@ -362,20 +355,26 @@ const NavBarPlus = () => {
               >
                 {t('Workshops')}
               </Link>
-              <Link
-                to="/about"
-                onClick={toggleMenu}
+              <span
+                onClick={() => {
+                  console.log('about');
+                  handleAboutClick();
+                  toggleMenu();
+                }}
                 className="block text-gray-900 hover:text-gray-600"
               >
                 {t('About us')}
-              </Link>
-              <Link
-                to="/contact"
-                onClick={toggleMenu}
+              </span>
+              <span
+                onClick={() => {
+                  console.log('contact');
+                  handleContactClick();
+                  toggleMenu();
+                }}
                 className="block text-gray-900 hover:text-gray-600"
               >
                 {t('Contact')}
-              </Link>
+              </span>
               {user && user.isAdmin ? (
                 <>
                   <Link

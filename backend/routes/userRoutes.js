@@ -133,7 +133,7 @@ userRouter.get('/:id', async (req, res) => {
   try {
     // Replace with your user identification logic
 
-    console.log('user idd paramss',req.params.id);
+    console.log('user idd paramss', req.params.id);
 
     const updatedUser = await User.findById(req.params.id);
 
@@ -141,7 +141,7 @@ userRouter.get('/:id', async (req, res) => {
       return res.status(404).send('User not found');
     }
 
-    console.log(updatedUser)
+    console.log(updatedUser);
 
     res.json({
       _id: updatedUser._id,
@@ -160,7 +160,7 @@ userRouter.get('/:id', async (req, res) => {
   }
 });
 
-userRouter.put(
+userRouter.post(
   '/profile',
   isAuth,
   asyncHandler(async (req, res) => {
