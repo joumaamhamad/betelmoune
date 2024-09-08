@@ -33,8 +33,10 @@ function Workshops() {
   return (
     <div className="p-6 font-sans mb-24">
       <div className="max-w-screen-xl mx-auto">
-        <h1 className="text-left text-4xl font-bold mb-6">{t('All Workshops')}</h1>
-        <div className="flex space-x-4 mb-6 rtl:space-x-reverse">
+        <h1 className="text-left text-4xl font-bold mb-6">
+          {t('All Workshops')}
+        </h1>
+        <div className="flex flex-wrap justify-center sm:justify-start mb-6 gap-2 sm:gap-4">
           {['All', 'Upcoming', 'Trending', 'Free', 'Premium'].map((cat) => (
             <button
               key={cat}

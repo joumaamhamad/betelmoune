@@ -32,7 +32,7 @@ export default function HomePage() {
 
   return (
     <div>
-      <div className="relative">
+      <div className="md:relative" style={{ zIndex: -1 }}>
         <img
           src="https://www.thespruceeats.com/thmb/jQ6j_SRd4WodhxgAyvU9k-vVjiA=/960x0/filters:no_upscale():max_bytes(150000):strip_icc()/sandra-ivany-57eec6365f9b586c357c5eca.jpg"
           alt="images"
@@ -62,7 +62,7 @@ export default function HomePage() {
           {products.map((product) => (
             <div
               key={product?.productId}
-              className="pb-4 bg-white rounded-lg shadow-md overflow-hidden relative group"
+              className="pb-4 bg-white rounded-lg shadow-md overflow-hidden md:relative group"
               onClick={() => {
                 dispatch(selectProduct(product));
                 navigate(`/products/${product.slug}`);
